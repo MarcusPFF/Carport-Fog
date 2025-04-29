@@ -1,0 +1,67 @@
+@startuml
+
+!pragma layout smetana
+package main {
+    class Main
+}
+
+
+package config {
+    class SessionConfig
+    class ThymeleafConfig
+}
+
+package controllers {
+    class RoutingController
+}
+
+package exceptions {
+    class DatabaseException
+}
+
+
+package persistence {
+    class ConnectionPool
+    class MailSender
+    class SVGgenerator
+    package mappers {
+        class OfferMapper
+        class OrderMapper
+        class PriceAndMaterialMapper
+    }
+}
+
+package entities {
+    class CustomerInformation
+    class Order
+    class Offers
+    class Wood
+    class Roof
+    class Screws
+    class Mounts
+    class Dimensions
+    class Treatment
+}
+
+
+main.Main --> controllers.RoutingController
+main.Main --> config.SessionConfig
+main.Main --> config.ThymeleafConfig
+main.Main --> persistence.ConnectionPool
+controllers.RoutingController --> persistence.mappers.OfferMapper
+controllers.RoutingController --> persistence.mappers.OrderMapper
+controllers.RoutingController --> persistence.mappers.PriceAndMaterialMapper
+controllers.RoutingController --> persistence.MailSender
+controllers.RoutingController --> persistence.SVGgenerator
+
+persistence.mappers.OfferMapper --> persistence.ConnectionPool
+persistence.mappers.OrderMapper --> persistence.ConnectionPool
+persistence.mappers.PriceAndMaterialMapper --> persistence.ConnectionPool
+persistence.MailSender --> persistence.ConnectionPool
+persistence.SVGgenerator --> persistence.ConnectionPool
+
+
+
+
+
+@enduml
