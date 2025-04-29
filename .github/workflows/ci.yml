@@ -21,5 +21,4 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
-        working-directory: pom.xml
         run: mvn -B package
