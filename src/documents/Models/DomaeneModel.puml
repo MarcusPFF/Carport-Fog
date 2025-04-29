@@ -1,6 +1,6 @@
 @startuml
 
-
+!pragma layout smetana
 package main {
     class Main
 }
