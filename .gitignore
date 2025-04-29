@@ -9,7 +9,6 @@
 *.ctxt
 
 #Maven
-*.xml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
