@@ -1,4 +1,4 @@
-## Codingstandars for Cupcake-Project-SEM2
+## Codingstandars
 
 - [] All Java code is in camelCase
 - [] All tables are named in snake_case
