@@ -41,14 +41,14 @@ package entities {
         + Roof Price
     }
 
-    class Screw {
+    class Screws {
         + Screws Id
         + Amount
         + Screw Price
-        + Roof Type
+        + Screw Type
     }
 
-    class Mount {
+    class Mounts {
         + Mount Id
         + Mount Price
         + Mount Type
@@ -72,8 +72,8 @@ package entities {
 entities.Order <-- entities.Offer
 
 entities.Offer --> entities.Wood
-entities.Offer --> entities.Screw
-entities.Offer --> entities.Mount
+entities.Offer --> entities.Screws
+entities.Offer --> entities.Mounts
 entities.Offer --> entities.Roof
 entities.Offer --> entities.CustomerInformation
 

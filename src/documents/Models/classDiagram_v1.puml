@@ -96,12 +96,7 @@ package entities {
         - Date expirationDate
         + Offer(offerId, totalExpensePrice, totalRetailPrice, sellerId, customerInformation, expirationDate)
     }
-    class Wood {
-        - int woodId
-        - String woodType
-        - float meterPrice
-        + wood(woodId, woodType, meterPrice)
-    }
+
     class Roof {
         - int roofId
         - String roofType
@@ -112,7 +107,7 @@ package entities {
         - int screwsId
         - int amount
         - float screwPrice
-        - String roofType
+        - String screwType
         + Screws(screwsId, amount, screwPrice, roofType)
     }
     class Mounts {
@@ -120,6 +115,12 @@ package entities {
         - float mountPrice
         - String mountType
         + Mounts(mountId, mountPrice, mountType()
+    }
+    class Wood {
+        - WoodType woodType
+        - Dimensions dimensions
+        - Treatment treatment
+        + wood(woodType, dimensions, treatment)
     }
     class Dimensions {
         - int dimensionId
@@ -134,6 +135,12 @@ package entities {
         - String treatmentType
         - float meterPrice
         + Treatment(treatmentId, treatmentType, meterPrice)
+    }
+    class WoodType {
+        - int woodId
+        - String woodType
+        - float meterPrice
+        + wood(woodId, woodType, meterPrice)
     }
 }
 
@@ -155,6 +162,9 @@ persistence.documentCreation.MailSender --> persistence.connection.ConnectionPoo
 persistence.documentCreation.SVGgenerator --> persistence.connection.ConnectionPool
 
 
+entities.Wood --> entities.Dimensions
+entities.Wood --> entities.Treatment
+entities.Wood --> entities.WoodType
 
 
 
