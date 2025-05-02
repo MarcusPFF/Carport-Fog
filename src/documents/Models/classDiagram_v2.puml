@@ -1,0 +1,182 @@
+@startuml
+
+!pragma layout smetana
+
+package main {
+    class Main {
+        - ConnctionPool connectionPool
+        - String DB
+        - String PASSWORD
+        - String URL
+        - String USER
+        + static void main(args: String[])
+    }
+}
+
+package config {
+    class SessionConfig {
+        + static SessionHandler sessionConfig()
+    }
+    class ThymeleafConfig {
+        + static TemplateEngine templateEngine()
+    }
+}
+
+package exceptions {
+    class DatabaseException {
+        + DatabaseException(ex: Throwable, message: String)
+    }
+}
+
+package persistence {
+    package controller {
+        class RoutingController {
+            - static ConnectionPool connectionPool
+            - static OfferMapper offerMapper
+            - static OrderMapper orderMapper
+            - static PriceAndMaterialMapper priceAndMaterialMapper
+            - static MailSender mailsender
+            - static SVGgenerator svgGenerator
+            + static void routes(Javalin app)
+            + static void show()
+            + static void handle()
+        }
+    }
+
+    package connection {
+        class ConnectionPool {
+            - static volatile ConnectionPool instance
+            - static HikariDataSource ds
+            - static final Logger LOGGER
+
+            - private ConnectionPool()
+            + static ConnectionPool getInstance(String user, String password, String url, String db)
+            + Connection getConnection() throws SQLException
+            + void close()
+            + static HikariDataSource createHikariConnectionPool(String user, String password, String url, String db)
+        }
+    }
+
+    package documentCreation{
+        class MailSender{}
+        class SVGgenerator{}
+    }
+
+    package mappers {
+        class OfferMapper
+        class OrderMapper
+        class PriceAndMaterialMapper
+    }
+}
+
+package entities {
+    class CustomerInformation{
+        - String customerMail
+        - String firstName
+        - String lastName
+        - Address address
+        + customerInformation(customerMail, firstName, lastName, address)
+    }
+
+    class Order {
+        - int orderId
+        - int offerId
+        - Date date
+        - String status
+        + Order(orderId, offerId, date, status)
+    }
+
+    class Offer {
+        - int offerId
+        - float totalExpensePrice
+        - float totalRetailPrice
+        - int sellerId
+        - customerInformation customerInformation
+        - Date expirationDate
+        - int carportLength;
+        - int carportWidth;
+        - int shedLength;
+        - int shedWidth;
+        + Offer(offerId, totalExpensePrice, totalRetailPrice, sellerId, customerInformation, expirationDate, carportLength, carportWidth, shedLength, shedWidth)
+    }
+
+    class Roof {
+        - int roofId
+        - String roofType
+        - float roofPrice
+        + roof(roofId, roofType, roofPrice)
+    }
+    class Screws {
+        - int screwsId
+        - int amount
+        - float screwPrice
+        - String screwType
+        + Screws(screwsId, amount, screwPrice, roofType)
+    }
+    class Mounts {
+        - int mountId
+        - float mountPrice
+        - String mountType
+        + Mounts(mountId, mountPrice, mountType()
+    }
+    class Wood {
+        - WoodType woodType
+        - Dimensions dimensions
+        - Treatment treatment
+        + wood(woodType, dimensions, treatment)
+    }
+    class Dimensions {
+        - int dimensionId
+        - float width
+        - float height
+        - float length
+        - float meterPrice
+        + Dimensions(dimensionId, width, height, length, meterPrice)
+    }
+    class Treatment {
+        - int treatmentId
+        - String treatmentType
+        - float treatmentMeterPrice
+        + Treatment(treatmentId, treatmentType, treatmentMeterPrice)
+    }
+    class WoodType {
+        - int woodId
+        - String woodType
+        - float woodTypeMeterPrice
+        + wood(woodId, woodType, woodTypeMeterPrice)
+    }
+
+    Class Address {
+        - int addressId
+        - String streetName
+        - int houseNumber
+        - int zipCode
+    }
+}
+
+
+main.Main --> persistence.controller.RoutingController
+main.Main --> config.SessionConfig
+main.Main --> config.ThymeleafConfig
+main.Main --> persistence.connection.ConnectionPool
+persistence.controller.RoutingController --> persistence.mappers.OfferMapper
+persistence.controller.RoutingController --> persistence.mappers.OrderMapper
+persistence.controller.RoutingController --> persistence.mappers.PriceAndMaterialMapper
+persistence.controller.RoutingController --> persistence.documentCreation.MailSender
+persistence.controller.RoutingController --> persistence.documentCreation.SVGgenerator
+
+persistence.mappers.OfferMapper --> persistence.connection.ConnectionPool
+persistence.mappers.OrderMapper --> persistence.connection.ConnectionPool
+persistence.mappers.PriceAndMaterialMapper --> persistence.connection.ConnectionPool
+persistence.documentCreation.MailSender --> persistence.connection.ConnectionPool
+persistence.documentCreation.SVGgenerator --> persistence.connection.ConnectionPool
+
+
+entities.Wood --> entities.Dimensions
+entities.Wood --> entities.Treatment
+entities.Wood --> entities.WoodType
+
+entities.CustomerInformation --> entities.Address
+
+
+@enduml
