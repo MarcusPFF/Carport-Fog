@@ -1,0 +1,96 @@
+@startuml
+
+!pragma layout smetana
+
+package entities {
+    class CustomerInformation {
+        + Mail
+        + First Name
+        + Last Name
+        + Address
+    }
+    class Order {
+        + Order Id
+        + Offer Id
+        + Date
+        + Status
+        + Sales Price
+    }
+    class Offer {
+        + Offer Id
+        + Total Expense Price
+        + Total Retail Price
+        + Seller Id
+        + Customer Information
+        + Expiration Date
+        + Carport Length;
+        + Carport Width;
+        + Shed Length;
+        + Shed Width;
+    }
+    class Wood {
+        + Wood Type
+        + Dimensions
+        + Treatment
+    }
+
+    class WoodType {
+        + Wood Id
+        + Wood Type
+        + Wood Type Meter Price
+    }
+    class Roof {
+        + Roof Id
+        + Roof Type
+        + Roof Price
+    }
+
+    class Screws {
+        + Screws Id
+        + Amount
+        + Screw Price
+        + Screw Type
+    }
+
+    class Mounts {
+        + Mount Id
+        + Mount Price
+        + Mount Type
+    }
+
+    class Dimensions {
+        + Dimension Id
+        + Width
+        + Height
+        + Length
+        + Meter Price
+    }
+
+    class Treatment {
+        + Treatment Id
+        + Treatment Type
+        + Treatment Meter Price
+    }
+    Class Address {
+        + Address Id
+        + Street Name
+        + House Number
+        + Zip Code
+    }
+}
+
+entities.Order <-- entities.Offer
+
+entities.Offer --> entities.Wood
+entities.Offer --> entities.Screws
+entities.Offer --> entities.Mounts
+entities.Offer --> entities.Roof
+entities.Offer --> entities.CustomerInformation
+
+
+entities.Wood --> entities.Dimensions
+entities.Wood --> entities.Treatment
+entities.Wood --> entities.WoodType
+
+entities.CustomerInformation --> entities.Address
+@enduml

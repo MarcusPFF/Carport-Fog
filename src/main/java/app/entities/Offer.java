@@ -10,14 +10,22 @@ public class Offer {
     private int sellerId;
     private CustomerInformation customerInformation;
     private Date expirationDate;
+    private int carportLength;
+    private int carportWidth;
+    private int shedLength;
+    private int shedWidth;
 
-    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, CustomerInformation customerInformation, Date expirationDate) {
+    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, CustomerInformation customerInformation, Date expirationDate, int carportLength, int carportWidth, int shedLength, int shedWidth) {
         this.offerId = offerId;
         this.totalExpensePrice = totalExpensePrice;
         this.totalRetailPrice = totalRetailPrice;
         this.sellerId = sellerId;
         this.customerInformation = customerInformation;
         this.expirationDate = expirationDate;
+        this.carportLength = carportLength;
+        this.carportWidth = carportWidth;
+        this.shedLength = shedLength;
+        this.shedWidth = shedWidth;
     }
 
     public int getOfferId() {
@@ -68,6 +76,38 @@ public class Offer {
         this.expirationDate = expirationDate;
     }
 
+    public int getCarportLength() {
+        return carportLength;
+    }
+
+    public void setCarportLength(int carportLength) {
+        this.carportLength = carportLength;
+    }
+
+    public int getCarportWidth() {
+        return carportWidth;
+    }
+
+    public void setCarportWidth(int carportWidth) {
+        this.carportWidth = carportWidth;
+    }
+
+    public int getShedLength() {
+        return shedLength;
+    }
+
+    public void setShedLength(int shedLength) {
+        this.shedLength = shedLength;
+    }
+
+    public int getShedWidth() {
+        return shedWidth;
+    }
+
+    public void setShedWidth(int shedWidth) {
+        this.shedWidth = shedWidth;
+    }
+
     @Override
     public String toString() {
         return "Offer{" +
@@ -77,6 +117,10 @@ public class Offer {
                 ", sellerId=" + sellerId +
                 ", customerInformation=" + customerInformation +
                 ", expirationDate=" + expirationDate +
+                ", carportLength=" + carportLength +
+                ", carportWidth=" + carportWidth +
+                ", shedLength=" + shedLength +
+                ", shedWidth=" + shedWidth +
                 '}';
     }
 }
