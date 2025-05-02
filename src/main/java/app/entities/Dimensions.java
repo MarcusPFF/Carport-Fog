@@ -5,14 +5,14 @@ public class Dimensions {
     private float width;
     private float height;
     private float length;
-    private float meterPrice;
+    private float dimensionsMeterPrice;
 
-    public Dimensions(int dimensionId, float width, float height, float length, float meterPrice) {
+    public Dimensions(int dimensionId, float width, float height, float length, float dimensionsMeterPrice) {
         this.dimensionId = dimensionId;
         this.width = width;
         this.height = height;
         this.length = length;
-        this.meterPrice = meterPrice;
+        this.dimensionsMeterPrice = dimensionsMeterPrice;
     }
 
     public int getDimensionId() {
@@ -47,12 +47,12 @@ public class Dimensions {
         this.length = length;
     }
 
-    public float getMeterPrice() {
-        return meterPrice;
+    public float getDimensionsMeterPrice() {
+        return dimensionsMeterPrice;
     }
 
-    public void setMeterPrice(float meterPrice) {
-        this.meterPrice = meterPrice;
+    public void setDimensionsMeterPrice(float dimensionsMeterPrice) {
+        this.dimensionsMeterPrice = dimensionsMeterPrice;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class Dimensions {
                 ", width=" + width +
                 ", height=" + height +
                 ", length=" + length +
-                ", meterPrice=" + meterPrice +
+                ", dimensionsMeterPrice=" + dimensionsMeterPrice +
                 '}';
     }
 }
