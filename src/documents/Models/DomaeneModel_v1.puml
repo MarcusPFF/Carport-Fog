@@ -33,7 +33,7 @@ package entities {
     class WoodType {
         + Wood Id
         + Wood Type
-        + Meter Price
+        + Wood Type Meter Price
     }
     class Roof {
         + Roof Id
@@ -41,14 +41,14 @@ package entities {
         + Roof Price
     }
 
-    class Screw {
+    class Screws {
         + Screws Id
         + Amount
         + Screw Price
-        + Roof Type
+        + Screw Type
     }
 
-    class Mount {
+    class Mounts {
         + Mount Id
         + Mount Price
         + Mount Type
@@ -65,15 +65,21 @@ package entities {
     class Treatment {
         + Treatment Id
         + Treatment Type
-        + Meter Price
+        + Treatment Meter Price
+    }
+    Class Address {
+        + Address Id
+        + Street Name
+        + House Number
+        + Zip Code
     }
 }
 
 entities.Order <-- entities.Offer
 
 entities.Offer --> entities.Wood
-entities.Offer --> entities.Screw
-entities.Offer --> entities.Mount
+entities.Offer --> entities.Screws
+entities.Offer --> entities.Mounts
 entities.Offer --> entities.Roof
 entities.Offer --> entities.CustomerInformation
 
@@ -82,5 +88,5 @@ entities.Wood --> entities.Dimensions
 entities.Wood --> entities.Treatment
 entities.Wood --> entities.WoodType
 
-
+entities.CustomerInformation --> entities.Address
 @enduml
