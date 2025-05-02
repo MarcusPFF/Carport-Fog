@@ -3,12 +3,12 @@ package app.entities;
 public class Treatment {
     private int treatmentId;
     private String treatmentType;
-    private float treatmentPrice;
+    private float treatmentMeterPrice;
 
-    public Treatment(int treatmentId, String treatmentType, float treatmentPrice) {
+    public Treatment(int treatmentId, String treatmentType, float treatmentMeterPrice) {
         this.treatmentId = treatmentId;
         this.treatmentType = treatmentType;
-        this.treatmentPrice = treatmentPrice;
+        this.treatmentMeterPrice = treatmentMeterPrice;
     }
 
     public int getTreatmentId() {
@@ -27,12 +27,12 @@ public class Treatment {
         this.treatmentType = treatmentType;
     }
 
-    public float getTreatmentPrice() {
-        return treatmentPrice;
+    public float getTreatmentMeterPrice() {
+        return treatmentMeterPrice;
     }
 
-    public void setTreatmentPrice(float treatmentPrice) {
-        this.treatmentPrice = treatmentPrice;
+    public void setTreatmentMeterPrice(float treatmentMeterPrice) {
+        this.treatmentMeterPrice = treatmentMeterPrice;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Treatment {
         return "Treatment{" +
                 "treatmentId=" + treatmentId +
                 ", treatmentType='" + treatmentType + '\'' +
-                ", treatmentPrice=" + treatmentPrice +
+                ", treatmentMeterPrice=" + treatmentMeterPrice +
                 '}';
     }
 }

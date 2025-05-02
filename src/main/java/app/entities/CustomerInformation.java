@@ -4,8 +4,9 @@ public class CustomerInformation {
     private String customerMail;
     private String firstName;
     private String lastName;
-    private String address;
-    public CustomerInformation(String customerMail, String firstName, String lastName, String address) {
+    private Address address;
+
+    public CustomerInformation(String customerMail, String firstName, String lastName, Address address) {
         this.customerMail = customerMail;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,11 +36,11 @@ public class CustomerInformation {
         this.lastName = lastName;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

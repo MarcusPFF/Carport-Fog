@@ -7,14 +7,12 @@ public class Order {
     private int offerId;
     private Date date;
     private String status;
-    private float salesPrice;
 
-    public Order(int orderId, int offerId, Date date, String status, float salesPrice) {
+    public Order(int orderId, int offerId, Date date, String status) {
         this.orderId = orderId;
         this.offerId = offerId;
         this.date = date;
         this.status = status;
-        this.salesPrice = salesPrice;
     }
 
     public int getOrderId() {
@@ -49,14 +47,6 @@ public class Order {
         this.status = status;
     }
 
-    public float getSalesPrice() {
-        return salesPrice;
-    }
-
-    public void setSalesPrice(float salesPrice) {
-        this.salesPrice = salesPrice;
-    }
-
     @Override
     public String toString() {
         return "Order{" +
@@ -64,7 +54,6 @@ public class Order {
                 ", offerId=" + offerId +
                 ", date=" + date +
                 ", status='" + status + '\'' +
-                ", salesPrice=" + salesPrice +
                 '}';
     }
 }

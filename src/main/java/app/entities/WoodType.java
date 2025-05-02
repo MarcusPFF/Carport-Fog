@@ -3,12 +3,12 @@ package app.entities;
 public class WoodType {
     private int woodId;
     private String woodType;
-    private float meterPrice;
+    private float woodTypeMeterPrice;
 
-    public WoodType(int woodId, String woodType, float meterPrice) {
+    public WoodType(int woodId, String woodType, float woodTypeMeterPrice) {
         this.woodId = woodId;
         this.woodType = woodType;
-        this.meterPrice = meterPrice;
+        this.woodTypeMeterPrice = woodTypeMeterPrice;
     }
 
     public int getWoodId() {
@@ -27,12 +27,12 @@ public class WoodType {
         this.woodType = woodType;
     }
 
-    public float getMeterPrice() {
-        return meterPrice;
+    public float getWoodTypeMeterPrice() {
+        return woodTypeMeterPrice;
     }
 
-    public void setMeterPrice(float meterPrice) {
-        this.meterPrice = meterPrice;
+    public void setWoodTypeMeterPrice(float woodTypeMeterPrice) {
+        this.woodTypeMeterPrice = woodTypeMeterPrice;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class WoodType {
         return "WoodType{" +
                 "woodId=" + woodId +
                 ", woodType='" + woodType + '\'' +
-                ", meterPrice=" + meterPrice +
+                ", woodTypeMeterPrice=" + woodTypeMeterPrice +
                 '}';
     }
 }
