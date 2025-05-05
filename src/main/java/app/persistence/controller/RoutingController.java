@@ -26,6 +26,15 @@ public class RoutingController {
         app.post("/index", ctx -> handleIndexPage(ctx));
 
     }
-    private static void handleIndexPage(Context ctx) {}
-    private static void showIndexPage(Context ctx) {}
+    private static void handleIndexPage(Context ctx) {
+    }
+
+    private static void showIndexPage(Context ctx) {
+        ctx.render("/index.html");
+    }
+
+    public static void getShowIndexPage(Context ctx) {
+        showIndexPage(ctx);
+    }
+
 }
