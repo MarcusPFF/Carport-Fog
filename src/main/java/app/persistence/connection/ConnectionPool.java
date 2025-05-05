@@ -1,5 +1,6 @@
 package app.persistence.connection;
 
+public class ConnectionPool {
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
