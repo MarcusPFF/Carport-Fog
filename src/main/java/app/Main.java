@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final String USER = "postgres";
-    private static final String PASSWORD = System.getenv("PASSWORD");
+    private static final String PASSWORD = System.getenv("kudsk_db_password");
     private static final String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=public";
     private static final String DB = "Fog_Carport";
 

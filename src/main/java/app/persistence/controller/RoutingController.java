@@ -1,7 +1,5 @@
 package app.persistence.controller;
 
-import app.entities.*;
-import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.MailSender;
 import app.persistence.documentCreation.SVGgenerator;
@@ -26,6 +24,7 @@ public class RoutingController {
         app.post("/index", ctx -> handleIndexPage(ctx));
 
     }
+
     private static void handleIndexPage(Context ctx) {
     }
 
