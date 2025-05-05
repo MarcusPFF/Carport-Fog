@@ -8,8 +8,6 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import java.util.logging.Logger;
 
-//TODO USER og PASSWORD skal ændres  til kudsks
-
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final String USER = "postgres";
