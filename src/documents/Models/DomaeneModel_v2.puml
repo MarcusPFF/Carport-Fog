@@ -23,6 +23,10 @@ package entities {
         + Seller Id
         + Customer Information
         + Expiration Date
+        + Carport Length;
+        + Carport Width;
+        + Shed Length;
+        + Shed Width;
     }
     class Wood {
         + Wood Type

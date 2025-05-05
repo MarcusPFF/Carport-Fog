@@ -93,7 +93,11 @@ package entities {
         - int sellerId
         - customerInformation customerInformation
         - Date expirationDate
-        + Offer(offerId, totalExpensePrice, totalRetailPrice, sellerId, customerInformation, expirationDate)
+        - int carportLength;
+        - int carportWidth;
+        - int shedLength;
+        - int shedWidth;
+        + Offer(offerId, totalExpensePrice, totalRetailPrice, sellerId, customerInformation, expirationDate, carportLength, carportWidth, shedLength, shedWidth)
     }
 
     class Roof {
