@@ -1,9 +1,7 @@
 package app.persistence.connection;
 
-public class ConnectionPool {
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -105,5 +103,9 @@ public class ConnectionPool {
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
         return new HikariDataSource(config);
+    }
+
+    public static ConnectionPool getInstance() {
+        return instance;
     }
 }
