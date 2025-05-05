@@ -8,6 +8,25 @@
 </head>
 <body>
 <header class="header">
+    <div class="mobile-header">
+        <div class="mobile-logo">
+            <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+        </div>
+        <div class="mobile-icons">
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/account-icon.svg}" alt="Fog Konto"/>
+                <span>Fog Konto</span>
+            </a>
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/find-icon.svg}" alt="Find Fog"/>
+                <span>Find Fog</span>
+            </a>
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/cart-icon.png}" alt="Kurv"/>
+                <span>Kurv</span>
+            </a>
+        </div>
+    </div>
     <div class="header-top">
         <div class="info-box">
             <img th:src="@{/images/header/return-usp.svg}" alt="30 days return" class="info-icon"/>
@@ -81,6 +100,7 @@
         </div>
     </div>
 </div>
+
 
 </body>
 </html>
