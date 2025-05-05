@@ -1,13 +1,84 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<title>Newsletter</title>
+<title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+ <link rel="stylesheet" th:href="@{/css/headerstyling.css}"/>
 </head>
-
 <body>
-<h1>Welcome to the Javalin / Thymeleaf demo</h1>
-<p>This is your first web application in this world</p>
+<header class="header">
+    <div class="header-top">
+        <div class="info-box">
+            <img th:src="@{/images/header/return-usp.svg}" alt="30 days return" class="info-icon"/>
+            <span>30 dages returret</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/store-usp.svg}" alt="click and collect icon" class="info-icon"/>
+            <span>Klik og hent inden for 3 timer*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/delivery.svg}" alt="delivery icon" class="info-icon"/>
+            <span>1-3 dages levering*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/trailer.svg}" alt="trailer icon" class="info-icon"/>
+            <span>Lån en trailer gratis</span>
+        </div>
+    </div>
+
+    <div class="main-nav">
+        <div class="left-section">
+            <div class="left-section-logo">
+                <div class="logo">
+                    <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                </div>
+            </div>
+            <nav class="nav-menu">
+                <a th:href="@{#}">Bolig & design</a>
+                <a th:href="@{#}">Byggematerialer</a>
+                <a th:href="@{#}">EL & belysning</a>
+                <a th:href="@{#}">Have & fritid</a>
+                <a th:href="@{#}">Værktøj</a>
+                <a th:href="@{#}">Mærker</a>
+                <a th:href="@{#}">Tilbud</a>
+                <a th:href="@{#}">Fog Pro</a>
+            </nav>
+        </div>
+
+        <div class="search">
+            <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
+            <input type="text" placeholder="Søgning" /></div>
+
+        <div class="user-icons">
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/account-icon.svg}" alt="Fog Konto"/>
+                <span>Fog Konto</span>
+            </a>
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/find-icon.svg}" alt="Find Fog"/>
+                <span>Find Fog</span>
+            </a>
+            <a th:href="@{#}" class="icon-link">
+                <img th:src="@{/images/header/cart-icon.png}" alt="Kurv"/>
+                <span>Kurv</span>
+            </a>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="wrapper">
+        <div class="titleBox">
+            <h1>
+                !Fog
+            </h1>
+        </div>
+        <div class="buttons">
+            <button>Quick-Byg Carport med fladt tag -></button>
+            <button>Ordrenummer -></button>
+            <button class = "salesMenButton">Sælgerside</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
