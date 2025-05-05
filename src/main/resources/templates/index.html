@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="da">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Temp header</title>
-    <link rel="stylesheet" th:href="@{/css/headerstyling.css}"/>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<title>!Fog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet"/>
+ <link rel="stylesheet" th:href="@{/css/headerstyling.css}"/>
 </head>
 <body>
 <header class="header">
@@ -66,5 +66,19 @@
         </div>
     </div>
 </header>
+<div class="main">
+    <div class="wrapper">
+        <div class="titleBox">
+            <h1>
+                !Fog
+            </h1>
+        </div>
+        <div class="buttons">
+            <button>Quick-Byg Carport med fladt tag -></button>
+            <button>Ordrenummer -></button>
+            <button class = "salesMenButton">Sælgerside</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
