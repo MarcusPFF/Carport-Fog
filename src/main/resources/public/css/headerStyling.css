@@ -1,5 +1,5 @@
 body {
-    margin: 0px; /* typisk default */
+    margin: 0px;
     background-color: #FAFAFA;
 }
 
@@ -217,19 +217,19 @@ body {
 
     .header-top {
         display: flex;
-        width: 400%; /* fordi der er 4 elementer */
+        width: 400%;
         animation: slideLoop 16s infinite ease-in-out;
     }
 
     .info-box {
-        flex: 0 0 100vw; /* ét element fylder hele skærmen */
+        flex: 0 0 100vw;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0.5rem 1rem;
         box-sizing: border-box;
         gap: 0.5rem;
-        background-color: white; /* justér efter design */
+        background-color: white;
     }
 
     .info-icon {
@@ -285,8 +285,3 @@ body {
         gap: 10px;
     }
 }
-/*@media (max-width: 350px) {*/
-/*    .user-icons {*/
-/*        padding-left: -60px;*/
-/*    }*/
-/*}*/
