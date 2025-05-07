@@ -1,20 +1,22 @@
 package app.persistence.Calculator;
 
+import app.entities.forCalculator.WoodForCalculator;
+
 public class PoleCalculator {
 
-    public MaterialCalculator poleAmountCalculator(int carportLength, int carportWidth, int shedLength, int shedWidth) {
+    public WoodForCalculator poleAmountCalculator(int carportLength, int carportWidth, int shedLength, int shedWidth) {
         int lengthAmount = poleAmountX(carportLength);
         int widthAmount = poleAmountY(carportWidth);
         int shedAmount = shedPoleAmount(carportLength, carportWidth, shedLength, shedWidth, lengthAmount, widthAmount);
         int amount = (lengthAmount * widthAmount) + shedAmount;
-        return new MaterialCalculator("Stolpe", amount, amount*300);
+        return new WoodForCalculator("Stolpe", amount, amount*300);
     }
 
     public int poleAmountX(int carportLength) {
         int LengthBetweenFirstAndLastPole = carportLength - 130;
         int amount = 2;
         while (true){
-            if(LengthBetweenFirstAndLastPole/amount<=300){
+            if(LengthBetweenFirstAndLastPole/(amount - 1)<=300){
                 return amount;
             }
             amount++;
@@ -25,7 +27,7 @@ public class PoleCalculator {
         int LengthBetweenRightAndLeftPole = carportWidth - 70;
         int amount = 2;
         while (true){
-            if(LengthBetweenRightAndLeftPole/amount<=700){
+            if(LengthBetweenRightAndLeftPole/(amount - 1)<=700){
                 return amount;
             }
             amount++;

@@ -23,4 +23,43 @@ public class MaterialCalculator {
         return materialsList;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getTotalLengthInCm() {
+        return totalLengthInCm;
+    }
+
+    public void setTotalLengthInCm(int totalLengthInCm) {
+        this.totalLengthInCm = totalLengthInCm;
+    }
+
+    public PoleCalculator getPoleCalculator() {
+        return poleCalculator;
+    }
+
+    public void setPoleCalculator(PoleCalculator poleCalculator) {
+        this.poleCalculator = poleCalculator;
+    }
+
+    public static ArrayList<MaterialCalculator> getMaterialsList() {
+        return materialsList;
+    }
+
+    public static void setMaterialsList(ArrayList<MaterialCalculator> materialsList) {
+        MaterialCalculator.materialsList = materialsList;
+    }
 }
