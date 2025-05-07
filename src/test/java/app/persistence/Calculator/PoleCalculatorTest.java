@@ -1,4 +1,5 @@
 package app.persistence.Calculator;
+import app.entities.forCalculator.WoodForCalculator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ public class PoleCalculatorTest {
         int shedWidth = 150;
 
         // Act:
-        MaterialCalculator result = calculator.poleAmountCalculator(carportLength, carportWidth, shedLength, shedWidth);
+        WoodForCalculator result = calculator.poleAmountCalculator(carportLength, carportWidth, shedLength, shedWidth);
 
         // Assert:
         assertNotNull(result, "Resultatet bør ikke være null");
