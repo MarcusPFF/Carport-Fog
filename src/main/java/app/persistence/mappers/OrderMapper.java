@@ -11,7 +11,7 @@ public class OrderMapper {
     //Skal kaldes når man et offer laves
     // husk at setStaatusId = 1
     public boolean createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
-        String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,current_date());";
+        String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,CURRENT_DATE);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, offerId);
@@ -25,29 +25,32 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Could not insert order into database");
+            throw new DatabaseException("Could not insert order into database: ");
         }
     }
 
     public Order getOrderDetailsFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
         String sql = "SELECT orders.order_id, orders.offer_id, orders.tracking_number, orders.purchase_date, status.status_description "
                     + "FROM orders "
-                    + "JOIN status ON orders.status_id = status.id "
+                    + "JOIN status ON orders.status_id = status.status_id "
                     + "WHERE orders.order_id = ?;";
-
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
-
             try (ResultSet rs = statement.executeQuery()) {
+
                 if (rs.next()) {
                     int retrievedOrderId = rs.getInt("order_id");
                     int offerId = rs.getInt("offer_id");
                     UUID trackingNumber = UUID.fromString(rs.getString("tracking_number"));
                     Date purchaseDate = rs.getDate("purchase_date");
                     String status = rs.getString("status_description");
-
+                    System.out.println("retrievedOrderId: " + retrievedOrderId);
+                    System.out.println("offerId: " + offerId);
+                    System.out.println("trackingNumber: " + trackingNumber);
+                    System.out.println("purchaseDate: " + purchaseDate);
+                    System.out.println("status: " + status);
                     return new Order(retrievedOrderId, offerId, trackingNumber, purchaseDate, status);
                 } else {
                     return null;
