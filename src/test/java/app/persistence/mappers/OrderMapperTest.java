@@ -42,225 +42,215 @@ class OrderMapperTest {
         orderMapper = new OrderMapper();
     }
 
-    private static void createTestSchema(Connection conn) throws SQLException {
-        String ddl = """
-                DROP SCHEMA IF EXISTS test CASCADE;
-                CREATE SCHEMA test;
-                
-                CREATE TABLE test.addresses (
-                    address_id   BIGINT      NOT NULL,
-                    street_name  VARCHAR     NOT NULL,
-                    house_number BIGINT      NOT NULL,
-                    zip_code     BIGINT      NOT NULL,
-                    CONSTRAINT pk_addresses       PRIMARY KEY (address_id)
-                );
-                
-                CREATE TABLE test.cities (
-                    zip_code   BIGINT  NOT NULL,
-                    city_name  VARCHAR NOT NULL,
-                    CONSTRAINT pk_cities  PRIMARY KEY (zip_code)
-                );
-                
-                CREATE TABLE test.customer (
-                    customer_id        BIGINT  NOT NULL,
-                    customer_mail      VARCHAR NOT NULL,
-                    customer_firstname VARCHAR NOT NULL,
-                    customer_lastname  VARCHAR NOT NULL,
-                    address_id         BIGINT  NOT NULL,
-                    CONSTRAINT pk_customer  PRIMARY KEY (customer_id)
-                );
-                
-                CREATE TABLE test.markup (
-                    expenses_price BIGINT NOT NULL,
-                    percentage     BIGINT NOT NULL,
-                    CONSTRAINT pk_markup PRIMARY KEY (expenses_price)
-                );
-                
-                CREATE TABLE test.mounts (
-                    mount_id        BIGINT  NOT NULL,
-                    mount_price     NUMERIC NOT NULL,
-                    mount_type_name VARCHAR NOT NULL,
-                    CONSTRAINT pk_mounts PRIMARY KEY (mount_id)
-                );
-                
-                CREATE TABLE test.mounts_list (
-                    offer_id     BIGINT NOT NULL,
-                    mount_id     BIGINT NOT NULL,
-                    mount_amount BIGINT NOT NULL
-                );
-                
-                CREATE TABLE test.offers (
-                    offer_id            BIGINT      NOT NULL,
-                    total_expense_price DOUBLE PRECISION NOT NULL,
-                    total_offer_price   DOUBLE PRECISION NOT NULL,
-                    seller_id           BIGINT      NOT NULL,
-                    customer_id         BIGINT      NOT NULL,
-                    expiration_date     DATE        NOT NULL,
-                    carport_length      BIGINT      NOT NULL,
-                    carport_width       BIGINT      NOT NULL,
-                    shed_length         BIGINT,
-                    shed_width          BIGINT,
-                    CONSTRAINT pk_offers PRIMARY KEY (offer_id)
-                );
-                
-                CREATE TABLE test.orders (
-                    order_id       BIGINT NOT NULL,
-                    offer_id       BIGINT NOT NULL,
-                    tracking_number UUID  NOT NULL,
-                    status_id      BIGINT NOT NULL,
-                    purchase_date  DATE   NOT NULL,
-                    CONSTRAINT pk_orders PRIMARY KEY (order_id)
-                );
-                
-                CREATE TABLE test.roof_list (
-                    offer_id    BIGINT NOT NULL,
-                    roof_id     BIGINT NOT NULL,
-                    roof_amount BIGINT NOT NULL
-                );
-                
-                CREATE TABLE test.roofs (
-                    roof_id        BIGINT NOT NULL,
-                    roof_length_cm BIGINT NOT NULL,
-                    roof_width_cm  BIGINT NOT NULL,
-                    roof_type_name VARCHAR NOT NULL,
-                    roof_price     NUMERIC NOT NULL,
-                    CONSTRAINT pk_roofs PRIMARY KEY (roof_id)
-                );
-                
-                CREATE TABLE test.screws (
-                    screw_id            BIGINT  NOT NULL,
-                    amount_pr_container BIGINT  NOT NULL,
-                    screw_price         NUMERIC NOT NULL,
-                    screw_type_name     VARCHAR NOT NULL,
-                    CONSTRAINT pk_screws PRIMARY KEY (screw_id)
-                );
-                
-                CREATE TABLE test.screws_list (
-                    offer_id      BIGINT NOT NULL,
-                    screw_id      BIGINT NOT NULL,
-                    screws_amount BIGINT NOT NULL
-                );
-                
-                CREATE TABLE test.sellers (
-                    seller_id        BIGINT  NOT NULL,
-                    seller_mail      VARCHAR NOT NULL,
-                    seller_firstname VARCHAR NOT NULL,
-                    seller_lastname  VARCHAR NOT NULL,
-                    CONSTRAINT pk_sellers PRIMARY KEY (seller_id)
-                );
-                
-                CREATE TABLE test.status (
-                    status_id          BIGINT  NOT NULL,
-                    status_description VARCHAR,
-                    message_for_mail   VARCHAR,
-                    CONSTRAINT pk_status PRIMARY KEY (status_id)
-                );
-                
-                CREATE TABLE test.wood_dimensions (
-                    wood_dimension_id         BIGINT  NOT NULL,
-                    wood_length               BIGINT  NOT NULL,
-                    wood_height               BIGINT  NOT NULL,
-                    wood_width                BIGINT  NOT NULL,
-                    wood_dimension_meter_price NUMERIC NOT NULL,
-                    CONSTRAINT pk_wood_dimensions PRIMARY KEY (wood_dimension_id)
-                );
-                
-                CREATE TABLE test.wood_list (
-                    wood_list_id      BIGINT NOT NULL,
-                    offer_id          BIGINT NOT NULL,
-                    wood_type_id      BIGINT NOT NULL,
-                    wood_treatment_id BIGINT NOT NULL,
-                    wood_dimension_id BIGINT NOT NULL,
-                    wood_amount       BIGINT NOT NULL,
-                    CONSTRAINT pk_wood_list PRIMARY KEY (wood_list_id)
-                );
-                
-                CREATE TABLE test.wood_treatment (
-                    wood_treatment_id         BIGINT  NOT NULL,
-                    wood_treatment_type_name  VARCHAR NOT NULL,
-                    wood_treatment_meter_price NUMERIC NOT NULL,
-                    CONSTRAINT pk_wood_treatment PRIMARY KEY (wood_treatment_id)
-                );
-                
-                CREATE TABLE test.wood_type (
-                    wood_type_id          BIGINT  NOT NULL,
-                    wood_type_name        VARCHAR NOT NULL,
-                    wood_type_meter_price NUMERIC NOT NULL,
-                    CONSTRAINT pk_wood_type PRIMARY KEY (wood_type_id)
-                );
-                
-                -- Foreign keys
-                ALTER TABLE test.addresses
-                    ADD CONSTRAINT fk_addresses_zip_code FOREIGN KEY (zip_code)
-                        REFERENCES test.cities (zip_code);
-                
-                ALTER TABLE test.customer
-                    ADD CONSTRAINT fk_customer_address FOREIGN KEY (address_id)
-                        REFERENCES test.addresses (address_id);
-                
-                ALTER TABLE test.mounts_list
-                    ADD CONSTRAINT fk_mounts_list_mount FOREIGN KEY (mount_id)
-                        REFERENCES test.mounts (mount_id),
-                    ADD CONSTRAINT fk_mounts_list_offer FOREIGN KEY (offer_id)
-                        REFERENCES test.offers (offer_id);
-                
-                ALTER TABLE test.offers
-                    ADD CONSTRAINT fk_offers_customer FOREIGN KEY (customer_id)
-                        REFERENCES test.customer (customer_id),
-                    ADD CONSTRAINT fk_offers_seller FOREIGN KEY (seller_id)
-                        REFERENCES test.sellers (seller_id);
-                
-                ALTER TABLE test.orders
-                    ADD CONSTRAINT fk_orders_offer FOREIGN KEY (offer_id)
-                        REFERENCES test.offers (offer_id),
-                    ADD CONSTRAINT fk_orders_status FOREIGN KEY (status_id)
-                        REFERENCES test.status (status_id);
-                
-                ALTER TABLE test.roof_list
-                    ADD CONSTRAINT fk_roof_list_offer FOREIGN KEY (offer_id)
-                        REFERENCES test.offers (offer_id),
-                    ADD CONSTRAINT fk_roof_list_roof FOREIGN KEY (roof_id)
-                        REFERENCES test.roofs (roof_id);
-                
-                ALTER TABLE test.screws_list
-                    ADD CONSTRAINT fk_screws_list_offer FOREIGN KEY (offer_id)
-                        REFERENCES test.offers (offer_id),
-                    ADD CONSTRAINT fk_screws_list_screw FOREIGN KEY (screw_id)
-                        REFERENCES test.screws (screw_id);
-                
-                ALTER TABLE test.wood_list
-                    ADD CONSTRAINT fk_wood_list_offer FOREIGN KEY (offer_id)
-                        REFERENCES test.offers (offer_id),
-                    ADD CONSTRAINT fk_wood_list_wood_dimension FOREIGN KEY (wood_dimension_id)
-                        REFERENCES test.wood_dimensions (wood_dimension_id),
-                    ADD CONSTRAINT fk_wood_list_wood_treatment FOREIGN KEY (wood_treatment_id)
-                        REFERENCES test.wood_treatment (wood_treatment_id),
-                    ADD CONSTRAINT fk_wood_list_wood_type FOREIGN KEY (wood_type_id)
-                        REFERENCES test.wood_type (wood_type_id);
+    private static void createTestSchemaWithData(Connection conn) throws SQLException {
+        String ddlWithData = """
+        -- Drop schema if it exists and create a new one
+        DROP SCHEMA IF EXISTS test CASCADE;
+        CREATE SCHEMA test;
 
-                """;
+        -- Create tables
+        CREATE TABLE test.cities (
+            id SERIAL PRIMARY KEY,
+            zip_code INT NOT NULL,
+            city_name VARCHAR(255) NOT NULL
+        );
+
+        CREATE TABLE test.customer (
+            id SERIAL PRIMARY KEY,
+            customer_mail VARCHAR(255) NOT NULL,
+            customer_firstname VARCHAR(255) NOT NULL,
+            customer_lastname VARCHAR(255) NOT NULL,
+            street_name VARCHAR(255) NOT NULL,
+            house_number INT NOT NULL,
+            zip_code INT NOT NULL
+        );
+
+        CREATE TABLE test.sellers (
+            id SERIAL PRIMARY KEY,
+            seller_mail VARCHAR(255) NOT NULL,
+            seller_firstname VARCHAR(255) NOT NULL,
+            seller_lastname VARCHAR(255) NOT NULL
+        );
+
+        CREATE TABLE test.status (
+            id SERIAL PRIMARY KEY,
+            status_description VARCHAR(255) NOT NULL,
+            message_for_mail VARCHAR(255) NOT NULL
+        );
+
+        CREATE TABLE test.markup (
+            id SERIAL PRIMARY KEY,
+            expenses_price DECIMAL(10, 2) NOT NULL,
+            percentage DECIMAL(5, 2) NOT NULL
+        );
+
+        CREATE TABLE test.mounts (
+            id SERIAL PRIMARY KEY,
+            mount_price DECIMAL(10, 2) NOT NULL,
+            mount_type_name VARCHAR(255) NOT NULL
+        );
+
+        CREATE TABLE test.roofs (
+            id SERIAL PRIMARY KEY,
+            roof_length_cm INT NOT NULL,
+            roof_width_cm INT NOT NULL,
+            roof_price DECIMAL(10, 2) NOT NULL
+        );
+
+        CREATE TABLE test.screws (
+            id SERIAL PRIMARY KEY,
+            amount_pr_container INT NOT NULL,
+            screw_price DECIMAL(10, 2) NOT NULL,
+            screw_type_name VARCHAR(255) NOT NULL
+        );
+
+        CREATE TABLE test.wood_type (
+            id SERIAL PRIMARY KEY,
+            wood_type_name VARCHAR(255) NOT NULL,
+            wood_type_meter_price DECIMAL(10, 2) NOT NULL
+        );
+
+        CREATE TABLE test.wood_treatment (
+            id SERIAL PRIMARY KEY,
+            wood_treatment_type_name VARCHAR(255) NOT NULL,
+            wood_treatment_meter_price DECIMAL(10, 2) NOT NULL
+        );
+
+        CREATE TABLE test.wood_dimensions (
+            id SERIAL PRIMARY KEY,
+            wood_length INT NOT NULL,
+            wood_height INT NOT NULL,
+            wood_width INT NOT NULL,
+            wood_dimension_meter_price DECIMAL(10, 2) NOT NULL
+        );
+
+        CREATE TABLE test.offers (
+            id SERIAL PRIMARY KEY,
+            total_expense_price DECIMAL(10, 2) NOT NULL,
+            total_offer_price DECIMAL(10, 2) NOT NULL,
+            seller_id INT REFERENCES test.sellers(id),
+            customer_id INT REFERENCES test.customer(id),
+            expiration_date DATE NOT NULL,
+            carport_length INT NOT NULL,
+            carport_width INT NOT NULL,
+            shed_length INT NOT NULL,
+            shed_width INT NOT NULL
+        );
+
+        CREATE TABLE test.orders (
+            id SERIAL PRIMARY KEY,
+            offer_id INT REFERENCES test.offers(id),
+            status_id INT REFERENCES test.status(id),
+            purchase_date DATE NOT NULL,
+            tracking_number UUID DEFAULT gen_random_uuid()
+        );
+
+        CREATE TABLE test.mounts_list (
+            offer_id INT REFERENCES test.offers(id),
+            mount_id INT REFERENCES test.mounts(id),
+            mount_amount INT NOT NULL
+        );
+
+        CREATE TABLE test.roof_list (
+            offer_id INT REFERENCES test.offers(id),
+            roof_id INT REFERENCES test.roofs(id),
+            roof_amount INT NOT NULL
+        );
+
+        CREATE TABLE test.screws_list (
+            offer_id INT REFERENCES test.offers(id),
+            screw_id INT REFERENCES test.screws(id),
+            screws_amount INT NOT NULL
+        );
+
+        CREATE TABLE test.wood_list (
+            offer_id INT REFERENCES test.offers(id),
+            wood_type_id INT REFERENCES test.wood_type(id),
+            wood_treatment_id INT REFERENCES test.wood_treatment(id),
+            wood_dimension_id INT REFERENCES test.wood_dimensions(id),
+            wood_amount INT NOT NULL
+        );
+
+        -- Insert test data
+        INSERT INTO test.cities (zip_code, city_name)
+        VALUES (1000, 'Copenhagen'), (2000, 'Aarhus'), (3000, 'Odense');
+
+        INSERT INTO test.customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code)
+        VALUES
+            ('john.doe@example.com', 'John', 'Doe', 'Main Street', 123, 1000),
+            ('jane.smith@example.com', 'Jane', 'Smith', 'Oak Avenue', 456, 2000),
+            ('alice.johnson@example.com', 'Alice', 'Johnson', 'Pine Road', 789, 3000);
+
+        INSERT INTO test.sellers (seller_mail, seller_firstname, seller_lastname)
+        VALUES
+            ('bob.martin@example.com', 'Bob', 'Martin'),
+            ('mary.jane@example.com', 'Mary', 'Jane'),
+            ('sam.doe@example.com', 'Sam', 'Doe');
+
+        INSERT INTO test.status (status_description, message_for_mail)
+        VALUES
+            ('Pending', 'Your order is pending.'),
+            ('Shipped', 'Your order has been shipped.'),
+            ('Delivered', 'Your order has been delivered.');
+
+        INSERT INTO test.markup (expenses_price, percentage)
+        VALUES (1000, 20), (2000, 15), (3000, 10);
+
+        INSERT INTO test.mounts (mount_price, mount_type_name)
+        VALUES (500.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
+
+        INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price)
+        VALUES (1000, 500, 1000.00), (1200, 600, 1500.00), (1400, 700, 2000.00);
+
+        INSERT INTO test.screws (amount_pr_container, screw_price, screw_type_name)
+        VALUES (100, 10.00, 'Wood Screw'), (200, 15.00, 'Metal Screw'), (300, 20.00, 'Concrete Screw');
+
+        INSERT INTO test.wood_type (wood_type_name, wood_type_meter_price)
+        VALUES ('Oak', 50.00), ('Pine', 30.00), ('Maple', 40.00);
+
+        INSERT INTO test.wood_treatment (wood_treatment_type_name, wood_treatment_meter_price)
+        VALUES ('Polished', 5.00), ('Varnished', 10.00), ('Painted', 15.00);
+
+        INSERT INTO test.wood_dimensions (wood_length, wood_height, wood_width, wood_dimension_meter_price)
+        VALUES (200, 50, 30, 15.00), (250, 60, 35, 20.00), (300, 70, 40, 25.00);
+
+        INSERT INTO test.offers (total_expense_price, total_offer_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
+        VALUES
+            (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
+            (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),
+            (9000.00, 10000.00, 3, 3, '2025-12-31', 700, 500, 300, 250);
+
+        INSERT INTO test.orders (offer_id, status_id, purchase_date)
+        VALUES
+            (1, 1, '2025-05-01'),
+            (2, 2, '2025-05-02'),
+            (3, 3, '2025-05-03');
+
+        INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount)
+        VALUES
+            (1, 1, 10), (2, 2, 5), (3, 3, 8);
+
+        INSERT INTO test.roof_list (offer_id, roof_id, roof_amount)
+        VALUES
+            (1, 1, 10), (2, 2, 5), (3, 3, 8);
+
+        INSERT INTO test.screws_list (offer_id, screw_id, screws_amount)
+        VALUES
+            (1, 1, 50), (2, 2, 30), (3, 3, 20);
+
+        INSERT INTO test.wood_list (offer_id, wood_type_id, wood_treatment_id, wood_dimension_id, wood_amount)
+        VALUES
+            (1, 1, 1, 1, 100), (2, 2, 2, 2, 200), (3, 3, 3, 3, 150);
+        """;
+
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute(ddl);
-        }
-        try (Connection connection = connectionPool.getConnection()) {
-            connection.prepareStatement("INSERT INTO test.cities (zip_code, city_name) VALUES (1000, 'TestCity')").execute();
-            connection.prepareStatement("INSERT INTO test.addresses (address_id, street_name, house_number, zip_code) VALUES (1, 'Main Street', 123, 1000)").execute();
-            connection.prepareStatement("INSERT INTO test.customer (customer_id, customer_mail, customer_firstname, customer_lastname, address_id) VALUES (1, 'cust@example.com', 'Test', 'Customer', 1)").execute();
-            connection.prepareStatement("INSERT INTO test.sellers (seller_id, seller_mail, seller_firstname, seller_lastname) VALUES (1, 'seller@example.com', 'Test', 'Seller')").execute();
-            connection.prepareStatement("""
-        INSERT INTO test.offers (
-            offer_id, total_expense_price, total_offer_price,
-            seller_id, customer_id, expiration_date,
-            carport_length, carport_width, shed_length, shed_width
-        ) VALUES (
-            10, 5000.0, 7500.0,
-            1, 1, CURRENT_DATE,
-            600, 300, 200, 200
-        )
-    """).execute();
-            connection.prepareStatement("INSERT INTO test.status (status_id, status_description) VALUES (1, 'Bekræftet')").execute();
+            stmt.execute(ddlWithData);
         }
     }
+
+
+
+
 
     @Test
     void createNewOrder() throws SQLException, DatabaseException {
@@ -289,12 +279,12 @@ class OrderMapperTest {
     @Test
     void getOrderDetailsFromOrderId() throws SQLException, DatabaseException {
         // Arrange
-        int orderId = 1;
-        int offerId = 1;
-        int statusId = 1;
-        String statusDescription = "Bekræftet";
-        UUID trackingNumber = UUID.randomUUID();
-        Date purchaseDate = Date.valueOf("2024-05-01");
+int orderId = 3;
+        int offerId = 3;
+        int statusId = 3;
+        String statusDescription = "Delivered";
+        UUID trackingNumber = UUID.fromString("aa0f3c1b-6348-4c41-bef9-79d91dce774d");
+        Date purchaseDate = Date.valueOf("2024-05-03");
 
         try (Connection conn = connectionPool.getConnection()) {
             // Insert status
@@ -329,5 +319,4 @@ class OrderMapperTest {
         Assertions.assertEquals(purchaseDate, order.getPurchaseDate());
         Assertions.assertEquals(statusDescription, order.getStatus());
     }
-
 }
