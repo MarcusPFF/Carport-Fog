@@ -25,15 +25,14 @@ class OrderMapperTest {
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
         try (Connection conn = connectionPool.getConnection()) {
-            conn.createStatement().execute("BEGIN;");
-            createTestSchema(conn);
+            createTestSchemaWithData(conn);
         }
     }
 
     @AfterAll
     static void afterAll() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
-            conn.createStatement().execute("ROLLBACK;");
+
         }
     }
 
@@ -286,27 +285,6 @@ int orderId = 3;
         UUID trackingNumber = UUID.fromString("aa0f3c1b-6348-4c41-bef9-79d91dce774d");
         Date purchaseDate = Date.valueOf("2024-05-03");
 
-        try (Connection conn = connectionPool.getConnection()) {
-            // Insert status
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO test.status (status_id, status_description) VALUES (?, ?)")) {
-                ps.setInt(1, statusId);
-                ps.setString(2, statusDescription);
-                ps.executeUpdate();
-            }
-
-            // Insert order
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO test.orders (order_id, offer_id, tracking_number, status_id, purchase_date) " +
-                            "VALUES (?, ?, ?, ?, ?)")) {
-                ps.setInt(1, orderId);
-                ps.setInt(2, offerId);
-                ps.setObject(3, trackingNumber);
-                ps.setInt(4, statusId);
-                ps.setDate(5, purchaseDate);
-                ps.executeUpdate();
-            }
-        }
 
         // Act
         Order order = orderMapper.getOrderDetailsFromOrderId(connectionPool, orderId);
