@@ -17,9 +17,9 @@ class OrderMapperTest {
     @BeforeAll
     static void beforeAll() throws SQLException {
         String USER = "postgres";
-        //String PASSWORD = "jo221mf411jk513!";
+        String PASSWORD = "jo221mf411jk513!";
         //TODO FÅ Getenv til at virke
-        String PASSWORD = System.getenv("kudsk_db_password");
+        //String PASSWORD = System.getenv("kudsk_db_password");
         String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=test";
         String DB = "Fog_Carport";
 
