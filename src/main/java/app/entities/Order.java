@@ -1,17 +1,20 @@
 package app.entities;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Order {
     private int orderId;
     private int offerId;
-    private Date date;
+    private UUID trackingNumber;
+    private Date purchaseDate;
     private String status;
 
-    public Order(int orderId, int offerId, Date date, String status) {
+    public Order(int orderId, int offerId, UUID trackingNumber , Date purchaseDate, String status) {
         this.orderId = orderId;
         this.offerId = offerId;
-        this.date = date;
+        this.trackingNumber = trackingNumber;
+        this.purchaseDate = purchaseDate;
         this.status = status;
     }
 
@@ -31,12 +34,19 @@ public class Order {
         this.offerId = offerId;
     }
 
-    public Date getDate() {
-        return date;
+    public UUID getTrackingNumber() {
+        return trackingNumber;
+    }
+    public void setTrackingNumber(UUID trackingNumber) {
+        this.trackingNumber = trackingNumber;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 
     public String getStatus() {
@@ -52,7 +62,8 @@ public class Order {
         return "Order{" +
                 "orderId=" + orderId +
                 ", offerId=" + offerId +
-                ", date=" + date +
+                ", trackingNumber=" + trackingNumber +
+                ", purchaseDate=" + purchaseDate +
                 ", status='" + status + '\'' +
                 '}';
     }
