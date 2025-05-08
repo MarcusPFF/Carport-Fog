@@ -1,11 +1,10 @@
 package app.persistence.mappers;
+
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.entities.Order;
 import org.junit.jupiter.api.*;
 import app.entities.Status;
-
-
 
 import java.sql.*;
 import java.util.UUID;
@@ -44,10 +43,6 @@ class OrderMapperTest {
     void setUp() {
         orderMapper = new OrderMapper();
     }
-
-
-
-
 
     @Test
     void createNewOrder() throws SQLException, DatabaseException {
