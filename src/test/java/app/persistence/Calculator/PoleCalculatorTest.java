@@ -13,7 +13,7 @@ public class PoleCalculatorTest {
     }
 
     @Test
-    public void testPoleAmountCalculator() {
+    public void testPoleCalculator() {
         // Arrange:
         int carportLengthInCm = 500;
         int carportWidthInCm = 300;
@@ -21,7 +21,7 @@ public class PoleCalculatorTest {
         int shedWidthInCm = 150;
 
         // Act:
-        WoodForCalculator result = calculator.poleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm);
+        WoodForCalculator result = calculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm);
 
         // Assert:
         assertNotNull(result, "Resultatet bør ikke være null");

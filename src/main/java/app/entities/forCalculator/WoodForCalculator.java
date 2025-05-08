@@ -1,6 +1,7 @@
 package app.entities.forCalculator;
 
 import app.persistence.Calculator.PoleCalculator;
+import app.persistence.Calculator.RafterCalculator;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class WoodForCalculator {
     private int woodWidthInMm;
     private int woodHeightInMm;
     private PoleCalculator poleCalculator;
+    private RafterCalculator rafterCalculator;
 
     private static ArrayList<WoodForCalculator> woodList;
 
@@ -26,7 +28,8 @@ public class WoodForCalculator {
 
     public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm) {
         woodList = new ArrayList<>();
-        woodList.add(poleCalculator.poleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
+        woodList.add(poleCalculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
+        woodList.add(rafterCalculator.rafterCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
         return woodList;
     }
 

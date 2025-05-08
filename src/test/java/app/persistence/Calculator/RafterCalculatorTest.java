@@ -31,12 +31,14 @@ class RafterCalculatorTest {
     @Test
     void totalRafterLengthCalculator() {
         // Arrange:
-        int carportLengthInCm = 570;
+        int carportWidthInCm = 570;
         int rafterAmount = 10;
-        int expected = 5700;
+        int shedLengthInCm = 200;
+        int shedWidthInCm = 500;
+        int expected = 7100;
 
         // Act:
-        int result = calculator.totalRafterLengthCalculator(rafterAmount, carportLengthInCm);
+        int result = calculator.totalRafterLengthCalculator(rafterAmount, carportWidthInCm, shedLengthInCm, shedWidthInCm);
 
         // Assert:
         assertEquals(expected, result, "Der bør være 57 meter spær.");

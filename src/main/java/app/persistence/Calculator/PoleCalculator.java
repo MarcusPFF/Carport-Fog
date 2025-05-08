@@ -4,7 +4,7 @@ import app.entities.forCalculator.WoodForCalculator;
 
 public class PoleCalculator {
 
-    public WoodForCalculator poleAmountCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM) {
+    public WoodForCalculator poleCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM) {
         int lengthAmount = poleAmountXCalculator(carportLengthInCM);
         int widthAmount = poleAmountYCalculator(carportWidthInCM);
         int shedAmount = shedPoleAmountCalculator(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
