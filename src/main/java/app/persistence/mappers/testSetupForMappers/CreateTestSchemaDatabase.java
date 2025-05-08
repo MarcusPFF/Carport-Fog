@@ -12,7 +12,6 @@ public class CreateTestSchemaDatabase {
         DROP SCHEMA IF EXISTS test CASCADE;
         CREATE SCHEMA test;
 
-        -- Create tables
         CREATE TABLE test.cities (
             zip_code INT NOT NULL PRIMARY KEY,
             city_name VARCHAR(255) NOT NULL
@@ -163,7 +162,8 @@ public class CreateTestSchemaDatabase {
         VALUES (500.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
 
         INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price, roof_type_name)
-        VALUES (1000, 500, 1000.00, 'Plastmo Ecolite blÃ¥tonet'), (1200, 600, 1500.00, 'Plastmo Ecolite klartonet'), (1400, 700, 2000.00, 'Plastmo Ecolite sort');
+
+        VALUES (1000, 500, 1000.00, 'Plastmo Ecolite blåtonet'), (1200, 600, 1500.00, 'Plastmo Ecolite klartonet'), (1400, 700, 2000.00, 'Plastmo Ecolite sort');
 
         INSERT INTO test.screws (amount_pr_container, screw_price, screw_type_name)
         VALUES (100, 10.00, 'Wood Screw'), (200, 15.00, 'Metal Screw'), (300, 20.00, 'Concrete Screw');
@@ -186,12 +186,12 @@ public class CreateTestSchemaDatabase {
         INSERT INTO test.orders (offer_id, status_id, purchase_date)
         VALUES
             (1, 1, '2025-05-01'),
-            (2, 2, '2025-05-02');
+            (2, 2, '2025-05-02'),
 
         INSERT INTO test.orders (offer_id, status_id, purchase_date, tracking_number)
         VALUES
             (3, 3, '2025-05-03', 'f47ac10b-58cc-4372-a567-0e02b2c3d479');
-
+      
         INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount)
         VALUES
             (1, 1, 10), (2, 2, 5), (3, 3, 8);
