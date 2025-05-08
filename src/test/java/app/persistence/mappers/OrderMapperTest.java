@@ -3,9 +3,12 @@ import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.entities.Order;
 import org.junit.jupiter.api.*;
+import app.entities.Status;
+
 
 
 import java.sql.*;
+import java.util.UUID;
 
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,5 +85,32 @@ class OrderMapperTest {
         assertEquals(offerId, order.getOfferId());
         assertEquals(purchaseDate, order.getPurchaseDate());
         assertEquals(statusDescription, order.getStatus());
+    }
+
+    @Test
+    void getTrackingNumberFromOrderId() throws SQLException, DatabaseException {
+        int orderId = 4;
+        UUID expectedTrackingNumber = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+
+        //Act: Get tracking_number from order_id
+        UUID trackingNumber = orderMapper.getTrackingNumberFromOrderId(connectionPool, orderId);
+        //Assert:
+        assertNotNull(trackingNumber);
+        assertEquals(expectedTrackingNumber, trackingNumber);
+    }
+
+    @Test
+    void getStatusFromTrackingNumber() throws SQLException, DatabaseException {
+        int orderId = 1;
+        UUID trackingNumber = orderMapper.getTrackingNumberFromOrderId(connectionPool, orderId);
+        assertNotNull(trackingNumber, "Tracking number should now not be null");
+
+        // Act: Get status via tracking_number
+        Status status = orderMapper.getStatusFromTrackingNumber(connectionPool, trackingNumber);
+        // Assert:
+        assertNotNull(status);
+        assertEquals(1, status.getStatusId());
+        assertEquals("Pending", status.getStatusDescription());
+        assertEquals("Your order is pending.", status.getMessageForMail());
     }
 }

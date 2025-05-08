@@ -181,13 +181,18 @@ public class CreateTestSchemaDatabase {
         VALUES
             (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
             (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),
-            (9000.00, 10000.00, 3, 3, '2025-12-31', 700, 500, 300, 250);
+            (9000.00, 10000.00, 3, 3, '2025-12-31', 700, 500, 300, 250),
+            (10000.00, 11000.00, 3, 3, '2025-12-31', 700, 500, 300, 250);
 
         INSERT INTO test.orders (offer_id, status_id, purchase_date)
         VALUES
             (1, 1, '2025-05-01'),
             (2, 2, '2025-05-02'),
             (3, 3, '2025-05-03');
+
+        INSERT INTO test.orders (offer_id, status_id, purchase_date, tracking_number)
+        VALUES
+            (4, 1, '2025-05-01', 'f47ac10b-58cc-4372-a567-0e02b2c3d479');
 
         INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount)
         VALUES
