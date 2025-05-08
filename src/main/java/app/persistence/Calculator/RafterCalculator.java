@@ -6,15 +6,15 @@ public class RafterCalculator {
 
     public WoodForCalculator rafterCalculator(int carportLengthInCM, int carportWidthInCM) {
         int rafterAmount = rafterAmountCalculator(carportLengthInCM);
-        int totalRafterLengthInCM = totalRafterLengthCalculator(rafterAmount, carportLengthInCM);
+        int totalRafterLengthInCM = totalRafterLengthCalculator(rafterAmount, carportWidthInCM);
         int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCM);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCM);
         return new WoodForCalculator("Spær", rafterAmount, totalRafterLengthInCM, rafterWidthInMm, rafterHeightInMm);
     }
 
     public int rafterAmountCalculator(int carportLengthInCM) {
-        int amount;
-        amount = (int) Math.ceil (carportLengthInCM/60.0);
+        int amount = 1;
+        amount = amount + (int) Math.ceil (carportLengthInCM/60.0);
         return amount;
     }
 

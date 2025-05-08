@@ -9,14 +9,14 @@ public class PoleCalculator {
         int widthAmount = poleAmountYCalculator(carportWidthInCM);
         int shedAmount = shedPoleAmountCalculator(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
         int amount = (lengthAmount * widthAmount) + shedAmount;
-        return new WoodForCalculator("Stolpe", amount, amount*300, 115, 115);
+        return new WoodForCalculator("Stolper", amount, amount*300, 115, 115);
     }
 
     public int poleAmountXCalculator(int carportLengthInCM) {
         int LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
         int amount = 2;
         while (true){
-            if(LengthBetweenFirstAndLastPoleInCM/(amount - 1)<=300){
+            if(LengthBetweenFirstAndLastPoleInCM/(amount - 1) <= 300){
                 return amount;
             }
             amount++;
@@ -27,7 +27,7 @@ public class PoleCalculator {
         int LengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
         int amount = 2;
         while (true){
-            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1)<=600){
+            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1) <= 600){
                 return amount;
             }
             amount++;

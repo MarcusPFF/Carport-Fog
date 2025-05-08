@@ -18,7 +18,7 @@ class RafterCalculatorTest {
     void testRafterAmountCalculator() {
         // Arrange:
         int carportLengthInCm = 570;
-        int expected = 10;
+        int expected = 11;
 
         // Act:
         int result = calculator.rafterAmountCalculator(carportLengthInCm);
