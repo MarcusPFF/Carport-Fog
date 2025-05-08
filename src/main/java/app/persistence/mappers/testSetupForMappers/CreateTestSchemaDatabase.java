@@ -186,7 +186,7 @@ public class CreateTestSchemaDatabase {
         INSERT INTO test.orders (offer_id, status_id, purchase_date)
         VALUES
             (1, 1, '2025-05-01'),
-            (2, 2, '2025-05-02'),
+            (2, 2, '2025-05-02');
 
         INSERT INTO test.orders (offer_id, status_id, purchase_date, tracking_number)
         VALUES
