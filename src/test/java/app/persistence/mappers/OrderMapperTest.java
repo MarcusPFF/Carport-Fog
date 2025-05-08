@@ -98,6 +98,7 @@ class OrderMapperTest {
 
         // Act: Get status via tracking_number
         Status status = orderMapper.getStatusFromTrackingNumber(connectionPool, trackingNumber);
+
         // Assert:
         assertNotNull(status);
         assertEquals(1, status.getStatusId());
