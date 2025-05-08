@@ -36,7 +36,7 @@ public class PoleCalculatorTest {
         int carportLengthInCm = 500;
 
         // Act:
-        int result = calculator.poleAmountX(carportLengthInCm);
+        int result = calculator.poleAmountXCalculator(carportLengthInCm);
 
         // Assert:
         assertEquals(3, result, "Der bør være 16 stolper i længden.");
@@ -48,7 +48,7 @@ public class PoleCalculatorTest {
         int carportWidthInCm = 300;
 
         // Act:
-        int result = calculator.poleAmountY(carportWidthInCm);
+        int result = calculator.poleAmountYCalculator(carportWidthInCm);
 
         // Assert:
         assertEquals(2, result, "Der bør være 4 stolper i bredden.");
@@ -65,7 +65,7 @@ public class PoleCalculatorTest {
         int widthAmount = 2;
 
         // Act:
-        int result = calculator.shedPoleAmount(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
+        int result = calculator.shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
         // Assert:
         assertEquals(4, result, "Der bør være 4 stolper til skuret.");

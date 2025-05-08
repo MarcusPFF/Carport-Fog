@@ -5,14 +5,14 @@ import app.entities.forCalculator.WoodForCalculator;
 public class PoleCalculator {
 
     public WoodForCalculator poleAmountCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM) {
-        int lengthAmount = poleAmountX(carportLengthInCM);
-        int widthAmount = poleAmountY(carportWidthInCM);
-        int shedAmount = shedPoleAmount(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
+        int lengthAmount = poleAmountXCalculator(carportLengthInCM);
+        int widthAmount = poleAmountYCalculator(carportWidthInCM);
+        int shedAmount = shedPoleAmountCalculator(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
         int amount = (lengthAmount * widthAmount) + shedAmount;
         return new WoodForCalculator("Stolpe", amount, amount*300, 115, 115);
     }
 
-    public int poleAmountX(int carportLengthInCM) {
+    public int poleAmountXCalculator(int carportLengthInCM) {
         int LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
         int amount = 2;
         while (true){
@@ -23,18 +23,18 @@ public class PoleCalculator {
         }
     }
 
-    public int poleAmountY(int carportWidthInCM) {
+    public int poleAmountYCalculator(int carportWidthInCM) {
         int LengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
         int amount = 2;
         while (true){
-            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1)<=500){
+            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1)<=600){
                 return amount;
             }
             amount++;
         }
     }
 
-    public int shedPoleAmount(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM, int lengthAmount, int widthAmount) {
+    public int shedPoleAmountCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM, int lengthAmount, int widthAmount) {
         if ((carportLengthInCM - 130)/(lengthAmount - 1) == shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) != shedWidthInCM){
             return 3;
         }
