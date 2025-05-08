@@ -26,7 +26,6 @@ class PriceAndMaterialMapperTest {
 
         try (Connection conn = connectionPool.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
-               // stmt.execute("SET search_path TO test, public;");
                 createTestSchemaWithData(conn);
             }
         }
