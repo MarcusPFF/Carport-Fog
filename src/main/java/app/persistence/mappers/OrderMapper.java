@@ -25,7 +25,7 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Could not insert order into database: ");
+            throw new DatabaseException(ex, "Could not insert order into database: ");
         }
     }
 
@@ -54,7 +54,7 @@ public class OrderMapper {
                 }
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Could not retrieve order from database");
+            throw new DatabaseException(ex, "Could not retrieve order from database");
         }
     }
 
@@ -71,11 +71,11 @@ public class OrderMapper {
                     UUID trackingNumber = UUID.fromString(rs.getString("tracking_number"));
                     return trackingNumber;
                 } else {
-                    throw new DatabaseException("No tracking number found for the provided orderId.");
+                    return null;
                 }
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Database error while fetching tracking number: " + ex.getMessage());
+            throw new DatabaseException(ex, "Database error while fetching tracking number: ");
         }
     }
 
@@ -99,11 +99,11 @@ public class OrderMapper {
                     String messageForMail = rs.getString("message_for_mail");
                     return new Status(statusId, statusDescription, messageForMail);
                 } else {
-                    throw new DatabaseException("No status found for the provided tracking number.");
+                    return null;
                 }
             }
         } catch (SQLException ex) {
-            throw new DatabaseException("Database error while fetching status: " + ex.getMessage());
+            throw new DatabaseException(ex, "Database error while fetching status: ");
         }
     }
 }
