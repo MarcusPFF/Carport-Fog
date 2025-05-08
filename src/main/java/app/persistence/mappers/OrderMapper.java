@@ -9,8 +9,8 @@ import java.util.UUID;
 
 public class OrderMapper {
 
-    //Skal kaldes når man et offer laves
-    // husk at setStaatusId = 1
+    // This method is called when an offer is created
+    // Status_id is always 1 when created
     public boolean createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,CURRENT_DATE);";
         try (Connection connection = connectionPool.getConnection()) {
@@ -107,6 +107,4 @@ public class OrderMapper {
             throw new DatabaseException("Database error while fetching status: " + ex.getMessage());
         }
     }
-
-
 }
