@@ -9,20 +9,24 @@ public class WoodForCalculator {
     private String name;
     private int amount;
     private int totalLengthInCm;
+    private int woodWidthInMm;
+    private int woodHeightInMm;
     private PoleCalculator poleCalculator;
 
     private static ArrayList<WoodForCalculator> woodList;
 
-    public WoodForCalculator(String name, int amount, int totalLengthInCm) {
+    public WoodForCalculator(String name, int amount, int totalLengthInCm, int woodWidthInMm, int woodHeightInMm) {
         this.name = name;
         this.amount = amount;
         this.totalLengthInCm = totalLengthInCm;
+        this.woodWidthInMm = woodWidthInMm;
+        this.woodHeightInMm = woodHeightInMm;
     }
 
 
-    public ArrayList<WoodForCalculator> woodCalculator(int carportLength, int carportWidth, int shedLength, int shedWidth) {
+    public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm) {
         woodList = new ArrayList<>();
-        woodList.add(poleCalculator.poleAmountCalculator(carportLength, carportWidth, shedLength, shedWidth));
+        woodList.add(poleCalculator.poleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
         return woodList;
     }
 

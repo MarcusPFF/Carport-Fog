@@ -4,44 +4,44 @@ import app.entities.forCalculator.WoodForCalculator;
 
 public class PoleCalculator {
 
-    public WoodForCalculator poleAmountCalculator(int carportLength, int carportWidth, int shedLength, int shedWidth) {
-        int lengthAmount = poleAmountX(carportLength);
-        int widthAmount = poleAmountY(carportWidth);
-        int shedAmount = shedPoleAmount(carportLength, carportWidth, shedLength, shedWidth, lengthAmount, widthAmount);
+    public WoodForCalculator poleAmountCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM) {
+        int lengthAmount = poleAmountX(carportLengthInCM);
+        int widthAmount = poleAmountY(carportWidthInCM);
+        int shedAmount = shedPoleAmount(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
         int amount = (lengthAmount * widthAmount) + shedAmount;
-        return new WoodForCalculator("Stolpe", amount, amount*300);
+        return new WoodForCalculator("Stolpe", amount, amount*300, 115, 115);
     }
 
-    public int poleAmountX(int carportLength) {
-        int LengthBetweenFirstAndLastPole = carportLength - 130;
+    public int poleAmountX(int carportLengthInCM) {
+        int LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
         int amount = 2;
         while (true){
-            if(LengthBetweenFirstAndLastPole/(amount - 1)<=300){
+            if(LengthBetweenFirstAndLastPoleInCM/(amount - 1)<=300){
                 return amount;
             }
             amount++;
         }
     }
 
-    public int poleAmountY(int carportWidth) {
-        int LengthBetweenRightAndLeftPole = carportWidth - 70;
+    public int poleAmountY(int carportWidthInCM) {
+        int LengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
         int amount = 2;
         while (true){
-            if(LengthBetweenRightAndLeftPole/(amount - 1)<=700){
+            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1)<=500){
                 return amount;
             }
             amount++;
         }
     }
 
-    public int shedPoleAmount(int carportLength, int carportWidth, int shedLength, int shedWidth, int lengthAmount, int widthAmount) {
-        if ((carportLength - 130)/(lengthAmount - 1) == shedLength && (carportWidth - 70)/(widthAmount - 1) != shedWidth){
+    public int shedPoleAmount(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM, int lengthAmount, int widthAmount) {
+        if ((carportLengthInCM - 130)/(lengthAmount - 1) == shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) != shedWidthInCM){
             return 3;
         }
-        if ((carportLength - 130)/(lengthAmount - 1) != shedLength && (carportWidth - 70)/(widthAmount - 1) == shedWidth){
+        if ((carportLengthInCM - 130)/(lengthAmount - 1) != shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) == shedWidthInCM){
             return 5;
         }
-        if (shedWidth == carportWidth - 70 && widthAmount > 2) {
+        if (shedWidthInCM == carportWidthInCM - 70 && widthAmount > 2) {
             return 8;
         }
         return 4;
