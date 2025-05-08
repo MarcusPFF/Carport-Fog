@@ -89,7 +89,7 @@ class OrderMapperTest {
 
     @Test
     void getTrackingNumberFromOrderId() throws SQLException, DatabaseException {
-        int orderId = 4;
+        int orderId = 3;
         UUID expectedTrackingNumber = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
 
         //Act: Get tracking_number from order_id

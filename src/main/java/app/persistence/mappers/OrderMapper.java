@@ -49,11 +49,6 @@ public class OrderMapper {
                     UUID trackingNumber = UUID.fromString(rs.getString("tracking_number"));
                     Date purchaseDate = rs.getDate("purchase_date");
                     String status = rs.getString("status_description");
-                    System.out.println("retrievedOrderId: " + retrievedOrderId);
-                    System.out.println("offerId: " + offerId);
-                    System.out.println("trackingNumber: " + trackingNumber);
-                    System.out.println("purchaseDate: " + purchaseDate);
-                    System.out.println("status: " + status);
                     return new Order(retrievedOrderId, offerId, trackingNumber, purchaseDate, status);
                 } else {
                     return null;
