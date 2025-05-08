@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      kudsk_db_password: ${{ secrets.KUDSK_DB_PASSWORD }}
 
     steps:
       - name: Checkout repo
