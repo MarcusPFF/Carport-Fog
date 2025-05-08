@@ -15,13 +15,13 @@ public class PoleCalculatorTest {
     @Test
     public void testPoleAmountCalculator() {
         // Arrange:
-        int carportLength = 500;
-        int carportWidth = 300;
-        int shedLength = 200;
-        int shedWidth = 150;
+        int carportLengthInCm = 500;
+        int carportWidthInCm = 300;
+        int shedLengthInCm = 200;
+        int shedWidthInCm = 150;
 
         // Act:
-        WoodForCalculator result = calculator.poleAmountCalculator(carportLength, carportWidth, shedLength, shedWidth);
+        WoodForCalculator result = calculator.poleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm);
 
         // Assert:
         assertNotNull(result, "Resultatet bør ikke være null");
@@ -33,10 +33,10 @@ public class PoleCalculatorTest {
     @Test
     public void testPoleAmountX() {
         // Arrange:
-        int carportLength = 500;
+        int carportLengthInCm = 500;
 
         // Act:
-        int result = calculator.poleAmountX(carportLength);
+        int result = calculator.poleAmountX(carportLengthInCm);
 
         // Assert:
         assertEquals(3, result, "Der bør være 16 stolper i længden.");
@@ -45,10 +45,10 @@ public class PoleCalculatorTest {
     @Test
     public void testPoleAmountY() {
         // Arrange:
-        int carportWidth = 300;
+        int carportWidthInCm = 300;
 
         // Act:
-        int result = calculator.poleAmountY(carportWidth);
+        int result = calculator.poleAmountY(carportWidthInCm);
 
         // Assert:
         assertEquals(2, result, "Der bør være 4 stolper i bredden.");
@@ -57,15 +57,15 @@ public class PoleCalculatorTest {
     @Test
     public void testShedPoleAmount() {
         // Arrange:
-        int carportLength = 500;
-        int carportWidth = 300;
-        int shedLength = 200;
-        int shedWidth = 150;
+        int carportLengthInCm = 500;
+        int carportWidthInCm = 300;
+        int shedLengthInCm = 200;
+        int shedWidthInCm = 150;
         int lengthAmount = 16;
         int widthAmount = 2;
 
         // Act:
-        int result = calculator.shedPoleAmount(carportLength, carportWidth, shedLength, shedWidth, lengthAmount, widthAmount);
+        int result = calculator.shedPoleAmount(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
         // Assert:
         assertEquals(4, result, "Der bør være 4 stolper til skuret.");

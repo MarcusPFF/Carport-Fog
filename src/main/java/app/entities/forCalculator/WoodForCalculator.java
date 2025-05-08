@@ -54,6 +54,21 @@ public class WoodForCalculator {
         this.totalLengthInCm = totalLengthInCm;
     }
 
+    public int getWoodHeightInMm() {
+        return woodHeightInMm;
+    }
+
+    public void setWoodHeightInMm(int woodHeightInMm) {
+        this.woodHeightInMm = woodHeightInMm;
+    }
+
+    public int getWoodWidthInMm() {
+        return woodWidthInMm;
+    }
+
+    public void setWoodWidthInMm(int woodWidthInMm) {
+        this.woodWidthInMm = woodWidthInMm;
+    }
 
     public static ArrayList<WoodForCalculator> getWoodList() {
         return woodList;
