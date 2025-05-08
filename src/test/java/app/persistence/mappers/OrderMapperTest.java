@@ -5,10 +5,8 @@ import app.persistence.connection.ConnectionPool;
 import app.entities.Order;
 import org.junit.jupiter.api.*;
 import app.entities.Status;
-
 import java.sql.*;
 import java.util.UUID;
-
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
 import static org.junit.jupiter.api.Assertions.*;
 

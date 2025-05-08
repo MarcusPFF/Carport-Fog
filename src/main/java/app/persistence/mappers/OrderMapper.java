@@ -3,7 +3,6 @@ package app.persistence.mappers;
 import app.persistence.connection.ConnectionPool;
 import app.entities.*;
 import app.exceptions.DatabaseException;
-
 import java.sql.*;
 import java.util.UUID;
 
