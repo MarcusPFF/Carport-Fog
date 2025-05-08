@@ -8,13 +8,13 @@ public class CreateTestSchemaDatabase {
 
     public static void createTestSchemaWithData(Connection conn) throws SQLException {
         String ddlWithData = """
-        -- Drop schema if it exists and create a new one
+                -- Drop schema if it exists and create a new one
         DROP SCHEMA IF EXISTS test CASCADE;
         CREATE SCHEMA test;
 
         -- Create tables
         CREATE TABLE test.cities (
-            zip_code BIGINT NOT NULL PRIMARY KEY,
+            zip_code INT NOT NULL PRIMARY KEY,
             city_name VARCHAR(255) NOT NULL
         );
 
@@ -56,7 +56,8 @@ public class CreateTestSchemaDatabase {
             roof_id BIGSERIAL PRIMARY KEY,
             roof_length_cm INT NOT NULL,
             roof_width_cm INT NOT NULL,
-            roof_price DECIMAL(10, 2) NOT NULL
+            roof_price DECIMAL(10, 2) NOT NULL,
+            roof_type_name VARCHAR(255) NOT NULL
         );
 
         CREATE TABLE test.screws (
@@ -161,8 +162,8 @@ public class CreateTestSchemaDatabase {
         INSERT INTO test.mounts (mount_price, mount_type_name)
         VALUES (500.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
 
-        INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price)
-        VALUES (1000, 500, 1000.00), (1200, 600, 1500.00), (1400, 700, 2000.00);
+        INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price, roof_type_name)
+        VALUES (1000, 500, 1000.00, 'Plastmo Ecolite blÃ¥tonet'), (1200, 600, 1500.00, 'Plastmo Ecolite klartonet'), (1400, 700, 2000.00, 'Plastmo Ecolite sort');
 
         INSERT INTO test.screws (amount_pr_container, screw_price, screw_type_name)
         VALUES (100, 10.00, 'Wood Screw'), (200, 15.00, 'Metal Screw'), (300, 20.00, 'Concrete Screw');

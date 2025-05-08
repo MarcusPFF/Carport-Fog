@@ -26,7 +26,6 @@ class OrderMapperTest {
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
         try (Connection conn = connectionPool.getConnection()) {
-            conn.createStatement().execute("BEGIN;");
             createTestSchemaWithData(conn);
         }
     }
