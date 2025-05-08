@@ -24,7 +24,6 @@ class NoggingCalculatorTest {
 
         // Assert:
         assertEquals(expected, result, "Der bør være 3 ragler.");
-
     }
 
     @Test
@@ -39,6 +38,5 @@ class NoggingCalculatorTest {
 
         // Assert:
         assertEquals(expected, result, "Der bør være 21 meter ragler.");
-
     }
 }
