@@ -159,7 +159,7 @@ public class CreateTestSchemaDatabase {
         VALUES (1000, 20), (2000, 15), (3000, 10);
 
         INSERT INTO test.mounts (mount_price, mount_type_name)
-        VALUES (500.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
+        VALUES (1000.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
 
         INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price, roof_type_name)
 
