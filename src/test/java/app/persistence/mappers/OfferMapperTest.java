@@ -70,16 +70,15 @@ class OfferMapperTest {
     }
 
     @Test
-    void getWoodDimensionIdFromFromLengthHeightWidth() throws SQLException, DatabaseException {
+    void getWoodDimensionIdFromLengthWidthHeight() throws SQLException, DatabaseException {
         //Arange
         int dimensionLength = 200;
-        int dimensionHeight = 50;
         int dimensionWidth = 30;
-
+        int dimensionHeight = 50;
         int expectedDimensionId = 1;
 
         //Act:
-        int dimensionId = offerMapper.getWoodDimensionIdFromFromLengthHeightWidth(connectionPool, dimensionLength, dimensionHeight,dimensionWidth);
+        int dimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connectionPool, dimensionLength, dimensionWidth, dimensionHeight);
 
         //Assert:
         assertNotNull(dimensionId);

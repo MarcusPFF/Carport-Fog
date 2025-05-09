@@ -52,15 +52,15 @@ public class OfferMapper {
         }
     }
 
-    public int getWoodDimensionIdFromFromLengthHeightWidth(ConnectionPool connectionPool, int woodLenght, int woodHeight, int woodWidth) throws DatabaseException {
-        String sql = "SELECT wood_dimension_id FROM wood_dimensions WHERE wood_length = ? AND wood_height = ? AND wood_width = ?;";
+    public int getWoodDimensionIdFromLengthWidthHeight(ConnectionPool connectionPool, int woodLenght, int woodWidth, int woodHeight) throws DatabaseException {
+        String sql = "SELECT wood_dimension_id FROM wood_dimensions WHERE wood_length = ? AND wood_width = ? AND wood_height = ?;";
 
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, woodLenght);
-            statement.setInt(2, woodHeight);
-            statement.setInt(3, woodWidth);
+            statement.setInt(2, woodWidth);
+            statement.setInt(3, woodHeight);
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
