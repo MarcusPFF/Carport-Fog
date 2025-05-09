@@ -1,28 +1,36 @@
 package app.persistence.Calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
+import app.persistence.mappers.OfferMapper;
+
 
 public class RafterCalculator {
-
-    public WoodForCalculator rafterForRoofCalculator(int carportLengthInCm, int carportWidthInCm) {
+    private OfferMapper offerMapper;
+    public WoodForCalculator rafterForRoofCalculator(int carportLengthInCm, int carportWidthInCm, int treatmentId) {
         int rafterAmount = rafterAmountForRoofCalculator(carportLengthInCm);
         int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCm);
-        return new WoodForCalculator("monteres på rem.", rafterAmount, carportWidthInCm, rafterWidthInMm, rafterHeightInMm, 2, woodType);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(carportWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName("Spær");
+        return new WoodForCalculator("monteres på rem.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }
 
-    public WoodForCalculator rafterForShedWidthCalculator(int shedWidthInCm) {
+    public WoodForCalculator rafterForShedWidthCalculator(int shedWidthInCm, int treatmentId) {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedWidthInCm);
-        return new WoodForCalculator("til bagside og forside af skur.", rafterAmount, shedWidthInCm, rafterWidthInMm, rafterHeightInMm, 2, 1);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName("Spær");
+        return new WoodForCalculator("til bagside og forside af skur.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }
 
-    public WoodForCalculator rafterForShedLengthCalculator(int shedLengthInCm) {
+    public WoodForCalculator rafterForShedLengthCalculator(int shedLengthInCm, int treatmentId) {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedLengthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedLengthInCm);
-        return new WoodForCalculator("til siderne på skur.", rafterAmount, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName("Spær");
+        return new WoodForCalculator("til siderne på skur.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }
 
     public int rafterAmountForRoofCalculator(int carportLengthInCM) {
