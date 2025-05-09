@@ -8,21 +8,21 @@ public class RafterCalculator {
         int rafterAmount = rafterAmountForRoofCalculator(carportLengthInCm);
         int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCm);
-        return new WoodForCalculator("Spær, monteres på rem.", rafterAmount, carportWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        return new WoodForCalculator("monteres på rem.", rafterAmount, carportWidthInCm, rafterWidthInMm, rafterHeightInMm, 2, woodType);
     }
 
     public WoodForCalculator rafterForShedWidthCalculator(int shedWidthInCm) {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedWidthInCm);
-        return new WoodForCalculator("Spær, til bagside og forside af skur.", rafterAmount, shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        return new WoodForCalculator("til bagside og forside af skur.", rafterAmount, shedWidthInCm, rafterWidthInMm, rafterHeightInMm, 2, 1);
     }
 
     public WoodForCalculator rafterForShedLengthCalculator(int shedLengthInCm) {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedLengthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedLengthInCm);
-        return new WoodForCalculator("Spær, til siderne på skur.", rafterAmount, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        return new WoodForCalculator("til siderne på skur.", rafterAmount, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
     }
 
     public int rafterAmountForRoofCalculator(int carportLengthInCM) {

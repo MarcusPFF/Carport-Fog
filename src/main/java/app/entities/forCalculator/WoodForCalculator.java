@@ -12,17 +12,21 @@ public class WoodForCalculator {
     private int LengthInCm;
     private int woodWidthInMm;
     private int woodHeightInMm;
+    private int treatmentId;
+    private int woodTypeId;
     private PoleCalculator poleCalculator;
     private RafterCalculator rafterCalculator;
 
     private static ArrayList<WoodForCalculator> woodList;
 
-    public WoodForCalculator(String name, int amount, int LengthInCm, int woodWidthInMm, int woodHeightInMm, String treatmentName, int woodTypeId) {
+    public WoodForCalculator(String name, int amount, int LengthInCm, int woodWidthInMm, int woodHeightInMm, int treatmentId, int woodTypeId) {
         this.name = name;
         this.amount = amount;
         this.LengthInCm = LengthInCm;
         this.woodWidthInMm = woodWidthInMm;
         this.woodHeightInMm = woodHeightInMm;
+        this.treatmentId = treatmentId;
+        this.woodTypeId = woodTypeId;
     }
 
 
