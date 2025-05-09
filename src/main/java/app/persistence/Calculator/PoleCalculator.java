@@ -9,7 +9,7 @@ public class PoleCalculator {
         int widthAmount = poleAmountYCalculator(carportWidthInCM);
         int shedAmount = shedPoleAmountCalculator(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
         int amount = (lengthAmount * widthAmount) + shedAmount;
-        return new WoodForCalculator("Stolper", amount, amount*300, 115, 115);
+        return new WoodForCalculator("Stolper", amount, 300, 100, 100);
     }
 
     public int poleAmountXCalculator(int carportLengthInCM) {

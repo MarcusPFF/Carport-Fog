@@ -27,7 +27,7 @@ public class PoleCalculatorTest {
         assertNotNull(result, "Resultatet bør ikke være null");
         assertEquals("Stolpe", result.getName(), "Materialet bør være 'Stolpe'");
         assertEquals(10, result.getAmount(), "Antallet af stolper bør være 6");
-        assertEquals(3000, result.getTotalLengthInCm(), "Totalprisen bør være 1800");
+        assertEquals(3000, result.getLengthInCm(), "Totalprisen bør være 1800");
     }
 
     @Test

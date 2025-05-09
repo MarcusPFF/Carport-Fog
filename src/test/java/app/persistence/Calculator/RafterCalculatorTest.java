@@ -1,6 +1,5 @@
 package app.persistence.Calculator;
 
-import app.entities.forCalculator.WoodForCalculator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,35 +14,19 @@ class RafterCalculatorTest {
 
 
     @Test
-    void testRafterAmountCalculator() {
+    void testRafterAmountForRoofCalculator() {
         // Arrange:
         int carportLengthInCm = 570;
         int expected = 11;
 
         // Act:
-        int result = calculator.rafterAmountCalculator(carportLengthInCm);
+        int result = calculator.rafterAmountForRoofCalculator(carportLengthInCm);
 
         // Assert:
         assertEquals(expected, result, "Der bør være 10 spær.");
 
     }
 
-    @Test
-    void totalRafterLengthCalculator() {
-        // Arrange:
-        int carportWidthInCm = 570;
-        int rafterAmount = 10;
-        int shedLengthInCm = 200;
-        int shedWidthInCm = 500;
-        int expected = 7100;
-
-        // Act:
-        int result = calculator.totalRafterLengthCalculator(rafterAmount, carportWidthInCm, shedLengthInCm, shedWidthInCm);
-
-        // Assert:
-        assertEquals(expected, result, "Der bør være 57 meter spær.");
-
-    }
 
     @Test
     void totalRafterHeightInMmCalculator() {

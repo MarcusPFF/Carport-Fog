@@ -4,24 +4,31 @@ import app.entities.forCalculator.WoodForCalculator;
 
 public class RafterCalculator {
 
-    public WoodForCalculator rafterCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCm) {
-        int rafterAmount = rafterAmountCalculator(carportLengthInCM);
-        int totalRafterLengthInCM = totalRafterLengthCalculator(rafterAmount, carportWidthInCM, shedLengthInCM, shedWidthInCm);
-        int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCM);
-        int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCM);
-        return new WoodForCalculator("Spær", rafterAmount, totalRafterLengthInCM, rafterWidthInMm, rafterHeightInMm);
+    public WoodForCalculator rafterForRoofCalculator(int carportLengthInCm, int carportWidthInCm) {
+        int rafterAmount = rafterAmountForRoofCalculator(carportLengthInCm);
+        int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCm);
+        int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCm);
+        return new WoodForCalculator("Spær, monteres på rem.", rafterAmount, carportWidthInCm, rafterWidthInMm, rafterHeightInMm);
     }
 
-    public int rafterAmountCalculator(int carportLengthInCM) {
+    public WoodForCalculator rafterForShedWidthCalculator(int shedWidthInCm) {
+        int rafterAmount = 2;
+        int rafterWidthInMm = totalRafterWidthInMmCalculator(shedWidthInCm);
+        int rafterHeightInMm = totalRafterHeightInMmCalculator(shedWidthInCm);
+        return new WoodForCalculator("Spær, til bagside og forside af skur.", rafterAmount, shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
+    }
+
+    public WoodForCalculator rafterForShedLengthCalculator(int shedLengthInCm) {
+        int rafterAmount = 2;
+        int rafterWidthInMm = totalRafterWidthInMmCalculator(shedLengthInCm);
+        int rafterHeightInMm = totalRafterHeightInMmCalculator(shedLengthInCm);
+        return new WoodForCalculator("Spær, til siderne på skur.", rafterAmount, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+    }
+
+    public int rafterAmountForRoofCalculator(int carportLengthInCM) {
         int amount = 1;
         amount = amount + (int) Math.ceil (carportLengthInCM/60.0);
         return amount;
-    }
-
-    public int totalRafterLengthCalculator(int rafterAmount, int carportWidthInCM, int shedLengthInCM, int shedWidthInCm) {
-        int totalRafterLengthInCm;
-        totalRafterLengthInCm = (rafterAmount * carportWidthInCM) + (shedLengthInCM * 2) + (shedWidthInCm * 2);
-        return totalRafterLengthInCm;
     }
 
     public int totalRafterHeightInMmCalculator( int carportWidthInCM) {

@@ -9,7 +9,7 @@ public class WoodForCalculator {
 
     private String name;
     private int amount;
-    private int totalLengthInCm;
+    private int LengthInCm;
     private int woodWidthInMm;
     private int woodHeightInMm;
     private PoleCalculator poleCalculator;
@@ -17,10 +17,10 @@ public class WoodForCalculator {
 
     private static ArrayList<WoodForCalculator> woodList;
 
-    public WoodForCalculator(String name, int amount, int totalLengthInCm, int woodWidthInMm, int woodHeightInMm) {
+    public WoodForCalculator(String name, int amount, int LengthInCm, int woodWidthInMm, int woodHeightInMm, String treatmentName, int woodTypeId) {
         this.name = name;
         this.amount = amount;
-        this.totalLengthInCm = totalLengthInCm;
+        this.LengthInCm = LengthInCm;
         this.woodWidthInMm = woodWidthInMm;
         this.woodHeightInMm = woodHeightInMm;
     }
@@ -29,7 +29,9 @@ public class WoodForCalculator {
     public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm) {
         woodList = new ArrayList<>();
         woodList.add(poleCalculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
-        woodList.add(rafterCalculator.rafterCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
+        woodList.add(rafterCalculator.rafterForRoofCalculator(carportLengthInCm, carportWidthInCm));
+        woodList.add(rafterCalculator.rafterForShedLengthCalculator(shedLengthInCm));
+        woodList.add(rafterCalculator.rafterForShedWidthCalculator(shedWidthInCm));
         return woodList;
     }
 
@@ -49,12 +51,12 @@ public class WoodForCalculator {
         this.amount = amount;
     }
 
-    public int getTotalLengthInCm() {
-        return totalLengthInCm;
+    public int getLengthInCm() {
+        return LengthInCm;
     }
 
-    public void setTotalLengthInCm(int totalLengthInCm) {
-        this.totalLengthInCm = totalLengthInCm;
+    public void setLengthInCm(int lengthInCm) {
+        this.LengthInCm = lengthInCm;
     }
 
     public int getWoodHeightInMm() {
