@@ -16,7 +16,6 @@ public class RoofForCalculator {
         this.name = name;
         this.totalRoofWidthInCm = totalRoofWidthInCm;
         this.totalRoofLengthInCm = totalRoofLengthInCm;
-
     }
 
 

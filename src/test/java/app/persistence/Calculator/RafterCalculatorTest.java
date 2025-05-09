@@ -47,7 +47,6 @@ class RafterCalculatorTest {
         // Arrange:
         int carportWidthInCm = 600;
         int expected = 60;
-
         int carportWidthInCm2 = 400;
         int expected2 = 45;
 

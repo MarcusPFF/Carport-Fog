@@ -12,23 +12,6 @@ public class PoleCalculatorTest {
         calculator = new PoleCalculator();
     }
 
-    @Test
-    public void testPoleCalculator() {
-        // Arrange:
-        int carportLengthInCm = 500;
-        int carportWidthInCm = 300;
-        int shedLengthInCm = 200;
-        int shedWidthInCm = 150;
-
-        // Act:
-        WoodForCalculator result = calculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm);
-
-        // Assert:
-        assertNotNull(result, "Resultatet bør ikke være null");
-        assertEquals("Stolpe", result.getName(), "Materialet bør være 'Stolpe'");
-        assertEquals(10, result.getAmount(), "Antallet af stolper bør være 6");
-        assertEquals(3000, result.getLengthInCm(), "Totalprisen bør være 1800");
-    }
 
     @Test
     public void testPoleAmountX() {

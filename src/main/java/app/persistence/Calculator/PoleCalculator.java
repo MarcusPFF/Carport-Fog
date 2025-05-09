@@ -1,20 +1,29 @@
 package app.persistence.Calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
+import app.persistence.mappers.OfferMapper;
 
 public class PoleCalculator {
+    private OfferMapper offerMapper;
 
-    public WoodForCalculator poleCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM) {
-        int lengthAmount = poleAmountXCalculator(carportLengthInCM);
-        int widthAmount = poleAmountYCalculator(carportWidthInCM);
-        int shedAmount = shedPoleAmountCalculator(carportLengthInCM, carportWidthInCM, shedLengthInCM, shedWidthInCM, lengthAmount, widthAmount);
+    public WoodForCalculator poleCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) {
+        int lengthAmount = poleAmountXCalculator(carportLengthInCm);
+        int widthAmount = poleAmountYCalculator(carportWidthInCm);
+        int shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
+
         int amount = (lengthAmount * widthAmount) + shedAmount;
-        return new WoodForCalculator("Stolper", amount, 300, 100, 100);
+
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(carportWidthInCm, poleWidthInMm, poleHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+
+        return new WoodForCalculator("Stolper", amount, woodDimensionId, treatmentId, woodTypeId);
     }
 
     public int poleAmountXCalculator(int carportLengthInCM) {
         int LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
         int amount = 2;
+
         while (true){
             if(LengthBetweenFirstAndLastPoleInCM/(amount - 1) <= 300){
                 return amount;
@@ -26,6 +35,7 @@ public class PoleCalculator {
     public int poleAmountYCalculator(int carportWidthInCM) {
         int LengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
         int amount = 2;
+
         while (true){
             if(LengthBetweenRightAndLeftPoleInCM/(amount - 1) <= 600){
                 return amount;
@@ -38,12 +48,15 @@ public class PoleCalculator {
         if ((carportLengthInCM - 130)/(lengthAmount - 1) == shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) != shedWidthInCM){
             return 3;
         }
+
         if ((carportLengthInCM - 130)/(lengthAmount - 1) != shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) == shedWidthInCM){
             return 5;
         }
+
         if (shedWidthInCM == carportWidthInCM - 70 && widthAmount > 2) {
             return 8;
         }
+
         return 4;
     }
 }

@@ -9,7 +9,7 @@ public class WoodForCalculator {
 
     private String name;
     private int amount;
-    private int woodDimensionId
+    private int woodDimensionId;
     private int treatmentId;
     private int woodTypeId;
     private PoleCalculator poleCalculator;
@@ -28,10 +28,12 @@ public class WoodForCalculator {
 
     public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm) {
         woodList = new ArrayList<>();
-        woodList.add(poleCalculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm));
-        woodList.add(rafterCalculator.rafterForRoofCalculator(carportLengthInCm, carportWidthInCm));
-        woodList.add(rafterCalculator.rafterForShedLengthCalculator(shedLengthInCm));
-        woodList.add(rafterCalculator.rafterForShedWidthCalculator(shedWidthInCm));
+
+        woodList.add(poleCalculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, 100, 100, "Stolpe", "Trykimprægneret"));
+        woodList.add(rafterCalculator.rafterForRoofCalculator(carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterForShedLengthCalculator(shedLengthInCm,"Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterForShedWidthCalculator(shedWidthInCm,"Spær", "Ubehandlet"));
+
         return woodList;
     }
 
@@ -51,28 +53,28 @@ public class WoodForCalculator {
         this.amount = amount;
     }
 
-    public int getLengthInCm() {
-        return LengthInCm;
+    public int getWoodDimensionId() {
+        return woodDimensionId;
     }
 
-    public void setLengthInCm(int lengthInCm) {
-        this.LengthInCm = lengthInCm;
+    public void setWoodDimensionId(int woodDimensionId) {
+        this.woodDimensionId = woodDimensionId;
     }
 
-    public int getWoodHeightInMm() {
-        return woodHeightInMm;
+    public int getTreatmentId() {
+        return treatmentId;
     }
 
-    public void setWoodHeightInMm(int woodHeightInMm) {
-        this.woodHeightInMm = woodHeightInMm;
+    public void setTreatmentId(int treatmentId) {
+        this.treatmentId = treatmentId;
     }
 
-    public int getWoodWidthInMm() {
-        return woodWidthInMm;
+    public int getWoodTypeId() {
+        return woodTypeId;
     }
 
-    public void setWoodWidthInMm(int woodWidthInMm) {
-        this.woodWidthInMm = woodWidthInMm;
+    public void setWoodTypeId(int woodTypeId) {
+        this.woodTypeId = woodTypeId;
     }
 
     public static ArrayList<WoodForCalculator> getWoodList() {

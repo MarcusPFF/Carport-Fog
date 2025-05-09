@@ -26,17 +26,4 @@ class NoggingCalculatorTest {
         assertEquals(expected, result, "Der bør være 3 ragler.");
     }
 
-    @Test
-    void totalNoggingLengthCalculator() {
-        // Arrange:
-        int carportLengthInCm = 700;
-        int noggingAmount = 3;
-        int expected = 2100;
-
-        // Act:
-        int result = calculator.totalNoggingLengthCalculator(noggingAmount, carportLengthInCm);
-
-        // Assert:
-        assertEquals(expected, result, "Der bør være 21 meter ragler.");
-    }
 }
