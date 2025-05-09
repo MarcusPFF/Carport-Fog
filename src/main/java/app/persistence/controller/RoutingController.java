@@ -1,7 +1,7 @@
 package app.persistence.controller;
 
 import app.persistence.connection.ConnectionPool;
-import app.persistence.documentCreation.MailSender;
+import app.persistence.util.MailSender;
 import app.persistence.documentCreation.SVGgenerator;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;

@@ -30,7 +30,6 @@ public class Main {
         app.get("/", ctx -> RoutingController.getShowIndexPage(ctx));
         RoutingController.routes(app);
     }
-
 }
 
 
