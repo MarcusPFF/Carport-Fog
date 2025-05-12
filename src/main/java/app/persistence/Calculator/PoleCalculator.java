@@ -6,14 +6,16 @@ import app.persistence.mappers.OfferMapper;
 public class PoleCalculator {
     private OfferMapper offerMapper;
 
-    public WoodForCalculator poleCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) {
+    public WoodForCalculator poleCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) {
         int lengthAmount = poleAmountXCalculator(carportLengthInCm);
         int widthAmount = poleAmountYCalculator(carportWidthInCm);
         int shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
         int amount = (lengthAmount * widthAmount) + shedAmount;
+        int digDepthOfPoleInCm = 90;
+        int poleLengthInCm = digDepthOfPoleInCm + carportHeight;
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(carportWidthInCm, poleWidthInMm, poleHeightInMm);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(poleLengthInCm, poleWidthInMm, poleHeightInMm);
         int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
         int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
 
