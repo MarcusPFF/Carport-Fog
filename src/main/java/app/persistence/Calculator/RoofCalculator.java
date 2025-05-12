@@ -50,7 +50,4 @@ public class RoofCalculator {
 
         return roofLengthInCm;
     }
-
-
-
 }

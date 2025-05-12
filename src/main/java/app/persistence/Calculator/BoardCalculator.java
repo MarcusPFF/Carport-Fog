@@ -92,8 +92,6 @@ public class BoardCalculator {
         return new WoodForCalculator(woodTypeName + ", vandbræt til stern i siderne.", amount, woodDimensionId, treatmentId, woodTypeId);
     }
 
-
-
     public int shedBoardAmountCalculator(int shedLengthInCm, int shedWidthInCm, int boardWidthInMm, int spareBoardAmount) {
         int totalCircumferenceInCm = (shedLengthInCm * 2) + (shedWidthInCm * 2);
         int boardCoverageInCm = 0;

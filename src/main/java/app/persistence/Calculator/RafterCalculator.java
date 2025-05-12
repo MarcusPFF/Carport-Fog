@@ -84,5 +84,4 @@ public class RafterCalculator {
 
         return woodWidthInMm;
     }
-
 }

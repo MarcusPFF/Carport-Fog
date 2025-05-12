@@ -37,6 +37,4 @@ class RoofCalculatorTest {
         // Assert:
         assertEquals(600, result, "De bør være 600 cm i længden.");
     }
-
-
 }

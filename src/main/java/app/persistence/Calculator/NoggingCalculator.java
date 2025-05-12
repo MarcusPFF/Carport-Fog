@@ -22,5 +22,4 @@ public class NoggingCalculator {
 
         return amount;
     }
-
 }
