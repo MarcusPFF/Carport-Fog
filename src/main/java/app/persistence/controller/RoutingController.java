@@ -29,7 +29,7 @@ public class RoutingController {
     }
 
     private static void showIndexPage(Context ctx) {
-        ctx.render("/index.html");
+        ctx.render("/quickByg.html");
     }
 
     public static void getShowIndexPage(Context ctx) {
