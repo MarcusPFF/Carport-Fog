@@ -1,9 +1,11 @@
 package app.entities.forCalculator;
 
+import app.exceptions.DatabaseException;
 import app.persistence.Calculator.BoardCalculator;
 import app.persistence.Calculator.NoggingCalculator;
 import app.persistence.Calculator.PoleCalculator;
 import app.persistence.Calculator.RafterCalculator;
+import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;
 
@@ -29,30 +31,35 @@ public class WoodForCalculator {
         this.woodTypeId = woodTypeId;
     }
 
+    //Pole = Stolpe
+    //Nogging = Ragle
+    //Rafter = Spær
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
 
-    public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm) {
+    public ArrayList<WoodForCalculator> woodCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm) throws DatabaseException {
         woodList = new ArrayList<>();
 
         //stolper
-        woodList.add(poleCalculator.poleCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, 100, 100, carportHeightInCm,"Stolpe", "Trykimprægneret"));
+        woodList.add(poleCalculator.poleCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, 100, 100, carportHeightInCm,"Stolpe", "Trykimprægneret"));
 
         //ragler
-        woodList.add(noggingCalculator.noggingCalculator(carportLengthInCm, carportWidthInCm, 45, 95, "Spær", "Ubehandlet"));
+        woodList.add(noggingCalculator.noggingCalculator(connection, carportLengthInCm, carportWidthInCm, 45, 95, "Spær", "Ubehandlet"));
 
         //spær
-        woodList.add(rafterCalculator.rafterForRoofCalculator(carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
-        woodList.add(rafterCalculator.rafterForShedLengthCalculator(shedLengthInCm,"Spær", "Ubehandlet"));
-        woodList.add(rafterCalculator.rafterForShedWidthCalculator(shedWidthInCm,"Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterForRoofCalculator(connection, carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterForShedLengthCalculator(connection, shedLengthInCm,"Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterForShedWidthCalculator(connection, shedWidthInCm,"Spær", "Ubehandlet"));
 
         //brædder
-        woodList.add(boardCalculator.shedBoardCalculator(shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 100, 20, carportHeightInCm));
-        woodList.add(boardCalculator.fasciaBoardFrontAndBackCalculator(carportWidthInCm,"Bræt", "Trykimprægneret", 200, 25));
-        woodList.add(boardCalculator.fasciaBoardSidesCalculator(carportLengthInCm,"Bræt", "Trykimprægneret", 200, 25));
-        woodList.add(boardCalculator.bargeBoardFrontCalculator(carportWidthInCm,"Bræt", "Trykimprægneret", 125, 25));
-        woodList.add(boardCalculator.bargeBoardSidesCalculator(carportLengthInCm,"Bræt", "Trykimprægneret", 125, 25));
-        woodList.add(boardCalculator.dripCapForBoardFrontCalculator(carportWidthInCm,"Bræt", "Trykimprægneret", 100, 20));
-        woodList.add(boardCalculator.dripCapForBoardSidesCalculator(carportLengthInCm,"Bræt", "Trykimprægneret", 100, 20));
-
+        woodList.add(boardCalculator.shedBoardCalculator(connection, shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 100, 20, carportHeightInCm, 10));
+        woodList.add(boardCalculator.fasciaBoardFrontAndBackCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 200, 25));
+        woodList.add(boardCalculator.fasciaBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 200, 25));
+        woodList.add(boardCalculator.bargeBoardFrontCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 125, 25));
+        woodList.add(boardCalculator.bargeBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 125, 25));
+        woodList.add(boardCalculator.dripCapForBoardFrontCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 100, 20));
+        woodList.add(boardCalculator.dripCapForBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 100, 20));
 
         return woodList;
     }

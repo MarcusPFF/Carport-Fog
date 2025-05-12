@@ -1,23 +1,25 @@
 package app.persistence.Calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
+import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
 import app.persistence.mappers.OfferMapper;
 
 public class PoleCalculator {
     private OfferMapper offerMapper;
 
-    public WoodForCalculator poleCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) {
+    public WoodForCalculator poleCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) throws DatabaseException {
         int lengthAmount = poleAmountXCalculator(carportLengthInCm);
         int widthAmount = poleAmountYCalculator(carportWidthInCm);
         int shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
         int amount = (lengthAmount * widthAmount) + shedAmount;
         int digDepthOfPoleInCm = 90;
-        int poleLengthInCm = digDepthOfPoleInCm + carportHeight;
+        int poleLengthInCm = digDepthOfPoleInCm + carportHeightInCm;
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(poleLengthInCm, poleWidthInMm, poleHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, poleLengthInCm, poleWidthInMm, poleHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
         return new WoodForCalculator("Stolper", amount, woodDimensionId, treatmentId, woodTypeId);
     }

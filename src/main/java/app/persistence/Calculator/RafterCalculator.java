@@ -1,43 +1,46 @@
 package app.persistence.Calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
+import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
 import app.persistence.mappers.OfferMapper;
 
 
 public class RafterCalculator {
     private OfferMapper offerMapper;
-    public WoodForCalculator rafterForRoofCalculator(int carportLengthInCm, int carportWidthInCm, String woodTypeName, String treatmentName) {
+
+    public WoodForCalculator rafterForRoofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
         int rafterAmount = rafterAmountForRoofCalculator(carportLengthInCm);
         int rafterWidthInMm = totalRafterWidthInMmCalculator(carportWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(carportWidthInCm);
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(carportWidthInCm, rafterWidthInMm, rafterHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
         return new WoodForCalculator(woodTypeName + "monteres på rem.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }
 
-    public WoodForCalculator rafterForShedWidthCalculator(int shedWidthInCm, String woodTypeName, String treatmentName) {
+    public WoodForCalculator rafterForShedWidthCalculator(ConnectionPool connection, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedWidthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedWidthInCm);
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
         return new WoodForCalculator(woodTypeName + "til bagside og forside af skur.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }
 
-    public WoodForCalculator rafterForShedLengthCalculator(int shedLengthInCm, String woodTypeName, String treatmentName) {
+    public WoodForCalculator rafterForShedLengthCalculator(ConnectionPool connection, int shedLengthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
         int rafterAmount = 2;
         int rafterWidthInMm = totalRafterWidthInMmCalculator(shedLengthInCm);
         int rafterHeightInMm = totalRafterHeightInMmCalculator(shedLengthInCm);
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
         return new WoodForCalculator(woodTypeName + ", til siderne på skur.", rafterAmount, woodDimensionId, treatmentId, woodTypeId);
     }

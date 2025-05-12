@@ -1,15 +1,17 @@
 package app.persistence.Calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
+import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
 import app.persistence.mappers.OfferMapper;
 
 public class NoggingCalculator {
     private OfferMapper offerMapper;
-    public WoodForCalculator noggingCalculator(int carportLengthInCm, int carportWidthInCm, int rafterWidthInMm, int rafterHeightInMm, String woodTypeName, String treatmentName) {
+    public WoodForCalculator noggingCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int rafterWidthInMm, int rafterHeightInMm, String woodTypeName, String treatmentName) throws DatabaseException {
         int noggingAmount = noggingAmountCalculator(carportWidthInCm);
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromFromLengthWidthHeight(carportLengthInCm, rafterWidthInMm, rafterHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(woodTypeName);
+        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
         return new WoodForCalculator("Ragler", noggingAmount, woodDimensionId, treatmentId, woodTypeId);
     }
