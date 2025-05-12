@@ -1,28 +1,41 @@
 package app.entities.forCalculator;
 
+import app.exceptions.DatabaseException;
 import app.persistence.Calculator.PoleCalculator;
+import app.persistence.Calculator.RoofCalculator;
+import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;
 
 public class RoofForCalculator {
+private RoofCalculator roofCalculator;
 
     private String name;
-    private int totalRoofWidthInCm;
-    private int totalRoofLengthInCm;
+    private int amount;
+    private int roofId;
 
     private static ArrayList<RoofForCalculator> roofList;
 
-    public RoofForCalculator(String name, int totalRoofWidthInCm, int totalRoofLengthInCm) {
+    public RoofForCalculator(String name, int amount, int roofId) {
         this.name = name;
-        this.totalRoofWidthInCm = totalRoofWidthInCm;
-        this.totalRoofLengthInCm = totalRoofLengthInCm;
+        this.amount = amount;
+        this.roofId = roofId;
     }
 
+    public RoofForCalculator() {
+    }
+//TODO test det her, kunne ikke teste pga ingen connectionpool
+    public ArrayList<RoofForCalculator> roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
+        roofList = new ArrayList<>();
+        int carportLengthLeftInCm = carportLengthInCm + 5;
 
-//    public ArrayList<WoodForCalculator> woodCalculator(int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm) {
-//        roofList = new ArrayList<>();
-//        return roofList;
-//    }
+        while (carportLengthLeftInCm > 0) {
+            roofList.add(roofCalculator.roofCalculator(connection, carportLengthLeftInCm, carportWidthInCm, roofPladeWidthInCm, roofName));
+            carportLengthLeftInCm = carportLengthLeftInCm - roofCalculator.roofLengthCalculator(carportLengthLeftInCm) + 20;
+        }
+
+        return roofList;
+    }
 
     public String getName() {
         return name;

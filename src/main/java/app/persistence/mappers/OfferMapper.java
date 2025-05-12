@@ -74,4 +74,9 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Database error while fetching dimension ID: ");
         }
     }
+
+    //todo lav den her metode så den faktisk virker
+    public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
+        return 1;
+    }
 }
