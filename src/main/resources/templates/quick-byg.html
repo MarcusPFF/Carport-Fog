@@ -103,49 +103,23 @@
                 <p>Carport bredde</p>
                 <select name="carportWidth">
                     <option value="">Vælg Bredde</option>
-                    <option value="240 cm">240cm</option>
-                    <option value="270 cm">270cm</option>
-                    <option value="300 cm">300cm</option>
-                    <option value="330 cm">330cm</option>
-                    <option value="360 cm">360cm</option>
-                    <option value="390 cm">390cm</option>
-                    <option value="420 cm">420cm</option>
-                    <option value="450 cm">450cm</option>
-                    <option value="480 cm">480cm</option>
-                    <option value="510 cm">510cm</option>
-                    <option value="540 cm">540cm</option>
-                    <option value="570 cm">570cm</option>
-                    <option value="600 cm">600cm</option>
+                    <th:block th:each="width : ${#numbers.sequence(240, 600, 30)}">
+                        <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                    </th:block>
                 </select>
 
                 <p>Carport længde</p>
                 <select name="carportLength">
                     <option value="">Vælg Længde</option>
-                    <option value="240 cm">240cm</option>
-                    <option value="270 cm">270cm</option>
-                    <option value="300 cm">300cm</option>
-                    <option value="330 cm">330cm</option>
-                    <option value="360 cm">360cm</option>
-                    <option value="390 cm">390cm</option>
-                    <option value="420 cm">420cm</option>
-                    <option value="450 cm">450cm</option>
-                    <option value="480 cm">480cm</option>
-                    <option value="510 cm">510cm</option>
-                    <option value="540 cm">540cm</option>
-                    <option value="570 cm">570cm</option>
-                    <option value="600 cm">600cm</option>
-                    <option value="630 cm">630cm</option>
-                    <option value="660 cm">660cm</option>
-                    <option value="690 cm">690cm</option>
-                    <option value="720 cm">720cm</option>
-                    <option value="750 cm">750cm</option>
-                    <option value="780 cm">780cm</option>
+                    <th:block th:each="length : ${#numbers.sequence(240, 780, 30)}">
+                        <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                    </th:block>
                 </select>
 
                 <p>Carport trapeztag</p>
                 <select name="carportTrapezroof">
                     <option value="">Vælg Tagplader</option>
-                    <option value="Uden tagplader">Uden tagplader</option>
+                    <option value="udenTagplader">Uden tagplader</option>
                     <option value="Plasttrapezplader">Plasttrapezplader</option>
                 </select>
 
@@ -159,24 +133,9 @@
                         <label for="redskabsrumLength">Redskabsrum Længde:</label>
                         <select id="redskabsrumLength" name="redskabsrumLength">
                             <option value="">Vælg længde</option>
-                            <option value="210">210 cm</option>
-                            <option value="240">240 cm</option>
-                            <option value="270">270 cm</option>
-                            <option value="300">300 cm</option>
-                            <option value="330">330 cm</option>
-                            <option value="360">360 cm</option>
-                            <option value="390">390 cm</option>
-                            <option value="420">420 cm</option>
-                            <option value="450">450 cm</option>
-                            <option value="480">480 cm</option>
-                            <option value="510">510 cm</option>
-                            <option value="540">540 cm</option>
-                            <option value="570">570 cm</option>
-                            <option value="600">600 cm</option>
-                            <option value="630">630 cm</option>
-                            <option value="660">660 cm</option>
-                            <option value="690">690 cm</option>
-                            <option value="720">720 cm</option>
+                            <th:block th:each="length : ${#numbers.sequence(210, 720, 30)}">
+                                <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                            </th:block>
                         </select>
                     </div>
 
@@ -184,32 +143,15 @@
                         <label for="redskabsrumWidth">Redskabsrum Bredde:</label>
                         <select id="redskabsrumWidth" name="redskabsrumWidth">
                             <option value="">Vælg bredde</option>
-                            <option value="150">150 cm</option>
-                            <option value="180">180 cm</option>
-                            <option value="210">210 cm</option>
-                            <option value="240">240 cm</option>
-                            <option value="270">270 cm</option>
-                            <option value="300">300 cm</option>
-                            <option value="330">330 cm</option>
-                            <option value="360">360 cm</option>
-                            <option value="390">390 cm</option>
-                            <option value="420">420 cm</option>
-                            <option value="450">450 cm</option>
-                            <option value="480">480 cm</option>
-                            <option value="510">510 cm</option>
-                            <option value="540">540 cm</option>
-                            <option value="570">570 cm</option>
-                            <option value="600">600 cm</option>
-                            <option value="630">630 cm</option>
-                            <option value="660">660 cm</option>
-                            <option value="690">690 cm</option>
+                            <th:block th:each="width : ${#numbers.sequence(150, 690, 30)}">
+                                <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                            </th:block>
                         </select>
                     </div>
                 </div>
                 <button class="next-page-button" name="nextPageButton">
                     Næste ➥
                 </button>
-                <!-- <a class="information" th:text="'Bredde: ' + ${session.carportWidth}"></a> -->
             </form>
         </div>
     </div>
