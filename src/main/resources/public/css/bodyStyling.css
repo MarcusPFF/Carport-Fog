@@ -38,6 +38,8 @@
     min-height: 500px;
     flex-direction: column;
     align-items: center;
+    color: black;
+    text-decoration: none;
 }
 
 .buttons button {
@@ -46,6 +48,7 @@
     padding: 15px;
     border-radius: 10px;
 }
+
 
 .sales-men-button {
     background-color: #FF0000;

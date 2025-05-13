@@ -63,6 +63,17 @@ html, body {
     position: relative;
 }
 
+.progress-bar {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    gap: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
 .title-box {
     width: 556px;
     height: 85px;
@@ -74,7 +85,7 @@ html, body {
     padding: 20px 10px;
 }
 
-.carport-dropdown-menus {
+.carport-dropdown-menus, .carport-dropdown-menus form {
     display: flex;
     min-height: 500px;
     flex-direction: column;
@@ -91,6 +102,10 @@ html, body {
 
 .carport-dropdown-menus p {
     margin-bottom: 0px;
+}
+.shed-Options {
+    display: none;
+    margin-top: 10px;
 }
 
 .shed-select-group {
@@ -155,6 +170,36 @@ h1 {
         padding: 5px;
         align-content: center;
     }
+
+    .progress-bar {
+        display: flex;
+        justify-content: center;
+        width: 90%;
+        gap: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .progress-step {
+        flex: 1;
+        background-color: #ddd;
+        color: #000;
+        padding: 10px 0;
+        clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        margin: 0;
+        border: 1px #013D7A;
+        text-align: center;
+        font-weight: bold;
+        font-size: 13px;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .progress-step.active {
+        background-color: #013D7A;
+        color: white;
+    }
+
 }
 
 @media (max-width: 650px) {
@@ -203,5 +248,11 @@ h1 {
         min-width: 270px;
         font-size: 1rem;
     }
+}
 
+@media (max-width: 500px) {
+    .progress-step {
+        font-size: 10px;
+        padding: 12px 0;
+    }
 }

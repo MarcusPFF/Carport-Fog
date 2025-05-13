@@ -9,6 +9,8 @@ import app.persistence.mappers.PriceAndMaterialMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.util.Map;
+
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
     private static OfferMapper offerMapper = new OfferMapper();
@@ -18,10 +20,12 @@ public class RoutingController {
     private static SVGgenerator svgGenerator = new SVGgenerator();
 
     public static void routes(Javalin app) {
-
         //skabelon
         app.get("/index", ctx -> showIndexPage(ctx));
         app.post("/index", ctx -> handleIndexPage(ctx));
+
+        app.get("/quickByg", ctx -> showQuickBygPage(ctx));
+        app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
 
     }
 
@@ -29,11 +33,40 @@ public class RoutingController {
     }
 
     private static void showIndexPage(Context ctx) {
-        ctx.render("/quickByg.html");
+        ctx.render("/index.html");
     }
 
     public static void getShowIndexPage(Context ctx) {
         showIndexPage(ctx);
+    }
+
+    private static void handleQuickBygPage(Context ctx) {
+        if (ctx.formParam("carportWidth") != null) {
+            String carportBredde = ctx.formParam("carportWidth");
+            String carportLaengde = ctx.formParam("carportLength");
+            String carportTrapezTag = ctx.formParam("carportTrapezRoof");
+            boolean redskabsrumChecked = ctx.formParam("redskabsrumCheckbox") != null;
+            String redskabsrumLength = ctx.formParam("redskabsrumLength");
+            String redskabsrumWidth = ctx.formParam("redskabsrumWidth");
+
+            // Save choices in session attributes
+            ctx.sessionAttribute("carportWidth", carportBredde);
+            ctx.sessionAttribute("carportLength", carportLaengde);
+            ctx.sessionAttribute("carportTrapezRoof", carportTrapezTag);
+            ctx.sessionAttribute("redskabsrumCheckbox", redskabsrumChecked);
+            ctx.sessionAttribute("redskabsrumLength", redskabsrumLength);
+            ctx.sessionAttribute("redskabsrumWidth", redskabsrumWidth);
+
+        }
+        ctx.render("/quickByg.html");
+    }
+
+    private static void showQuickBygPage(Context ctx) {
+        ctx.render("/quickByg.html");
+    }
+
+    public static void getShowQuickBygPage(Context ctx) {
+        showQuickBygPage(ctx);
     }
 
 }
