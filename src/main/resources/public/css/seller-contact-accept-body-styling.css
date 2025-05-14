@@ -47,6 +47,9 @@
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
+.button-accept:hover {
+    background-color: #012b59;
+}
 .offer-input {
     position: relative;
     display: flex;

@@ -36,13 +36,13 @@ public class RoutingController {
     }
 
     public static void showSellerContactPage(Context ctx) {
-        String tilbudsnr = ctx.sessionAttribute("tilbudsnr");
+        String offerId = ctx.sessionAttribute("offerId");
         ctx.render("/seller-contact.html");
     }
 
     public static void handleSellerContactPage(Context ctx) {
-        String tilbudsnr = ctx.formParam("tilbudsnr");
-        ctx.sessionAttribute("tilbudsnr", tilbudsnr);
+        String offerId = ctx.formParam("offerId");
+        ctx.sessionAttribute("offerId", offerId);
         showIndexPage(ctx);
     }
 }
