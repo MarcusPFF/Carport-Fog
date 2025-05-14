@@ -27,7 +27,6 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
-
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
@@ -50,7 +49,6 @@
                     </nav>
                 </div>
             </div>
-
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -76,20 +74,17 @@
 <div class="main">
     <div class="wrapper">
         <div class="title-box">
-            <h1>temp forside !Fog</h1>
+            <h1>!Fog (temp)</h1>
         </div>
         <div class="buttons">
-            <button>Quick byg carport</button>
+            <form method="get" th:action="@{/quickByg}">
+                <button type="submit"> Quick-Byg Carport med fladt tag</button>
+            </form>
             <form method="get" th:action="@{/seller-contact}">
                 <button type="submit">Kontakt af sælger</button>
             </form>
             <form method="get" th:action="@{/accept-offer}">
                 <button type="submit">Bekræft tilbud</button>
-            </form>
-            <button>Sælgerside</button>
-          
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
             </form>
             <button>Ordrenummer</button>
             <button class="sales-men-button">Sælgerside</button>

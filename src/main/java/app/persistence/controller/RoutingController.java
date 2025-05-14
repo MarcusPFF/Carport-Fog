@@ -21,15 +21,11 @@ public class RoutingController {
         //skabelon
         app.get("/index", ctx -> showIndexPage(ctx));
 
-
         app.get("/seller-contact", ctx -> showSellerContactPage(ctx));
         app.post("/seller-contact", ctx -> handleSellerContactPage(ctx));
 
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
-
-    }
-
     }
 
     private static void showIndexPage(Context ctx) {
@@ -79,5 +75,4 @@ public class RoutingController {
     public static void getShowQuickBygPage(Context ctx) {
         showQuickBygPage(ctx);
     }
-
 }

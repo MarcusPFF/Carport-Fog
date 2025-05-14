@@ -31,8 +31,7 @@ body {
     font-size: 13px;
 }
 
-
-.left-section{
+.left-section {
     display: flex;
     flex-direction: row;
 }
@@ -136,10 +135,9 @@ body {
 }
 
 
-
 @media (max-width: 1475px) {
 
-    .left-section{
+    .left-section {
         flex-direction: column;
     }
 
@@ -191,7 +189,7 @@ body {
     }
 
 
-    .search{
+    .search {
         gap: 5px;
         width: 20%;
         max-width: 300px;
@@ -204,17 +202,19 @@ body {
         min-width: 50px;
     }
 
-    .user-icons{
+    .user-icons {
         gap: 5px;
         width: 300px;
         margin-top: 30px;
         padding-left: calc(90vw - 550px);
     }
-    .icon-link{
+
+    .icon-link {
 
         margin-right: 10px;
     }
 }
+
 @media (max-width: 740px) {
 
     .header-top {
@@ -240,14 +240,23 @@ body {
     }
 
     @keyframes slideLoop {
-        0%   { transform: translateX(0); }
-        25%  { transform: translateX(-100vw); }
-        50%  { transform: translateX(-200vw); }
-        75%  { transform: translateX(-300vw); }
-        100% { transform: translateX(0); }
+        0% {
+            transform: translateX(0);
+        }
+        25% {
+            transform: translateX(-100vw);
+        }
+        50% {
+            transform: translateX(-200vw);
+        }
+        75% {
+            transform: translateX(-300vw);
+        }
+        100% {
+            transform: translateX(0);
+        }
     }
 }
-
 
 
 @media (max-width: 650px) {
@@ -257,7 +266,7 @@ body {
         gap: 12px;
     }
 
-    .search{
+    .search {
         gap: 0px;
         width: 20%;
         min-width: 50px;
@@ -273,8 +282,9 @@ body {
         justify-content: center;
     }
 }
+
 @media (max-width: 515px) {
-    .user-icons{
+    .user-icons {
         width: 150px;
         padding-left: calc(90vw - 325px);
     }
@@ -283,7 +293,7 @@ body {
         display: none;
     }
 
-    .section{
+    .section {
         gap: 10px;
     }
 }
