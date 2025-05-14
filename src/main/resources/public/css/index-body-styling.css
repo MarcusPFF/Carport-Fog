@@ -71,7 +71,7 @@ h1 {
 
 @media (max-width: 650px) {
 
-    .main{
+    .main {
         align-items: normal;
         justify-content: normal;
     }
@@ -107,6 +107,4 @@ h1 {
         min-width: 270px;
         font-size: 1rem;
     }
-
-
 }
