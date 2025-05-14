@@ -10,6 +10,8 @@ body {
     color: #333;
     background-color: #ffffff;
     height: 150px;
+    z-index: 100;
+
 }
 
 

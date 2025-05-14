@@ -3,9 +3,10 @@
 <title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
 </head>
+
 <body>
 <header class="header">
     <div class="header-top animate-in">
@@ -86,6 +87,12 @@
                 <button type="submit">Bekræft tilbud</button>
             </form>
             <button>Sælgerside</button>
+          
+            <form method="get" th:action="@{/quickByg}">
+                <button type="submit"> Quick-Byg Carport med fladt tag</button>
+            </form>
+            <button>Ordrenummer</button>
+            <button class="sales-men-button">Sælgerside</button>
         </div>
     </div>
 </div>

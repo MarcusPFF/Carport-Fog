@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<title>!Fog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/css/quick-byg-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<script th:src="@{/js/check-box-action-listener.js}"></script>
+</head>
+
+
+<body>
+<header class="header">
+    <div class="header-top animate-in">
+        <div class="info-box">
+            <img th:src="@{/images/header/return-usp.svg}" alt="30 days return" class="info-icon"/>
+            <span>30 dages returret</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/store-usp.svg}" alt="click and collect icon" class="info-icon"/>
+            <span>Klik og hent inden for 3 timer*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/delivery.svg}" alt="delivery icon" class="info-icon"/>
+            <span>1-3 dages levering*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/trailer.svg}" alt="trailer icon" class="info-icon"/>
+            <span>Lån en trailer gratis</span>
+        </div>
+    </div>
+
+    <div class="main-nav">
+        <div class="section">
+            <div class="left-section">
+                <input type="checkbox" id="toggle-dropdown" hidden>
+                <label for="toggle-dropdown" class="left-section-logo" style="cursor: pointer;">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </label>
+                <div class="dropdown-wrapper">
+                    <nav class="nav-menu">
+                        <a th:href="@{#}">Bolig & design</a>
+                        <a th:href="@{#}">Byggematerialer</a>
+                        <a th:href="@{#}">EL & belysning</a>
+                        <a th:href="@{#}">Have & fritid</a>
+                        <a th:href="@{#}">Værktøj</a>
+                        <a th:href="@{#}">Mærker</a>
+                        <a th:href="@{#}">Carport</a>
+                        <a th:href="@{#}">Fog Pro</a>
+                    </nav>
+                </div>
+            </div>
+
+
+            <div class="search">
+                <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
+                <input type="text" placeholder="Søgning"/>
+            </div>
+
+            <div class="user-icons">
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/account-icon.svg}" alt="Fog Konto"/>
+                    <span>Fog Konto</span>
+                </a>
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/find-icon.svg}" alt="Find Fog"/>
+                    <span>Find Fog</span>
+                </a>
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/cart-icon.png}" alt="Kurv"/>
+                    <span>Kurv</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="main">
+    <div class="side-menu">
+        <ul>
+            <li>》 Din Carport</li>
+            <li>Kontaktoplysninger</li>
+            <li>Bekræftelse</li>
+        </ul>
+    </div>
+    <div class="wrapper">
+        <div class="progress-bar">
+            <div class="progress-step active">Din Carport</div>
+            <div class="progress-step">Kontaktoplysninger</div>
+            <div class="progress-step">Bekræftelse</div>
+        </div>
+        <div class="title-box">
+            <h1>
+                Carport med fladt tag
+            </h1>
+        </div>
+
+        <div class="carport-dropdown-menus">
+            <form method="post" th:action="@{/quickByg}">
+                <p>Carport bredde</p>
+                <select name="carportWidth">
+                    <option value="">Vælg Bredde</option>
+                    <th:block th:each="width : ${#numbers.sequence(240, 600, 30)}">
+                        <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                    </th:block>
+                </select>
+
+                <p>Carport længde</p>
+                <select name="carportLength">
+                    <option value="">Vælg Længde</option>
+                    <th:block th:each="length : ${#numbers.sequence(240, 780, 30)}">
+                        <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                    </th:block>
+                </select>
+
+                <p>Carport trapeztag</p>
+                <select name="carportTrapezroof">
+                    <option value="">Vælg Tagplader</option>
+                    <option value="udenTagplader">Uden tagplader</option>
+                    <option value="Plasttrapezplader">Plasttrapezplader</option>
+                </select>
+
+                <label>
+                    <input type="checkbox" id="redskabsrumCheckbox" name="redskabsrumCheckbox">
+                    Tilknyttet redskabsrum?
+                </label>
+
+                <div id="redskabsrumOptions" class="shed-Options">
+                    <div class="shed-select-group">
+                        <label for="redskabsrumLength">Redskabsrum Længde:</label>
+                        <select id="redskabsrumLength" name="redskabsrumLength">
+                            <option value="">Vælg længde</option>
+                            <th:block th:each="length : ${#numbers.sequence(210, 720, 30)}">
+                                <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div class="shed-select-group">
+                        <label for="redskabsrumWidth">Redskabsrum Bredde:</label>
+                        <select id="redskabsrumWidth" name="redskabsrumWidth">
+                            <option value="">Vælg bredde</option>
+                            <th:block th:each="width : ${#numbers.sequence(150, 690, 30)}">
+                                <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <button class="next-page-button" name="nextPageButton">
+                    Næste ➥
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

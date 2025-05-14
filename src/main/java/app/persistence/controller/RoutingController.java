@@ -18,12 +18,17 @@ public class RoutingController {
     private static SVGgenerator svgGenerator = new SVGgenerator();
 
     public static void routes(Javalin app) {
-
         //skabelon
         app.get("/index", ctx -> showIndexPage(ctx));
 
+
         app.get("/seller-contact", ctx -> showSellerContactPage(ctx));
         app.post("/seller-contact", ctx -> handleSellerContactPage(ctx));
+
+        app.get("/quickByg", ctx -> showQuickBygPage(ctx));
+        app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
+
+    }
 
     }
 
@@ -45,4 +50,34 @@ public class RoutingController {
         ctx.sessionAttribute("offerId", offerId);
         showIndexPage(ctx);
     }
+
+    private static void handleQuickBygPage(Context ctx) {
+        if (ctx.formParam("carportWidth") != null) {
+            String carportWidth = ctx.formParam("carportWidth");
+            String carportLength = ctx.formParam("carportLength");
+            String carportTrapezRoof = ctx.formParam("carportTrapezRoof");
+            boolean redskabsrumCheckbox = ctx.formParam("redskabsrumCheckbox") != null;
+            String redskabsrumLength = ctx.formParam("redskabsrumLength");
+            String redskabsrumWidth = ctx.formParam("redskabsrumWidth");
+
+            // Save choices in session attributes
+            ctx.sessionAttribute("carportWidth", carportWidth);
+            ctx.sessionAttribute("carportLength", carportLength);
+            ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
+            ctx.sessionAttribute("redskabsrumCheckbox", redskabsrumCheckbox);
+            ctx.sessionAttribute("redskabsrumLength", redskabsrumLength);
+            ctx.sessionAttribute("redskabsrumWidth", redskabsrumWidth);
+
+        }
+        ctx.render("/quick-byg.html");
+    }
+
+    private static void showQuickBygPage(Context ctx) {
+        ctx.render("/quick-byg.html");
+    }
+
+    public static void getShowQuickBygPage(Context ctx) {
+        showQuickBygPage(ctx);
+    }
+
 }
