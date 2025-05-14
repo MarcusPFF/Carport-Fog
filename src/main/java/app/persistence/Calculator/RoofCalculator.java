@@ -14,29 +14,37 @@ public class RoofCalculator {
 
     //todo test den her
     public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
+        int amount;
+        int roofLengthInCm;
+        int roofId;
 
-        int amount = roofAmountInWidthCalculator(carportWidthInCm, roofPladeWidthInCm);
-        int roofLengthInCm = roofLengthCalculator(carportLengthInCm);
+        amount = roofAmountInWidthCalculator(carportWidthInCm, roofPladeWidthInCm);
+        roofLengthInCm = roofLengthCalculator(carportLengthInCm);
+        roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
 
-        int roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
-
-        return new RoofForCalculator(roofName + "monteres på rem.", amount, roofId);
+        return new RoofForCalculator(roofName, amount, roofId, "tagplader monteres på spær.");
     }
 
-
     public int roofAmountInWidthCalculator(int carportWidthInCm, int roofWidthInCm) {
-        int amount = 0;
+        int amount;
+        amount = 0;
+
         while (carportWidthInCm > amount * (roofWidthInCm - 20)) {
             amount++;
         }
+
         return amount;
     }
 
     public int roofLengthCalculator(int carportLengthInCm) {
-        int shortestLengthInCm = 300;
-        int mediumLengthInCm = 450;
-        int longestLengthInCm = 600;
+        int shortestLengthInCm;
+        int mediumLengthInCm;
+        int longestLengthInCm;
         int roofLengthInCm;
+
+        shortestLengthInCm = 300;
+        mediumLengthInCm = 450;
+        longestLengthInCm = 600;
 
         if (carportLengthInCm + 5 < shortestLengthInCm) {
             roofLengthInCm = shortestLengthInCm;

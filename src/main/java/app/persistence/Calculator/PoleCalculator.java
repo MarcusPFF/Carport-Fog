@@ -9,27 +9,40 @@ public class PoleCalculator {
     private OfferMapper offerMapper;
 
     public WoodForCalculator poleCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) throws DatabaseException {
-        int lengthAmount = poleAmountXCalculator(carportLengthInCm);
-        int widthAmount = poleAmountYCalculator(carportWidthInCm);
-        int shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
+        int amount;
+        int lengthAmount;
+        int widthAmount;
+        int shedAmount;
+        int digDepthOfPoleInCm;
+        int poleLengthInCm;
+        int woodDimensionId;
+        int treatmentId;
+        int woodTypeId;
 
-        int amount = (lengthAmount * widthAmount) + shedAmount;
-        int digDepthOfPoleInCm = 90;
-        int poleLengthInCm = digDepthOfPoleInCm + carportHeightInCm;
+        lengthAmount = poleAmountXCalculator(carportLengthInCm);
+        widthAmount = poleAmountYCalculator(carportWidthInCm);
+        shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
-        int woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, poleLengthInCm, poleWidthInMm, poleHeightInMm);
-        int treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
-        int woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
+        amount = (lengthAmount * widthAmount) + shedAmount;
+        digDepthOfPoleInCm = 90;
+        poleLengthInCm = digDepthOfPoleInCm + carportHeightInCm;
 
-        return new WoodForCalculator("Stolper", amount, woodDimensionId, treatmentId, woodTypeId);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, poleLengthInCm, poleWidthInMm, poleHeightInMm);
+        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
+
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Stolper nedgraves 90-100 cm. i jord");
     }
 
     public int poleAmountXCalculator(int carportLengthInCM) {
-        int LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
-        int amount = 2;
+        int amount;
+        int LengthBetweenFirstAndLastPoleInCM;
 
-        while (true){
-            if(LengthBetweenFirstAndLastPoleInCM/(amount - 1) <= 300){
+        LengthBetweenFirstAndLastPoleInCM = carportLengthInCM - 130;
+        amount = 2;
+
+        while (true) {
+            if (LengthBetweenFirstAndLastPoleInCM / (amount - 1) <= 400) {
                 return amount;
             }
             amount++;
@@ -37,11 +50,14 @@ public class PoleCalculator {
     }
 
     public int poleAmountYCalculator(int carportWidthInCM) {
-        int LengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
-        int amount = 2;
+        int lengthBetweenRightAndLeftPoleInCM;
+        int amount;
 
-        while (true){
-            if(LengthBetweenRightAndLeftPoleInCM/(amount - 1) <= 600){
+        lengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
+        amount = 2;
+
+        while (true) {
+            if (lengthBetweenRightAndLeftPoleInCM / (amount - 1) <= 600) {
                 return amount;
             }
             amount++;
@@ -49,18 +65,44 @@ public class PoleCalculator {
     }
 
     public int shedPoleAmountCalculator(int carportLengthInCM, int carportWidthInCM, int shedLengthInCM, int shedWidthInCM, int lengthAmount, int widthAmount) {
-        if ((carportLengthInCM - 130)/(lengthAmount - 1) == shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) != shedWidthInCM){
-            return 3;
+        int betweenPolesWidthInCm;
+        int betweenPolesLengthInCm;
+        int shedPolesYAmount;
+        int shedPolesXAmount;
+        int totalShedPoles;
+
+        betweenPolesWidthInCm = (carportWidthInCM - 70) / (widthAmount - 1);
+        betweenPolesLengthInCm = (carportLengthInCM - 130) / (lengthAmount - 1);
+        shedPolesYAmount = 1;
+        shedPolesXAmount = 0;
+        totalShedPoles = 1;
+
+        while (shedWidthInCM > betweenPolesWidthInCm) {
+            shedPolesYAmount++;
+            betweenPolesWidthInCm += betweenPolesWidthInCm;
         }
 
-        if ((carportLengthInCM - 130)/(lengthAmount - 1) != shedLengthInCM && (carportWidthInCM - 70)/(widthAmount - 1) == shedWidthInCM){
-            return 5;
+        while (shedLengthInCM > betweenPolesLengthInCm) {
+            shedPolesXAmount++;
+            betweenPolesLengthInCm += betweenPolesLengthInCm;
         }
 
-        if (shedWidthInCM == carportWidthInCM - 70 && widthAmount > 2) {
-            return 8;
+        if (shedLengthInCM == betweenPolesLengthInCm && shedWidthInCM == betweenPolesWidthInCm) {
+            shedPolesXAmount = 0;
         }
 
-        return 4;
+        else if (shedWidthInCM != betweenPolesWidthInCm && shedLengthInCM != betweenPolesLengthInCm) {
+            shedPolesXAmount = shedPolesXAmount + shedPolesYAmount;
+        }
+
+        else if (shedLengthInCM != betweenPolesLengthInCm) {
+            shedPolesXAmount = shedPolesYAmount + 1;
+        }
+
+        shedPolesYAmount = shedPolesYAmount * 2;
+        totalShedPoles = totalShedPoles + shedPolesXAmount + shedPolesYAmount;
+
+        return totalShedPoles;
     }
+
 }

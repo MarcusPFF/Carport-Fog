@@ -23,7 +23,7 @@ class RafterCalculatorTest {
         int result = calculator.rafterAmountForRoofCalculator(carportLengthInCm);
 
         // Assert:
-        assertEquals(expected, result, "Der bør være 10 spær.");
+        assertEquals(expected, result, "Der bør være 11 spær.");
 
     }
 
@@ -38,7 +38,7 @@ class RafterCalculatorTest {
         int result = calculator.totalRafterHeightInMmCalculator(carportWidthInCm);
 
         // Assert:
-        assertEquals(expected, result, "Der bør være en spær højde på 245mm.");
+        assertEquals(expected, result, "Der bør være en spær højde på 245 mm.");
 
     }
 
@@ -56,7 +56,25 @@ class RafterCalculatorTest {
         int result2 = calculator.totalRafterWidthInMmCalculator(carportWidthInCm2);
 
         // Assert:
-        assertEquals(expected, result, "Der bør være en spær brede på 60mm.");
-        assertEquals(expected2, result2, "Der bør være en spær brede på 45mm.");
+        assertEquals(expected, result, "Der bør være en spær brede på 60 mm.");
+        assertEquals(expected2, result2, "Der bør være en spær brede på 45 mm.");
+    }
+
+    @Test
+    void rafterBeamAmountCalculator() {
+        // Arrange:
+        int carportWidthInCm = 700;
+        int expected = 3;
+        int carportWidthInCm2 = 600;
+        int expected2 = 2;
+
+        // Act:
+        int result = calculator.rafterBeamAmountCalculator(carportWidthInCm);
+
+        int result2 = calculator.rafterBeamAmountCalculator(carportWidthInCm2);
+
+        // Assert:
+        assertEquals(expected, result, "Der bør være 3 remme.");
+        assertEquals(expected2, result2, "Der bør være 2 remme.");
     }
 }

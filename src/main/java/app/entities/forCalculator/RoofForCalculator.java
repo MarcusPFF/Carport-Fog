@@ -13,13 +13,15 @@ private RoofCalculator roofCalculator;
     private String name;
     private int amount;
     private int roofId;
+    private String description;
 
     private static ArrayList<RoofForCalculator> roofList;
 
-    public RoofForCalculator(String name, int amount, int roofId) {
+    public RoofForCalculator(String name, int amount, int roofId, String description) {
         this.name = name;
         this.amount = amount;
         this.roofId = roofId;
+        this.description = description;
     }
 
     public RoofForCalculator() {

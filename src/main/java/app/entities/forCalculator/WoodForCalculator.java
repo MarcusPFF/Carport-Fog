@@ -16,6 +16,7 @@ public class WoodForCalculator {
     private int woodDimensionId;
     private int treatmentId;
     private int woodTypeId;
+    private String description;
     private PoleCalculator poleCalculator;
     private RafterCalculator rafterCalculator;
     private NoggingCalculator noggingCalculator;
@@ -23,34 +24,38 @@ public class WoodForCalculator {
 
     private static ArrayList<WoodForCalculator> woodList;
 
-    public WoodForCalculator(String name, int amount, int woodDimensionId, int treatmentId, int woodTypeId) {
+    public WoodForCalculator(String name, int amount, int woodDimensionId, int treatmentId, int woodTypeId, String description) {
         this.name = name;
         this.amount = amount;
         this.woodDimensionId = woodDimensionId;
         this.treatmentId = treatmentId;
         this.woodTypeId = woodTypeId;
+        this.description = description;
     }
 
     //Pole = Stolpe
-    //Nogging = Ragle
+    //Nogging = Reglar
     //Rafter = Spær
     //Fascia board = Understernbræt
     //Barge board = Oversternbræt
     //Drip cap = Vandbræt
 
-    public ArrayList<WoodForCalculator> woodCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm) throws DatabaseException {
+    public ArrayList<WoodForCalculator> woodCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int amountOfDoorsForTheShed) throws DatabaseException {
         woodList = new ArrayList<>();
 
         //stolper
         woodList.add(poleCalculator.poleCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, 100, 100, carportHeightInCm,"Stolpe", "Trykimprægneret"));
 
-        //ragler
-        woodList.add(noggingCalculator.noggingCalculator(connection, carportLengthInCm, carportWidthInCm, 45, 95, "Spær", "Ubehandlet"));
+        //reglar
+        woodList.add(noggingCalculator.noggingForShedSidesCalculator(connection, 45, 95, shedLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm,"Reglar", "Ubehandlet"));
+        woodList.add(noggingCalculator.noggingForShedFrontAndBackCalculator(connection, 45, 95, carportLengthInCm, carportWidthInCm, shedWidthInCm,"Reglar", "Ubehandlet"));
+
+        //lægter
+        woodList.add(noggingCalculator.noggingForZOnTheDoorCalculator(connection, 40, 75, 420,"Lægte","Ubehandlet", amountOfDoorsForTheShed));
 
         //spær
         woodList.add(rafterCalculator.rafterForRoofCalculator(connection, carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
-        woodList.add(rafterCalculator.rafterForShedLengthCalculator(connection, shedLengthInCm,"Spær", "Ubehandlet"));
-        woodList.add(rafterCalculator.rafterForShedWidthCalculator(connection, shedWidthInCm,"Spær", "Ubehandlet"));
+        woodList.add(rafterCalculator.rafterBeamCalculator(connection, carportLengthInCm, carportWidthInCm, 95, 195, "Spær", "Ubehandlet"));
 
         //brædder
         woodList.add(boardCalculator.shedBoardCalculator(connection, shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 100, 20, carportHeightInCm, 10));
