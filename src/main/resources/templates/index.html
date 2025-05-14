@@ -3,9 +3,10 @@
 <title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/bodyStyling.css}"/>
-<link rel="stylesheet" th:href="@{/css/headerStyling.css}"/>
+<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
 </head>
+
 <body>
 <header class="header">
     <div class="header-top animate-in">
@@ -51,9 +52,6 @@
             </div>
 
 
-
-
-
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -85,7 +83,9 @@
             </h1>
         </div>
         <div class="buttons">
-            <button>Quick-Byg Carport med fladt tag</button>
+            <form method="get" th:action="@{/quickByg}">
+                <button type="submit"> Quick-Byg Carport med fladt tag</button>
+            </form>
             <button>Ordrenummer</button>
             <button class="sales-men-button">Sælgerside</button>
         </div>
