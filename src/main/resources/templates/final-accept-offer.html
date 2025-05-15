@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" th:href="@{/css/final-accept-offer-body-styling.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+    <title>!Fog – Afslut tilbud</title>
+</head>
+<body>
+<header class="header">…</header>
+
+<div class="main">
+    <div class="wrapper">
+        <div class="title-box">
+            <h1>Godkendelse af tilbud</h1>
+        </div>
+        <div class="content-box">
+            <a th:text="'Tilbuds nr: ' + ${session.offerId}"></a>
+            <a th:text="'Email: ' + ${session.email}"></a>
+            <a th:text="'Pris: ' + ${session.salesPriceFromOfferId} + ' DKK'">Pris: 0 DKK</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

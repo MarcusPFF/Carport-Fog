@@ -3,10 +3,10 @@
 <title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/accept-offer-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<script th:src="@{/js/clearbutton.js}" defer></script>
 </head>
-
 <body>
 <header class="header">
     <div class="header-top animate-in">
@@ -27,6 +27,7 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
+
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
@@ -49,6 +50,7 @@
                     </nav>
                 </div>
             </div>
+
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -74,21 +76,23 @@
 <div class="main">
     <div class="wrapper">
         <div class="title-box">
-            <h1>!Fog (temp)</h1>
+            <h1>Godkendelse af tilbud</h1>
         </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
-            </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <button class="sales-men-button">Sælgerside</button>
+        <form method="post" th:action="@{/accept-offer}">
+            <div class="offer-input">
+                <!--Input felt som har en masse regler omkring hvad der må indtastes -->
+                <input type="text" pattern="[0-9]+" inputmode="numeric" name="offerId" placeholder="Tilbuds nr"
+                       id="offerId" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                       oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                <button type="button" class="clear-btn" aria-label="Clear">&#215;</button>
+            </div>
+            <button type="submit" class="button-accept">Søg</button>
+        </form>
+        <div th:if="${errorMessage}" class="error">
+            <p th:text="${errorMessage}"></p>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

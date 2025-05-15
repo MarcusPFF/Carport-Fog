@@ -24,6 +24,12 @@ public class RoutingController {
         app.get("/seller-contact", ctx -> showSellerContactPage(ctx));
         app.post("/seller-contact", ctx -> handleSellerContactPage(ctx));
 
+        app.get("/accept-offer", ctx -> showAcceptOfferPage(ctx));
+        app.post("/accept-offer", ctx -> handleAcceptOfferPage(ctx));
+
+        app.get("/final-accept-offer", ctx -> showFinalAcceptOfferPage(ctx));
+        app.post("/final-accept-offer", ctx -> handleFinalAcceptOfferPage(ctx));
+
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
     }
@@ -34,6 +40,50 @@ public class RoutingController {
 
     public static void getShowIndexPage(Context ctx) {
         showIndexPage(ctx);
+    }
+
+    public static void showFinalAcceptOfferPage(Context ctx) {
+        ctx.render("/final-accept-offer.html");
+    }
+
+    public static void handleFinalAcceptOfferPage(Context ctx) {
+        String action = ctx.formParam("action");
+        if ("confirm".equals(action)) {
+            ctx.attribute("actionConfirmed", true);
+            // evt. send mail her
+        } else {
+            ctx.attribute("actionConfirmed", false);
+        }
+        ctx.render("/final-accept-offer.html");
+    }
+
+    public static void showAcceptOfferPage(Context ctx) {
+        ctx.render("/accept-offer.html");
+    }
+
+    public static void handleAcceptOfferPage(Context ctx) {
+        String offerIdStr = ctx.sessionAttribute("offerId");
+
+        try {
+            int offerId = Integer.parseInt(offerIdStr);
+
+            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
+            String email = app.persistence.mappers.OfferMapper.getMailFromOfferId(connectionPool, offerId);
+            ctx.sessionAttribute("email", email);
+
+            if (salesPriceFromOfferId > 0.1) {
+                ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
+                showFinalAcceptOfferPage(ctx);
+            } else {
+                ctx.status(400);
+                ctx.attribute("errorMessage", "Tilbud " + offerId + " findes ikke.");
+                ctx.render("accept-offer.html");
+            }
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            ctx.attribute("errorMessage", "Tilbudsnummeret er ugyldigt.");
+            ctx.render("accept-offer.html");
+        }
     }
 
     public static void showSellerContactPage(Context ctx) {

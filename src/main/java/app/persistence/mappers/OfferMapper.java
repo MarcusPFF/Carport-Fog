@@ -78,4 +78,12 @@ public class OfferMapper {
     public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
         return 1;
     }
+
+    public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId){
+        return 999.99F;
+    }
+
+    public static String getMailFromOfferId(ConnectionPool connection, int offerId){
+        return "test@kunde.dk";
+    }
 }

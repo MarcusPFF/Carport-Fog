@@ -82,7 +82,7 @@
         <form method="post" th:action="@{/seller-contact}" onsubmit="return confirmAndSubmit(this);">
             <div class="offer-input">
                 <!--Input felt som har en masse regler omkring hvad der må indtastes -->
-                <input type="text" pattern="[0-9]+" inputmode="numeric" name="tilbudsnr" placeholder="Tilbuds nr"
+                <input type="text" pattern="[0-9]+" inputmode="numeric" name="offerId" placeholder="Tilbuds nr"
                        id="offerId" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
                        oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
                 <button type="button" class="clear-btn" aria-label="Clear">&#215;</button>
