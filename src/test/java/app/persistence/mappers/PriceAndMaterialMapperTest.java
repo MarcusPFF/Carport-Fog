@@ -298,4 +298,17 @@ class PriceAndMaterialMapperTest {
         assertEquals(expectedTotal, actualTotal, 0.0001f,
                 "Sum of woodType + dimension + treatment prices should match");
     }
+
+    @Test
+    void getMarkupPercentageFromExpensePrice() throws DatabaseException {
+        float expensePrice = 27450.21f;
+        int expectedPercentage = 135;
+
+        // Act
+        int actualPercentage = PriceAndMaterialMapper.getMarkupPercentageFromExpensePrice(connectionPool, expensePrice);
+
+        // Assert
+        assertEquals(expectedPercentage, actualPercentage,
+                "expected percentage and actual percentage prices should match");
+    }
 }

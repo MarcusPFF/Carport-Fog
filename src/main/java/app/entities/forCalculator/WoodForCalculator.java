@@ -14,7 +14,7 @@ public class WoodForCalculator {
     private String name;
     private int amount;
     private int woodDimensionId;
-    private int treatmentId;
+    private int woodTreatmentId;
     private int woodTypeId;
     private String description;
     private PoleCalculator poleCalculator;
@@ -24,11 +24,11 @@ public class WoodForCalculator {
 
     private static ArrayList<WoodForCalculator> woodList;
 
-    public WoodForCalculator(String name, int amount, int woodDimensionId, int treatmentId, int woodTypeId, String description) {
+    public WoodForCalculator(String name, int amount, int woodDimensionId, int woodTreatmentId, int woodTypeId, String description) {
         this.name = name;
         this.amount = amount;
         this.woodDimensionId = woodDimensionId;
-        this.treatmentId = treatmentId;
+        this.woodTreatmentId = woodTreatmentId;
         this.woodTypeId = woodTypeId;
         this.description = description;
     }
@@ -92,8 +92,8 @@ public class WoodForCalculator {
         return woodDimensionId;
     }
 
-    public int getTreatmentId() {
-        return treatmentId;
+    public int getWoodTreatmentId() {
+        return woodTreatmentId;
     }
 
     public int getWoodTypeId() {

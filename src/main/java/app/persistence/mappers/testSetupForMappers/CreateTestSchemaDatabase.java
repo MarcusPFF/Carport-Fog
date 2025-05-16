@@ -41,8 +41,8 @@ public class CreateTestSchemaDatabase {
         );
 
         CREATE TABLE test.markup (
-            expenses_price DECIMAL(10, 2) NOT NULL PRIMARY KEY,
-            percentage DECIMAL(5, 2) NOT NULL
+            expenses_price BIGINT PRIMARY KEY,
+            percentage BIGINT NOT NULL
         );
 
         CREATE TABLE test.mounts (
@@ -89,7 +89,7 @@ public class CreateTestSchemaDatabase {
         CREATE TABLE test.offers (
             offer_id BIGSERIAL PRIMARY KEY,
             total_expense_price DECIMAL(10, 2) NOT NULL,
-            total_offer_price DECIMAL(10, 2) NOT NULL,
+            total_sales_price DECIMAL(10, 2) NOT NULL,
             seller_id INT REFERENCES test.sellers(seller_id),
             customer_id INT REFERENCES test.customer(customer_id),
             expiration_date DATE NOT NULL,
@@ -101,35 +101,35 @@ public class CreateTestSchemaDatabase {
 
         CREATE TABLE test.orders (
             order_id BIGSERIAL PRIMARY KEY,
-            offer_id INT REFERENCES test.offers(offer_id),
+            offer_id INT REFERENCES test.offers(offer_id) ON DELETE CASCADE,
             status_id INT REFERENCES test.status(status_id),
             purchase_date DATE NOT NULL,
             tracking_number UUID DEFAULT gen_random_uuid()
         );
 
         CREATE TABLE test.mounts_list (
-            offer_id INT REFERENCES test.offers(offer_id),
+            offer_id INT REFERENCES test.offers(offer_id) ON DELETE CASCADE,
             mount_id INT REFERENCES test.mounts(mount_id),
             mount_amount INT NOT NULL, 
             mount_description VARCHAR(255)
         );
 
         CREATE TABLE test.roof_list (
-            offer_id INT REFERENCES test.offers(offer_id),
+            offer_id INT REFERENCES test.offers(offer_id) ON DELETE CASCADE,
             roof_id INT REFERENCES test.roofs(roof_id),
             roof_amount INT NOT NULL, 
             roof_description VARCHAR(255)
         );
 
         CREATE TABLE test.screws_list (
-            offer_id INT REFERENCES test.offers(offer_id),
+            offer_id INT REFERENCES test.offers(offer_id) ON DELETE CASCADE,
             screw_id INT REFERENCES test.screws(screw_id),
             screws_amount INT NOT NULL, 
             screw_description VARCHAR(255)
         );
 
         CREATE TABLE test.wood_list (
-            offer_id INT REFERENCES test.offers(offer_id),
+            offer_id INT REFERENCES test.offers(offer_id) ON DELETE CASCADE,
             wood_type_id INT REFERENCES test.wood_type(wood_type_id),
             wood_treatment_id INT REFERENCES test.wood_treatment(wood_treatment_id),
             wood_dimension_id INT REFERENCES test.wood_dimensions(wood_dimension_id),
@@ -160,7 +160,7 @@ public class CreateTestSchemaDatabase {
             (3, 'Delivered', 'Your order has been delivered.');
 
         INSERT INTO test.markup (expenses_price, percentage)
-        VALUES (10000, 35), (20000, 25), (30000, 20);
+        VALUES (0, 150), (10000, 140), (25000, 135), (50000, 125);
 
         INSERT INTO test.mounts (mount_price, mount_type_name)
         VALUES 
@@ -215,7 +215,7 @@ public class CreateTestSchemaDatabase {
             (100, 100, 35.00)
         )AS dims(w, h, price);
         
-        INSERT INTO test.offers (total_expense_price, total_offer_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
+        INSERT INTO test.offers (total_expense_price, total_sales_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
         VALUES
             (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
             (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),

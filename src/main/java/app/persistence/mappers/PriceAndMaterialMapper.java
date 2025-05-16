@@ -217,6 +217,27 @@ public class PriceAndMaterialMapper {
 
         return woodTypePrice + dimensionPrice + treatmentPrice;
     }
+
+    public static int getMarkupPercentageFromExpensePrice(ConnectionPool connectionPool, float expensePrice) throws DatabaseException {
+        String sql = "SELECT expenses_price, percentage FROM markup ORDER BY expenses_price DESC;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+
+                    if (rs.getInt("expenses_price") < expensePrice) {
+                        return rs.getInt("percentage");
+                    }
+                }
+                throw new DatabaseException(null, "Markup id not found for price: " + expensePrice);
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Error getting wood treatment meter price from database");
+        }
+
+    }
+
+
+
 }
 
 
