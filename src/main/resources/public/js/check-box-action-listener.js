@@ -4,16 +4,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const lengthSelect = document.getElementById("redskabsrumLength");
     const widthSelect = document.getElementById("redskabsrumWidth");
 
+    function updateShedOptionsDisplay() {
+        if (checkbox.checked) {
+            options.style.display = "block";
+        } else {
+            options.style.display = "none";
+            // Clear selections when unchecked
+            if (lengthSelect) lengthSelect.value = "";
+            if (widthSelect) widthSelect.value = "";
+        }
+    }
+
     if (checkbox && options) {
-        checkbox.addEventListener("change", function () {
-            if (this.checked) {
-                options.style.display = "block";
-            } else {
-                options.style.display = "none";
-                // Clear selections when unchecked
-                if (lengthSelect) lengthSelect.value = "";
-                if (widthSelect) widthSelect.value = "";
-            }
-        });
+        checkbox.addEventListener("change", updateShedOptionsDisplay);
+        updateShedOptionsDisplay(); // 🔥 Initial visning baseret på om boksen var tjekket
     }
 });

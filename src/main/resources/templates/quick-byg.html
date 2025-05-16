@@ -104,7 +104,9 @@
                 <select name="carportWidth">
                     <option value="">Vælg Bredde</option>
                     <th:block th:each="width : ${#numbers.sequence(240, 600, 30)}">
-                        <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                        <option th:value="${width + ' cm'}"
+                                th:text="${width + 'cm'}"
+                                th:selected="${width + ' cm' == carportWidth}"></option>
                     </th:block>
                 </select>
 
@@ -112,20 +114,27 @@
                 <select name="carportLength">
                     <option value="">Vælg Længde</option>
                     <th:block th:each="length : ${#numbers.sequence(240, 780, 30)}">
-                        <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                        <option th:value="${length + ' cm'}"
+                                th:text="${length + 'cm'}"
+                                th:selected="${length + ' cm' == carportLength}">
+                        </option>
+
                     </th:block>
                 </select>
 
                 <p>Carport trapeztag</p>
                 <select name="carportTrapezroof">
                     <option value="">Vælg Tagplader</option>
-                    <option value="udenTagplader">Uden tagplader</option>
-                    <option value="Plasttrapezplader">Plasttrapezplader</option>
+                    <option value="udenTagplader"
+                            th:selected="${carportTrapezRoof == 'udenTagplader'}">Uden tagplader</option>
+                    <option value="Plasttrapezplader"
+                            th:selected="${carportTrapezRoof == 'Plasttrapezplader'}">Plasttrapezplader</option>
                 </select>
 
                 <label>
-                    <input type="checkbox" id="redskabsrumCheckbox" name="redskabsrumCheckbox">
-                    Tilknyttet redskabsrum?
+                    <input type="checkbox" id="redskabsrumCheckbox" name="redskabsrumCheckbox"
+                           th:checked="${redskabsrumCheckbox}">
+                           Tilknyttet redskabsrum?
                 </label>
 
                 <div id="redskabsrumOptions" class="shed-Options">
@@ -134,7 +143,8 @@
                         <select id="redskabsrumLength" name="redskabsrumLength">
                             <option value="">Vælg længde</option>
                             <th:block th:each="length : ${#numbers.sequence(210, 720, 30)}">
-                                <option th:value="${length + ' cm'}" th:text="${length + 'cm'}"></option>
+                                <option th:value="${length + ' cm'}" th:text="${length + ' cm'}"
+                                        th:selected="${length + ' cm' == redskabsrumLength}"></option>
                             </th:block>
                         </select>
                     </div>
@@ -143,14 +153,15 @@
                         <label for="redskabsrumWidth">Redskabsrum Bredde:</label>
                         <select id="redskabsrumWidth" name="redskabsrumWidth">
                             <option value="">Vælg bredde</option>
-                            <th:block th:each="width : ${#numbers.sequence(150, 690, 30)}">
-                                <option th:value="${width + ' cm'}" th:text="${width + 'cm'}"></option>
+                            <th:block th:each="width : ${#numbers.sequence(150, 360, 30)}">
+                                <option th:value="${width + ' cm'}" th:text="${width + ' cm'}"
+                                        th:selected="${width + ' cm' == redskabsrumWidth}"></option>
                             </th:block>
                         </select>
                     </div>
                 </div>
                 <button class="next-page-button" name="nextPageButton">
-                    Næste ➥
+                    Næste →
                 </button>
             </form>
         </div>
