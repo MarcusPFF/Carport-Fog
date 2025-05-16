@@ -8,6 +8,15 @@ import app.persistence.mappers.OfferMapper;
 public class BoardCalculator {
     private OfferMapper offerMapper;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     public WoodForCalculator shedBoardCalculator(ConnectionPool connection, int shedLengthInCm, int shedWidthInCm, String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm, int boardLengthInCM, int spareBoardAmount) throws DatabaseException {
        int amount;
        int woodDimensionId;

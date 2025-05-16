@@ -87,4 +87,10 @@ public class OfferMapper {
     public int getAmountPrContainerFromScrewName(ConnectionPool connection, String screwName) {
         return 200;
     }
+    public float getSalesPriceFromOfferId(ConnectionPool connection, int offerId) {
+//        sql = "SELECT total_offer_price FROM offers WHERE offer_id = ?";
+//
+//        statement.setInt(1, offerId);
+        return 10;
+    }
 }

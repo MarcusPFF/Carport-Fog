@@ -33,37 +33,48 @@ public class WoodForCalculator {
         this.description = description;
     }
 
-    //Pole = Stolpe
-    //Nogging = Reglar
-    //Rafter = Spær
-    //Fascia board = Understernbræt
-    //Barge board = Oversternbræt
-    //Drip cap = Vandbræt
+    public WoodForCalculator() {}
 
-    public ArrayList<WoodForCalculator> woodCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int amountOfDoorsForTheShed) throws DatabaseException {
+    public ArrayList<WoodForCalculator> woodListCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int amountOfDoorsForTheShed) throws DatabaseException {
         woodList = new ArrayList<>();
 
-        //stolper
+        //Stolper. (regnes i stk)
         woodList.add(poleCalculator.poleCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, 100, 100, carportHeightInCm,"Stolpe", "Trykimprægneret"));
 
-        //reglar
+        //Regler for siderne af skur. (regnes i stk)
         woodList.add(noggingCalculator.noggingForShedSidesCalculator(connection, 45, 95, shedLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm,"Reglar", "Ubehandlet"));
+
+        //Regler for forsiden og bagsiden af skur. (regnes i stk)
         woodList.add(noggingCalculator.noggingForShedFrontAndBackCalculator(connection, 45, 95, carportLengthInCm, carportWidthInCm, shedWidthInCm,"Reglar", "Ubehandlet"));
 
-        //lægter
+        //Lægter for z bag på døren til skuret (regnes i stk)
         woodList.add(noggingCalculator.noggingForZOnTheDoorCalculator(connection, 40, 75, 420,"Lægte","Ubehandlet", amountOfDoorsForTheShed));
 
-        //spær
+        //Spær som Taget skal monteres på. (regnes i stk)
         woodList.add(rafterCalculator.rafterForRoofCalculator(connection, carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
+
+        //Remme som spær skal monteres på. (regnes i stk)
         woodList.add(rafterCalculator.rafterBeamCalculator(connection, carportLengthInCm, carportWidthInCm, 95, 195, "Spær", "Ubehandlet"));
 
-        //brædder
+        //Brædder til beklædning af skur. (regnes i stk)
         woodList.add(boardCalculator.shedBoardCalculator(connection, shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 100, 20, carportHeightInCm, 10));
+
+        //Understernbrædder til forenden og bagende af carport. (regnes i stk)
         woodList.add(boardCalculator.fasciaBoardFrontAndBackCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 200, 25));
+
+        //Understernbrædder til siderne af carport. (regnes i stk)
         woodList.add(boardCalculator.fasciaBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 200, 25));
+
+        //Oversternbrædder til forende af carport. (regnes i stk)
         woodList.add(boardCalculator.bargeBoardFrontCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 125, 25));
+
+        //Oversternbrædder til siderne af carport. (regnes i stk)
         woodList.add(boardCalculator.bargeBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 125, 25));
+
+        //Vandbrædder til forenden af carport. (regnes i stk)
         woodList.add(boardCalculator.dripCapForBoardFrontCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 100, 20));
+
+        //Vandbrædder til siderne af carport. (regnes i stk)
         woodList.add(boardCalculator.dripCapForBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 100, 20));
 
         return woodList;
@@ -73,47 +84,27 @@ public class WoodForCalculator {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getAmount() {
         return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public int getWoodDimensionId() {
         return woodDimensionId;
     }
 
-    public void setWoodDimensionId(int woodDimensionId) {
-        this.woodDimensionId = woodDimensionId;
-    }
-
     public int getTreatmentId() {
         return treatmentId;
-    }
-
-    public void setTreatmentId(int treatmentId) {
-        this.treatmentId = treatmentId;
     }
 
     public int getWoodTypeId() {
         return woodTypeId;
     }
 
-    public void setWoodTypeId(int woodTypeId) {
-        this.woodTypeId = woodTypeId;
+    public String getDescription() {
+        return description;
     }
 
     public static ArrayList<WoodForCalculator> getWoodList() {
         return woodList;
-    }
-
-    public static void setWoosList(ArrayList<WoodForCalculator> woodList) {
-        WoodForCalculator.woodList = woodList;
     }
 }

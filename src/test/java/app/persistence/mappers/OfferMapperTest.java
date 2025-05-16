@@ -44,7 +44,7 @@ class OfferMapperTest {
     @Test
     void getTreatmentIdFromTreatmentName() throws SQLException, DatabaseException {
         //Arange
-        String treatmentName = "Polished";
+        String treatmentName = "Trykimprægneret";
         int expectedTreatmentId = 1;
 
         //Act:
@@ -58,7 +58,7 @@ class OfferMapperTest {
     @Test
     void getWoodTypeIdFromWoodTypeName() throws SQLException, DatabaseException {
         //Arange
-        String woodTypeName = "Oak";
+        String woodTypeName = "Spær";
         int expectedWoodTypeId = 1;
 
         //Act:
@@ -72,10 +72,10 @@ class OfferMapperTest {
     @Test
     void getWoodDimensionIdFromLengthWidthHeight() throws SQLException, DatabaseException {
         //Arange
-        int dimensionLength = 200;
-        int dimensionWidth = 30;
-        int dimensionHeight = 50;
-        int expectedDimensionId = 1;
+        int dimensionLength = 210;
+        int dimensionWidth = 60;
+        int dimensionHeight = 145;
+        int expectedDimensionId = 563;
 
         //Act:
         int dimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connectionPool, dimensionLength, dimensionWidth, dimensionHeight);

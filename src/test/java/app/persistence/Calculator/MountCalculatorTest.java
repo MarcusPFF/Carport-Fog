@@ -1,17 +1,45 @@
 package app.persistence.Calculator;
 
+import app.persistence.connection.ConnectionPool;
+import app.persistence.mappers.OfferMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MountCalculatorTest {
     private static MountCalculator calculator;
+    private static ConnectionPool connectionPool;
 
     @BeforeAll
-    public static void init() {
-        calculator = new MountCalculator();
+    static void beforeAll() throws SQLException {
+        String USER = "postgres";
+        String PASSWORD = System.getenv("kudsk_db_password");
+        String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=test";
+        String DB = "Fog_Carport";
+
+        connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+        try (Connection conn = connectionPool.getConnection()) {
+            createTestSchemaWithData(conn);
+        }
     }
+
+    @AfterAll
+    static void afterAll() throws SQLException {
+        try (Connection conn = connectionPool.getConnection()) {
+            conn.createStatement().execute("ROLLBACK;");
+        }
+    }
+    
+    @BeforeEach
+    void setUp() { calculator = new MountCalculator(); }
 
     @Test
     void leftRafterMountsAmountCalculator() {
@@ -90,5 +118,29 @@ class MountCalculatorTest {
 
         // Assert
         assertEquals(expected, result);
+    }
+
+    @Test
+    void leftRafterMountCalculator() {
+    }
+
+    @Test
+    void rightRafterMountCalculator() {
+    }
+
+    @Test
+    void squareBracketsForRafterMountCalculator() {
+    }
+
+    @Test
+    void angleMountCalculator() {
+    }
+
+    @Test
+    void stableDoorHandleCalculator() {
+    }
+
+    @Test
+    void hingeForDoorCalculator() {
     }
 }

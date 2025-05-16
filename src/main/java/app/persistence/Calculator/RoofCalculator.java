@@ -9,10 +9,18 @@ import app.persistence.mappers.OfferMapper;
 public class RoofCalculator {
     private OfferMapper offerMapper;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     //10Cm pr bølge
     //overlap med 2 bølger
 
-    //todo test den her
     public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
         int amount;
         int roofLengthInCm;
@@ -22,7 +30,7 @@ public class RoofCalculator {
         roofLengthInCm = roofLengthCalculator(carportLengthInCm);
         roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
 
-        return new RoofForCalculator(roofName, amount, roofId, "tagplader monteres på spær.");
+        return new RoofForCalculator(roofName, amount, roofId, "Tagplader monteres på spær.");
     }
 
     public int roofAmountInWidthCalculator(int carportWidthInCm, int roofWidthInCm) {

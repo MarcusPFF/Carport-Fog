@@ -9,6 +9,15 @@ public class NoggingCalculator {
     private OfferMapper offerMapper;
     private PoleCalculator poleCalculator;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     public WoodForCalculator noggingForShedFrontAndBackCalculator(ConnectionPool connection, int rafterWidthInMm, int rafterHeightInMm, int carportLength, int carportWidthInCm, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
         int poleAmountForWidth;
         int noggingAmount;

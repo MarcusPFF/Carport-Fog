@@ -13,7 +13,15 @@ public class ScrewCalculator {
     private PoleCalculator poleCalculator;
     private NoggingCalculator noggingCalculator;
 
-    //todo test den her
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     public ScrewForCalculator screwForRoofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String screwName) throws DatabaseException {
         int amount;
         int amountPrContainer;

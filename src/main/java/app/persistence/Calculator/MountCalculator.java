@@ -11,6 +11,15 @@ public class MountCalculator {
     private PoleCalculator poleCalculator;
     private NoggingCalculator noggingCalculator;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     public MountForCalculator leftRafterMountCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String mountName) throws DatabaseException {
         int amount;
         int rafterAmount;
@@ -55,7 +64,7 @@ public class MountCalculator {
         return new MountForCalculator(mountName, amount, mountId, "Til montering af rem på stolper.");
     }
 
-    public MountForCalculator angleMountCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String mountName, int shedLengthInCm, int shedWidthInCm) throws DatabaseException {
+    public MountForCalculator angleMountCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, String mountName) throws DatabaseException {
         int amount;
         int poleAmountX;
         int poleAmountY;
@@ -76,7 +85,7 @@ public class MountCalculator {
         return new MountForCalculator(mountName, amount, mountId, "Til montering af løsholter i skur.");
     }
 
-    public MountForCalculator stableDoorHandleCalculator(ConnectionPool connection, String mountName, int amountOfDoorsForShed) throws DatabaseException {
+    public MountForCalculator stableDoorHandleCalculator(ConnectionPool connection, int amountOfDoorsForShed, String mountName) throws DatabaseException {
         int amount;
         int mountId;
 
@@ -86,7 +95,7 @@ public class MountCalculator {
         return new MountForCalculator(mountName, amount, mountId, "Til lås på dør i skur.");
     }
 
-    public MountForCalculator hingeForDoorCalculator(ConnectionPool connection, String mountName, int amountOfDoorsForShed) throws DatabaseException {
+    public MountForCalculator hingeForDoorCalculator(ConnectionPool connection, int amountOfDoorsForShed, String mountName) throws DatabaseException {
         int amount;
         int mountId;
 

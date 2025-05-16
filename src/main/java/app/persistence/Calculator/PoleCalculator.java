@@ -8,6 +8,15 @@ import app.persistence.mappers.OfferMapper;
 public class PoleCalculator {
     private OfferMapper offerMapper;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     public WoodForCalculator poleCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) throws DatabaseException {
         int amount;
         int lengthAmount;

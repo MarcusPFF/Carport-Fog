@@ -157,7 +157,7 @@ class PriceAndMaterialMapperTest {
     void getRoofPrice() throws SQLException, DatabaseException {
         // Arrange
         int roofId = 1;
-        double expectedPrice = 1000.00;
+        float expectedPrice = 349.95f;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getRoofPrice(connectionPool, roofId);
@@ -169,7 +169,7 @@ class PriceAndMaterialMapperTest {
             ps.setInt(1, roofId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Row with roofId = " + roofId + "should exist");
-                assertEquals(expectedPrice, actualPrice, 0.0001f,
+                assertEquals(expectedPrice, actualPrice,
                         "expectedPrice should match with actualPrice");
             }
         }
@@ -179,7 +179,7 @@ class PriceAndMaterialMapperTest {
     void getScrewsPrice() throws SQLException, DatabaseException {
         // Arrange
         int screwsId = 1;
-        double expectedPrice = 10.00;
+        float expectedPrice = 69.95f;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getScrewsPrice(connectionPool, screwsId);
@@ -191,7 +191,7 @@ class PriceAndMaterialMapperTest {
             ps.setInt(1, screwsId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Row with screwsId = " + screwsId + " should exist");
-                assertEquals(expectedPrice, actualPrice, 0.0001f,
+                assertEquals(expectedPrice, actualPrice,
                         "expectedPrice should match actualPrice");
             }
         }
@@ -223,7 +223,7 @@ class PriceAndMaterialMapperTest {
     void getWoodTypeMeterPrice() throws SQLException, DatabaseException {
         // Arrange
         int woodTypeId = 1;
-        double expectedPrice = 50.00;
+        float expectedPrice = 10.25f;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getWoodTypeMeterPrice(connectionPool, woodTypeId);
@@ -235,7 +235,7 @@ class PriceAndMaterialMapperTest {
             ps.setInt(1, woodTypeId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Row with woodTypeId = " + woodTypeId + " should exist");
-                assertEquals(expectedPrice, actualPrice, 0.0001f,
+                assertEquals(expectedPrice, actualPrice,
                         "expectedPrice should match actualPrice");
             }
         }
@@ -245,7 +245,7 @@ class PriceAndMaterialMapperTest {
     void getDimensionMeterPrice() throws SQLException, DatabaseException {
         // Arrange
         int dimensionId = 1;
-        double expectedPrice = 15.00;
+        float expectedPrice = 12.95f;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getDimensionMeterPrice(connectionPool, dimensionId);
@@ -257,8 +257,7 @@ class PriceAndMaterialMapperTest {
             ps.setInt(1, dimensionId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Row with dimensionId = " + dimensionId + " should exist");
-                assertEquals(expectedPrice, actualPrice, 0.0001f,
-                        "expectedPrice should match actualPrice");
+                assertEquals(expectedPrice, actualPrice, "expectedPrice should match actualPrice");
             }
         }
     }
@@ -267,7 +266,7 @@ class PriceAndMaterialMapperTest {
     void getTreatmentMeterPrice() throws SQLException, DatabaseException {
         // Arrange
         int treatmentId = 1;
-        double expectedPrice = 5.00;
+        float expectedPrice = 10.00f;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getTreatmentMeterPrice(connectionPool, treatmentId);
@@ -279,8 +278,7 @@ class PriceAndMaterialMapperTest {
             ps.setInt(1, treatmentId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Row with treatmentId = " + treatmentId + " should exist");
-                assertEquals(expectedPrice, actualPrice, 0.0001f,
-                        "expectedPrice should match actualPrice");
+                assertEquals(expectedPrice, actualPrice, "expectedPrice should match actualPrice");
             }
         }
     }
@@ -291,13 +289,13 @@ class PriceAndMaterialMapperTest {
         int woodTypeId = 1;
         int dimensionId = 1;
         int treatmentId = 1;
-        double expectedTotal = 50.00 + 15.00 + 5.00;
+        float expectedTotal = 12.95f + 10.00f + 10.25f;
 
         // Act
         float actualTotal = PriceAndMaterialMapper.getTotalWoodPrice(connectionPool, woodTypeId, dimensionId, treatmentId);
 
         // Assert
-        assertEquals(expectedTotal, actualTotal, 0.0001f,
+        assertEquals(expectedTotal, actualTotal,
                 "Sum of woodType + dimension + treatment prices should match");
     }
 }

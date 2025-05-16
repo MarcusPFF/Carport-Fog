@@ -110,19 +110,22 @@ public class CreateTestSchemaDatabase {
         CREATE TABLE test.mounts_list (
             offer_id INT REFERENCES test.offers(offer_id),
             mount_id INT REFERENCES test.mounts(mount_id),
-            mount_amount INT NOT NULL
+            mount_amount INT NOT NULL, 
+            mount_description VARCHAR(255)
         );
 
         CREATE TABLE test.roof_list (
             offer_id INT REFERENCES test.offers(offer_id),
             roof_id INT REFERENCES test.roofs(roof_id),
-            roof_amount INT NOT NULL
+            roof_amount INT NOT NULL, 
+            roof_description VARCHAR(255)
         );
 
         CREATE TABLE test.screws_list (
             offer_id INT REFERENCES test.offers(offer_id),
             screw_id INT REFERENCES test.screws(screw_id),
-            screws_amount INT NOT NULL
+            screws_amount INT NOT NULL, 
+            screw_description VARCHAR(255)
         );
 
         CREATE TABLE test.wood_list (
@@ -130,7 +133,8 @@ public class CreateTestSchemaDatabase {
             wood_type_id INT REFERENCES test.wood_type(wood_type_id),
             wood_treatment_id INT REFERENCES test.wood_treatment(wood_treatment_id),
             wood_dimension_id INT REFERENCES test.wood_dimensions(wood_dimension_id),
-            wood_amount INT NOT NULL
+            wood_amount INT NOT NULL, 
+            wood_description VARCHAR(255)
         );
 
         -- Insert test data
@@ -156,42 +160,76 @@ public class CreateTestSchemaDatabase {
             (3, 'Delivered', 'Your order has been delivered.');
 
         INSERT INTO test.markup (expenses_price, percentage)
-        VALUES (1000, 20), (2000, 15), (3000, 10);
+        VALUES (10000, 35), (20000, 25), (30000, 20);
 
         INSERT INTO test.mounts (mount_price, mount_type_name)
-        VALUES (1000.00, 'Steel'), (1000.00, 'Aluminum'), (1500.00, 'Wood');
-
+        VALUES 
+            (15.00, 'Universal 190 mm højre'),
+            (15.00, 'Universal 190 mm venstre'),
+            (18.00, 'Bræddebolt 10 x 120 mm'),
+            (12.00, 'Firkantskiver 40 x 40 x 11 mm'),
+            (49.00, 'Stalddørsgreb 50 x 75 mm'),
+            (29.00, 'T-hængsel 390 mm'),
+            (8.00,  'Vinkelbeslag 50 x 50 x 35 mm');
+               
         INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price, roof_type_name)
-
-        VALUES (1000, 500, 1000.00, 'Plastmo Ecolite blåtonet'), (1200, 600, 1500.00, 'Plastmo Ecolite klartonet'), (1400, 700, 2000.00, 'Plastmo Ecolite sort');
+        VALUES
+            (600, 120, 349.95, 'Plastmo Ecolite blåtonet'),
+            (450, 120, 299.95, 'Plastmo Ecolite blåtonet'),
+            (300, 120, 249.95, 'Plastmo Ecolite blåtonet'),
+            (600, 120, 349.95, 'Plastmo Ecolite klarttonet'),
+            (450, 120, 299.95, 'Plastmo Ecolite klarttonet'),
+            (300, 120, 249.95, 'Plastmo Ecolite klarttonet'),
+            (600, 120, 349.95, 'Plastmo Ecolite sorttonet'),
+            (450, 120, 299.95, 'Plastmo Ecolite sorttonet'),
+            (300, 120, 249.95, 'Plastmo Ecolite sorttonet');
 
         INSERT INTO test.screws (amount_pr_container, screw_price, screw_type_name)
-        VALUES (100, 10.00, 'Wood Screw'), (200, 15.00, 'Metal Screw'), (300, 20.00, 'Concrete Screw');
-
+        VALUES 
+                (200, 69.95, 'Plastmo bundskruer 200 stk.'), 
+                (200, 49.95, '4,5 x 60 mm. skruer 200 stk.'), 
+                (250, 59.95, '4,0 x 50 mm. beslagskruer 250 stk.'), 
+                (300, 79.95, '4,5 x 50 mm. Skruer 300 stk.'), 
+                (1, 24.95, 'Bræddebolt 10 x 120 mm.'), 
+                (1000, 99.95, 'Hulbånd 1x20 mm. 10 mtr.');
+        
         INSERT INTO test.wood_type (wood_type_name, wood_type_meter_price)
-        VALUES ('Oak', 50.00), ('Pine', 30.00), ('Maple', 40.00);
-
+        VALUES ('Spær', 10.25), ('Lægte', 5.45), ('Reglar', 7.25), ('Stolpe', 8.75), ('Bræt', 9.25);
+        
         INSERT INTO test.wood_treatment (wood_treatment_type_name, wood_treatment_meter_price)
-        VALUES ('Polished', 5.00), ('Varnished', 10.00), ('Painted', 15.00);
-
-        INSERT INTO test.wood_dimensions (wood_length, wood_height, wood_width, wood_dimension_meter_price)
-        VALUES (200, 50, 30, 15.00), (250, 60, 35, 20.00), (300, 70, 40, 25.00);
-
+        VALUES ('Trykimprægneret', 10.00), ('Ubehandlet', 0.00), ('Poleret', 5.00), ('Malet', 10.00);
+        
+        INSERT INTO test.wood_dimensions (wood_length, wood_width, wood_height, wood_dimension_meter_price)
+        SELECT l, w, h, price
+        FROM (VALUES
+            (150),(180),(210),(240),(270),(300),(330),(360),(390),(420), (450),(480),(510),(540),(570),(600),(680),(720),(750),(780)
+        ) AS lengths(l),
+        (VALUES
+            (20, 100, 12.95), (20, 125, 14.50), (20, 150, 15.90), (20, 175, 17.25), (20, 200, 18.60),
+            (25, 100, 13.95), (25, 125, 15.50), (25, 150, 16.90), (25, 175, 18.25), (25, 200, 19.60),
+            (30, 100, 14.95), (30, 125, 16.50), (30, 150, 17.90), (30, 175, 19.25), (30, 200, 20.60),
+            (40, 75, 10.50),
+            (45, 95, 16.25), (45, 120, 17.75), (45, 145, 19.00), (45, 170, 20.25), (45, 195, 21.50), (45, 220, 22.75), (45, 245, 24.00), (45, 270, 25.25), (45, 295, 26.50), (45, 320, 27.75),
+            (60, 95, 18.25), (60, 120, 19.75), (60, 145, 21.00), (60, 170, 22.25), (60, 195, 23.50), (60, 220, 24.75), (60, 245, 26.00), (60, 270, 27.25), (60, 295, 28.50), (60, 320, 29.75),
+            (75, 95, 20.25), (75, 120, 21.75), (75, 145, 23.00), (75, 170, 24.25), (75, 195, 25.50), (75, 220, 26.75), (75, 245, 28.00), (75, 270, 29.25), (75, 295, 30.50), (75, 320, 31.75),
+            (100, 100, 35.00)
+        )AS dims(w, h, price);
+        
         INSERT INTO test.offers (total_expense_price, total_offer_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
         VALUES
             (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
             (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),
             (9000.00, 10000.00, 3, 3, '2025-12-31', 700, 500, 300, 250);
-
+        
         INSERT INTO test.orders (offer_id, status_id, purchase_date)
         VALUES
             (1, 1, '2025-05-01'),
             (2, 2, '2025-05-02');
-
+        
         INSERT INTO test.orders (offer_id, status_id, purchase_date, tracking_number)
         VALUES
             (3, 3, '2025-05-03', 'f47ac10b-58cc-4372-a567-0e02b2c3d479');
-      
+        
         INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount)
         VALUES
             (1, 1, 10), (2, 2, 5), (3, 3, 8);
