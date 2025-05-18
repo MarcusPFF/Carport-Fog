@@ -24,9 +24,17 @@ public class RoutingController {
         app.get("/seller-contact", ctx -> showSellerContactPage(ctx));
         app.post("/seller-contact", ctx -> handleSellerContactPage(ctx));
 
+        app.get("/accept-offer", ctx -> showAcceptOfferPage(ctx));
+        app.post("/accept-offer", ctx -> handleAcceptOfferPage(ctx));
+
+        app.get("/final-accept-offer", ctx -> showFinalAcceptOfferPage(ctx));
+        app.post("/final-accept-offer", ctx -> handleFinalAcceptOfferPage(ctx));
+
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
 
+        app.get("/seller-admin", ctx -> showSellerAdminPage(ctx));
+        app.post("/seller-admin", ctx -> handleSellerAdminPage(ctx));
 
         app.get("/contact-information", ctx -> showContactInformationPage(ctx));
         app.post("/contact-information", ctx -> handleContactInformationPage(ctx));
@@ -36,7 +44,6 @@ public class RoutingController {
     }
 
     private static void handleIndexPage(Context ctx) {
-
     }
 
     private static void showIndexPage(Context ctx) {
@@ -46,6 +53,69 @@ public class RoutingController {
 
     public static void getShowIndexPage(Context ctx) {
         showIndexPage(ctx);
+    }
+
+    public static void showSellerAdminPage(Context ctx) {
+        ctx.render("/seller-admin.html");
+    }
+
+    public static void handleSellerAdminPage(Context ctx) {
+
+    }
+
+    public static void showFinalAcceptOfferPage(Context ctx) {
+        Boolean denied = ctx.sessionAttribute("offerDenied");
+        Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
+        ctx.attribute("actionDenied", denied != null && denied);
+        ctx.attribute("actionConfirmed", confirmed != null && confirmed);
+        ctx.render("/final-accept-offer.html");
+    }
+
+    public static void handleFinalAcceptOfferPage(Context ctx) {
+        String action = ctx.formParam("action");
+        if ("confirm".equals(action)) {
+            ctx.sessionAttribute("offerConfirmed", true);
+            ctx.sessionAttribute("offerDenied",    false);
+            //Handlingskode her
+
+        } else if ("deny".equals(action)) {
+            ctx.sessionAttribute("offerConfirmed", false);
+            ctx.sessionAttribute("offerDenied",    true);
+            ctx.sessionAttribute("offerId", null);
+            //Handlingskode her
+
+        }
+        ctx.redirect("/final-accept-offer");
+    }
+
+
+    public static void showAcceptOfferPage(Context ctx) {
+        ctx.render("/accept-offer.html");
+    }
+
+    public static void handleAcceptOfferPage(Context ctx) {
+        String offerIdStr = ctx.sessionAttribute("offerId");
+
+        try {
+            int offerId = Integer.parseInt(offerIdStr);
+
+            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
+            String email = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, offerId);
+            ctx.sessionAttribute("email", email);
+
+            if (salesPriceFromOfferId > 0.1) {
+                ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
+                showFinalAcceptOfferPage(ctx);
+            } else {
+                ctx.status(400);
+                ctx.attribute("errorMessage", "Tilbud " + offerId + " findes ikke.");
+                ctx.render("accept-offer.html");
+            }
+        } catch (NumberFormatException e) {
+            ctx.status(400);
+            ctx.attribute("errorMessage", "Tilbudsnummeret er ugyldigt.");
+            ctx.render("accept-offer.html");
+        }
     }
 
     public static void showSellerContactPage(Context ctx) {

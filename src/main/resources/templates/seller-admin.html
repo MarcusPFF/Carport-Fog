@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<title>Sælger kontakt</title>
+<title>Sælger admin</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/seller-contact-accept-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/seller-admin-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
 <script th:src="@{/js/clearbutton.js}" defer></script>
-<script th:src="@{/js/popup-contact.js}" defer></script>
 </head>
 <body>
 <header class="header">
@@ -77,9 +76,9 @@
 <div class="main">
     <div class="wrapper">
         <div class="title-box">
-            <h1>Bliv kontaktet af sælger</h1>
+            <h1>Godkendelse af tilbud</h1>
         </div>
-        <form method="post" th:action="@{/seller-contact}" onsubmit="return confirmAndSubmit(this);">
+        <form method="post" th:action="@{/accept-offer}">
             <div class="offer-input">
                 <!--Input felt som har en masse regler omkring hvad der må indtastes -->
                 <input type="text" pattern="[0-9]+" inputmode="numeric" name="offerId" placeholder="Tilbuds nr"
@@ -87,8 +86,11 @@
                        oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
                 <button type="button" class="clear-btn" aria-label="Clear">&#215;</button>
             </div>
-            <button type="submit" class="button-accept">Bekræft</button>
+            <button type="submit" class="button-accept">Login</button>
         </form>
+        <div th:if="${errorMessage}" class="error">
+            <p th:text="${errorMessage}"></p>
+        </div>
     </div>
 </div>
 </div>

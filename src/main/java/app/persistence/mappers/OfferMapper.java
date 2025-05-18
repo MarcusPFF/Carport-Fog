@@ -1,11 +1,9 @@
 package app.persistence.mappers;
 
 import app.persistence.connection.ConnectionPool;
-import app.entities.*;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
-import java.util.UUID;
 
 public class OfferMapper {
 
@@ -74,8 +72,15 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Database error while fetching dimension ID: ");
         }
     }
-    //todo lav den her metode så den faktisk virker
     public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
         return 1;
+    }
+    //TEST KODE SOM MIDLERTIDIGT ER HER, Kan ikke fjernes
+    public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId){
+        return 999.99F;
+    }
+
+    public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId){
+        return "test@kunde.dk";
     }
 }
