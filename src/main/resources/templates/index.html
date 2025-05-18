@@ -86,7 +86,10 @@
             <form method="get" th:action="@{/accept-offer}">
                 <button type="submit">Bekræft tilbud</button>
             </form>
-            <button class="sales-men-button">Sælgerside</button>
+            <form method="get" th:action="@{/seller-admin}">
+                <button class="sales-men-button" type="submit">Sælger</button>
+            </form>
+            </div>
         </div>
     </div>
 </div>

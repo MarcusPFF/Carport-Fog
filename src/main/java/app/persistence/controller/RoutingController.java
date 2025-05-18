@@ -32,6 +32,9 @@ public class RoutingController {
 
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
+
+        app.get("/seller-admin", ctx -> showSellerAdminPage(ctx));
+        app.post("/seller-admin", ctx -> handleSellerAdminPage(ctx));
     }
 
     private static void showIndexPage(Context ctx) {
@@ -42,20 +45,39 @@ public class RoutingController {
         showIndexPage(ctx);
     }
 
+    public static void showSellerAdminPage(Context ctx) {
+        ctx.render("/seller-admin.html");
+    }
+
+    public static void handleSellerAdminPage(Context ctx) {
+
+    }
+
     public static void showFinalAcceptOfferPage(Context ctx) {
+        Boolean denied = ctx.sessionAttribute("offerDenied");
+        Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
+        ctx.attribute("actionDenied", denied != null && denied);
+        ctx.attribute("actionConfirmed", confirmed != null && confirmed);
         ctx.render("/final-accept-offer.html");
     }
 
     public static void handleFinalAcceptOfferPage(Context ctx) {
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
-            ctx.attribute("actionConfirmed", true);
-            // evt. send mail her
-        } else {
-            ctx.attribute("actionConfirmed", false);
+            ctx.sessionAttribute("offerConfirmed", true);
+            ctx.sessionAttribute("offerDenied",    false);
+            //Handlingskode her
+
+        } else if ("deny".equals(action)) {
+            ctx.sessionAttribute("offerConfirmed", false);
+            ctx.sessionAttribute("offerDenied",    true);
+            ctx.sessionAttribute("offerId", null);
+            //Handlingskode her
+
         }
-        ctx.render("/final-accept-offer.html");
+        ctx.redirect("/final-accept-offer");
     }
+
 
     public static void showAcceptOfferPage(Context ctx) {
         ctx.render("/accept-offer.html");

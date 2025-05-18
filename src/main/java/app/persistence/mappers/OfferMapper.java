@@ -74,11 +74,10 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Database error while fetching dimension ID: ");
         }
     }
-    //todo lav den her metode så den faktisk virker
     public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
         return 1;
     }
-
+    //TEST KODE SOM MIDLERTIDIGT ER HER, Kan ikke fjernes
     public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId){
         return 999.99F;
     }
