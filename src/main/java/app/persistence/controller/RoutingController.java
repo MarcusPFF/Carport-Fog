@@ -1,11 +1,11 @@
 package app.persistence.controller;
 
 import app.persistence.connection.ConnectionPool;
-import app.persistence.util.MailSender;
 import app.persistence.documentCreation.SVGgenerator;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
+import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -20,10 +20,13 @@ public class RoutingController {
     public static void routes(Javalin app) {
         //skabelon
         app.get("/index", ctx -> showIndexPage(ctx));
-        app.post("/index", ctx -> handleIndexPage(ctx));
+
+        app.get("/seller-contact", ctx -> showSellerContactPage(ctx));
+        app.post("/seller-contact", ctx -> handleSellerContactPage(ctx));
 
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
+
 
         app.get("/contact-information", ctx -> showContactInformationPage(ctx));
         app.post("/contact-information", ctx -> handleContactInformationPage(ctx));
@@ -33,6 +36,7 @@ public class RoutingController {
     }
 
     private static void handleIndexPage(Context ctx) {
+
     }
 
     private static void showIndexPage(Context ctx) {
@@ -41,6 +45,17 @@ public class RoutingController {
 
 
     public static void getShowIndexPage(Context ctx) {
+        showIndexPage(ctx);
+    }
+
+    public static void showSellerContactPage(Context ctx) {
+        String offerId = ctx.sessionAttribute("offerId");
+        ctx.render("/seller-contact.html");
+    }
+
+    public static void handleSellerContactPage(Context ctx) {
+        String offerId = ctx.formParam("offerId");
+        ctx.sessionAttribute("offerId", offerId);
         showIndexPage(ctx);
     }
 
@@ -88,6 +103,7 @@ public class RoutingController {
     public static void getShowQuickBygPage(Context ctx) {
         showQuickBygPage(ctx);
     }
+
 
     public static void handleContactInformationPage(Context ctx) {
         String firstname = ctx.formParam("firstname");
