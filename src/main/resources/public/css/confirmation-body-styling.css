@@ -76,7 +76,7 @@ html, body {
 .title-box {
     width: 556px;
     height: 85px;
-    background-color: #ffffff;
+    background-color: #FFFFFF;
     color: #000000;
     text-align: center;
     align-items: start;
@@ -94,7 +94,7 @@ h1 {
     bottom: 20px;
     right: 20px;
     padding: 15px 30px;
-    background-color: #013d7a;
+    background-color: #013D7A;
     color: white;
     border: none;
     border-radius: 50px;
@@ -107,7 +107,7 @@ h1 {
     bottom: 20px;
     left: 20px;
     padding: 15px 30px;
-    background-color: #013d7a;
+    background-color: #013D7A;
     color: white;
     border: none;
     border-radius: 50px;
@@ -122,24 +122,26 @@ h1 {
 .former-page-button:hover {
     background-color: #013469;
 }
+
 .confirmation-list {
     list-style-type: none;
-    padding: 1.5rem;
-    background-color: #fafafa;
-    border: 1px solid #ddd;
+    padding: 24px;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
     border-radius: 10px;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
+    margin-bottom: 32px;
+    font-size: 18px;
+    margin: 16px;
 }
 
 .confirmation-list li {
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
 }
 
 .confirmation-list ul {
-    padding-left: 2rem;
+    padding-left: 32px;
     list-style-type: circle;
-    margin-top: 0.5rem;
+    margin-top: 8px;
 }
 
 @media (max-width: 830px) {
@@ -256,5 +258,9 @@ h1 {
     .progress-step {
         font-size: 10px;
         padding: 16px 0;
+    }
+
+    .confirmation-list li {
+        font-size: 14px;
     }
 }

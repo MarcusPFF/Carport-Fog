@@ -30,8 +30,6 @@ public class RoutingController {
 
         app.get("/confirmation", ctx -> showConfirmationPage(ctx));
         app.post("/confirmation", ctx -> handleConfirmationPage(ctx));
-
-
     }
 
     private static void handleIndexPage(Context ctx) {
@@ -55,7 +53,6 @@ public class RoutingController {
             String redskabsrumLength = ctx.formParam("redskabsrumLength");
             String redskabsrumWidth = ctx.formParam("redskabsrumWidth");
 
-            // Save choices in session attributes
             ctx.sessionAttribute("carportWidth", carportWidth);
             ctx.sessionAttribute("carportLength", carportLength);
             ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
@@ -85,7 +82,6 @@ public class RoutingController {
         if (ctx.sessionAttribute("redskabsrumWidth") != null) {
             ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
         }
-
         ctx.render("/quick-byg.html");
     }
 
@@ -104,8 +100,6 @@ public class RoutingController {
         boolean samtykke = ctx.formParam("samtykkeCheckbox") != null;
         ctx.sessionAttribute("samtykke", samtykke);
 
-
-        // Gem data i sessionen
         ctx.sessionAttribute("firstname", firstname);
         ctx.sessionAttribute("lastname", lastname);
         ctx.sessionAttribute("address", address);
@@ -118,6 +112,15 @@ public class RoutingController {
     }
 
     public static void showContactInformationPage(Context ctx) {
+        ctx.attribute("firstname", ctx.sessionAttribute("firstname"));
+        ctx.attribute("lastname", ctx.sessionAttribute("lastname"));
+        ctx.attribute("address", ctx.sessionAttribute("address"));
+        ctx.attribute("zipcode", ctx.sessionAttribute("zipcode"));
+        ctx.attribute("city", ctx.sessionAttribute("city"));
+        ctx.attribute("phone", ctx.sessionAttribute("phone"));
+        ctx.attribute("email", ctx.sessionAttribute("email"));
+        ctx.attribute("samtykke", ctx.sessionAttribute("samtykke"));
+
         ctx.render("/contact-information.html");
     }
 
@@ -135,5 +138,4 @@ public class RoutingController {
 
         ctx.render("/confirmation.html");
     }
-
 }

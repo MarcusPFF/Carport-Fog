@@ -102,18 +102,18 @@
         <div class="information-fields">
             <form action="/contact-information" method="post">
                 <div class="form-grid">
-                    <input type="text" name="firstname" placeholder="Fornavn" required>
-                    <input type="text" name="lastname" placeholder="Efternavn" required>
-                    <input type="text" name="address" placeholder="Adresse" required>
-                    <input type="text" name="zipcode" placeholder="Postnummer" required>
-                    <input type="text" name="city" placeholder="By" required>
-                    <input type="tel" name="phone" placeholder="Telefonnummer" pattern="\d{8}" required title="Telefonnummer skal være præcis 8 cifre">
+                    <input type="text" name="firstname" placeholder="Fornavn" th:value="${firstname}" required>
+                    <input type="text" name="lastname" placeholder="Efternavn" th:value="${lastname}" required>
+                    <input type="text" name="address" placeholder="Adresse" th:value="${address}" required>
+                    <input type="text" name="zipcode" placeholder="Postnummer" th:value="${zipcode}" required>
+                    <input type="text" name="city" placeholder="By" th:value="${city}" required>
+                    <input type="tel" name="phone" placeholder="Telefonnummer" pattern="\d{8}" th:value="${phone}" required title="Telefonnummer skal være præcis 8 cifre">
 
-                    <input type="email" name="email" class="email-input" placeholder="Email" required>
+                    <input type="email" name="email" class="email-input" placeholder="Email" th:value="${email}" required>
                 </div>
 
                 <label class="checkbox-label">
-                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox">
+                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox" th:checked="${samtykke} ? true : false" required title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
                     Kontakt Samtykke
                     <p class="checkbox-description">
                         !Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg

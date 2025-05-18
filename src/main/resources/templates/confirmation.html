@@ -97,8 +97,10 @@
                 Bekræft information
             </h1>
         </div>
-        <p>Her er dine valgte mål til din carport:</p>
+
         <ul class="confirmation-list">
+            <b>Her er dine valgte mål til din carport:</b>
+            <li></li>
             <li>Længde: <span th:text="${carportLength}">[mangler længde]</span></li>
             <li>Bredde: <span th:text="${carportWidth}">[mangler bredde]</span></li>
             <li>Tagtype: <span th:text="${carportTrapezRoof}">[mangler tagtype]</span></li>
@@ -110,19 +112,14 @@
                 </ul>
             </li>
         </ul>
-
-
-
         <button class="next-page-button" name="nextPageButton">
             Næste →
         </button>
-        <button type="button" class="former-page-button" onclick="goBack()">
+        <button type="button" class="former-page-button" onclick="goBack2()">
             ← Tilbage
         </button>
-
         </form>
     </div>
-</div>
 </div>
 </body>
 </html>
