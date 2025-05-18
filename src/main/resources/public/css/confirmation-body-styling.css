@@ -1,0 +1,266 @@
+* {
+    font-family: Helvetica;
+}
+.main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 0;
+    gap: 0;
+    padding-left: 200px;
+}
+
+.side-menu {
+    position: fixed;
+    top: 150px;
+    left: 45%;
+    transform: translateX(-270px);
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-menu ul li {
+    margin-bottom: 15px;
+}
+
+.side-menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.side-menu, .wrapper {
+    min-height: calc(100vh - 150px);
+}
+
+.wrapper {
+    z-index: 10;
+    margin-top: 150px;
+    max-width: 962px;
+    width: 576px;
+    border: 2px solid #DDDDDD;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px;
+    margin-left: 100px;
+    position: relative;
+}
+
+.progress-bar {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    gap: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+.title-box {
+    width: 556px;
+    height: 85px;
+    background-color: #FFFFFF;
+    color: #000000;
+    text-align: center;
+    align-items: start;
+    margin: 0 auto;
+    padding: 20px 10px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-top: 25px;
+}
+
+.next-page-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 30px;
+    background-color: #013D7A;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.former-page-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 15px 30px;
+    background-color: #013D7A;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.next-page-button:hover {
+    background-color: #013469;
+}
+
+.former-page-button:hover {
+    background-color: #013469;
+}
+
+.confirmation-list {
+    list-style-type: none;
+    padding: 24px;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    margin-bottom: 32px;
+    font-size: 18px;
+    margin: 16px;
+}
+
+.confirmation-list li {
+    margin-bottom: 16px;
+}
+
+.confirmation-list ul {
+    padding-left: 32px;
+    list-style-type: circle;
+    margin-top: 8px;
+}
+
+@media (max-width: 830px) {
+    .main {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    .side-menu {
+        display: none !important;
+        position: static !important;
+        padding: 0 !important;
+        width: 0 !important;
+    }
+
+    .wrapper {
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        min-width: 300px;
+        border-width: 5px;
+        box-sizing: border-box;
+    }
+
+    .title-box {
+        width: calc(100% - 10px);
+        min-width: 280px;
+        height: auto;
+        padding: 5px;
+        align-content: center;
+    }
+
+    .progress-bar {
+        display: flex;
+        justify-content: center;
+        width: 90%;
+        gap: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .progress-step {
+        flex: 1;
+        background-color: #DDDDDD;
+        color: #000000;
+        padding: 10px 0;
+        clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        margin: 0;
+        border: 1px #013D7A;
+        text-align: center;
+        font-weight: bold;
+        font-size: 13px;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    .progress-step.active {
+        background-color: #013D7A;
+        color: white;
+    }
+}
+
+@media (max-width: 650px) {
+    .main {
+        justify-content: center;
+        padding-left: 0;
+    }
+
+    .side-menu {
+        display: none !important;
+        position: static !important;
+        padding: 0 !important;
+        width: 0 !important;
+    }
+
+    .wrapper {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .title-box {
+        width: calc(100% - 10px);
+        min-width: 280px;
+        height: auto;
+        padding: 5px;
+        align-content: center;
+    }
+
+    .title-box h1 {
+        font-size: 32px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        min-width: 280px;
+    }
+
+    .buttons button {
+        width: calc(100% - 20px);
+        min-width: 270px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .form-grid input {
+        font-size: 14px;
+    }
+
+    .progress-step {
+        font-size: 10px;
+        padding: 16px 0;
+    }
+
+    .confirmation-list li {
+        font-size: 14px;
+    }
+}
