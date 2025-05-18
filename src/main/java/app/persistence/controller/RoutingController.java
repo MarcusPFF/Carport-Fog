@@ -90,7 +90,7 @@ public class RoutingController {
             int offerId = Integer.parseInt(offerIdStr);
 
             float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
-            String email = app.persistence.mappers.OfferMapper.getMailFromOfferId(connectionPool, offerId);
+            String email = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, offerId);
             ctx.sessionAttribute("email", email);
 
             if (salesPriceFromOfferId > 0.1) {

@@ -1,11 +1,9 @@
 package app.persistence.mappers;
 
 import app.persistence.connection.ConnectionPool;
-import app.entities.*;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
-import java.util.UUID;
 
 public class OfferMapper {
 
@@ -82,7 +80,7 @@ public class OfferMapper {
         return 999.99F;
     }
 
-    public static String getMailFromOfferId(ConnectionPool connection, int offerId){
+    public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId){
         return "test@kunde.dk";
     }
 }
