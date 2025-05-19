@@ -33,8 +33,11 @@ public class RoutingController {
         app.get("/quickByg", ctx -> showQuickBygPage(ctx));
         app.post("/quickByg", ctx -> handleQuickBygPage(ctx));
 
-        app.get("/seller-admin", ctx -> showSellerAdminPage(ctx));
-        app.post("/seller-admin", ctx -> handleSellerAdminPage(ctx));
+        app.get("/seller-admin-login", ctx -> showSellerAdminLogin(ctx));
+        app.post("/seller-admin-login", ctx -> handleSellerAdminLogin(ctx));
+
+        app.get("/seller-admin-page", ctx -> showSellerAdminPage(ctx));
+        app.post("/seller-admin-page", ctx -> handleSellerAdminPage(ctx));
 
         app.get("/contact-information", ctx -> showContactInformationPage(ctx));
         app.post("/contact-information", ctx -> handleContactInformationPage(ctx));
@@ -55,8 +58,28 @@ public class RoutingController {
         showIndexPage(ctx);
     }
 
+    public static void showSellerAdminLogin(Context ctx) {
+        ctx.render("/seller-admin-login.html");
+    }
+
+    public static void handleSellerAdminLogin(Context ctx) {
+        String sellerCode = ctx.formParam("sellerCode");
+
+        //In purpose this is not a system env, everyone can get to the secret admin page :))
+        String verySecretAdminCode = "1111";
+
+        if (sellerCode.equals(verySecretAdminCode)) {
+            showSellerAdminPage(ctx);
+        } else {
+            ctx.status(400);
+            String errorMsg = "Forkert sælger kode: " + sellerCode;
+            ctx.attribute("errorMessage", errorMsg);
+            showSellerAdminLogin(ctx);
+        }
+    }
+
     public static void showSellerAdminPage(Context ctx) {
-        ctx.render("/seller-admin.html");
+        ctx.render("/seller-admin-page.html");
     }
 
     public static void handleSellerAdminPage(Context ctx) {
@@ -75,12 +98,12 @@ public class RoutingController {
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
-            ctx.sessionAttribute("offerDenied",    false);
+            ctx.sessionAttribute("offerDenied", false);
             //Handlingskode her
 
         } else if ("deny".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", false);
-            ctx.sessionAttribute("offerDenied",    true);
+            ctx.sessionAttribute("offerDenied", true);
             ctx.sessionAttribute("offerId", null);
             //Handlingskode her
 
@@ -170,11 +193,6 @@ public class RoutingController {
         ctx.render("/quick-byg.html");
     }
 
-    public static void getShowQuickBygPage(Context ctx) {
-        showQuickBygPage(ctx);
-    }
-
-
     public static void handleContactInformationPage(Context ctx) {
         String firstname = ctx.formParam("firstname");
         String lastname = ctx.formParam("lastname");
@@ -211,7 +229,6 @@ public class RoutingController {
     }
 
     public static void handleConfirmationPage(Context ctx) {
-
     }
 
     public static void showConfirmationPage(Context ctx) {
