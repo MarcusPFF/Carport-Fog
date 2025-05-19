@@ -19,7 +19,7 @@ public class CreateTestSchemaDatabase {
 
         CREATE TABLE test.customer (
             customer_id BIGSERIAL PRIMARY KEY,
-            customer_mail VARCHAR(255) NOT NULL,
+            customer_mail VARCHAR(255) NOT NULL UNIQUE,
             customer_firstname VARCHAR(255) NOT NULL,
             customer_lastname VARCHAR(255) NOT NULL,
             street_name VARCHAR(255) NOT NULL,
@@ -88,7 +88,7 @@ public class CreateTestSchemaDatabase {
 
         CREATE TABLE test.offers (
             offer_id BIGSERIAL PRIMARY KEY,
-            total_expense_price DECIMAL(10, 2) NOT NULL,
+            total_expenses_price DECIMAL(10, 2) NOT NULL,
             total_sales_price DECIMAL(10, 2) NOT NULL,
             seller_id INT REFERENCES test.sellers(seller_id),
             customer_id INT REFERENCES test.customer(customer_id),
@@ -166,7 +166,6 @@ public class CreateTestSchemaDatabase {
         VALUES 
             (15.00, 'Universal 190 mm højre'),
             (15.00, 'Universal 190 mm venstre'),
-            (18.00, 'Bræddebolt 10 x 120 mm'),
             (12.00, 'Firkantskiver 40 x 40 x 11 mm'),
             (49.00, 'Stalddørsgreb 50 x 75 mm'),
             (29.00, 'T-hængsel 390 mm'),
@@ -215,7 +214,7 @@ public class CreateTestSchemaDatabase {
             (100, 100, 35.00)
         )AS dims(w, h, price);
         
-        INSERT INTO test.offers (total_expense_price, total_sales_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
+        INSERT INTO test.offers (total_expenses_price, total_sales_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
         VALUES
             (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
             (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),
@@ -230,21 +229,21 @@ public class CreateTestSchemaDatabase {
         VALUES
             (3, 3, '2025-05-03', 'f47ac10b-58cc-4372-a567-0e02b2c3d479');
         
-        INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount)
+        INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount, mount_description)
         VALUES
-            (1, 1, 10), (2, 2, 5), (3, 3, 8);
+            (1, 1, 10, 'Spær monterings beslag'), (1, 4, 6, 'Firkantskive til montering af rem'), (3, 3, 8, 'staldørsgreb til skur');
 
-        INSERT INTO test.roof_list (offer_id, roof_id, roof_amount)
+        INSERT INTO test.roof_list (offer_id, roof_id, roof_amount, roof_description)
         VALUES
-            (1, 1, 10), (2, 2, 5), (3, 3, 8);
+            (1, 1, 10, 'Tagplader monteres på spær'), (1, 2, 10, 'Tagplader monteres på spær'), (3, 3, 8, 'Tagplader monteres på spær');
 
-        INSERT INTO test.screws_list (offer_id, screw_id, screws_amount)
+        INSERT INTO test.screws_list (offer_id, screw_id, screws_amount, screw_description)
         VALUES
-            (1, 1, 50), (2, 2, 30), (3, 3, 20);
+            (1, 1, 50, 'Til spær beslag'), (1, 2, 30, 'Til rem montering på stolpe'), (3, 3, 20, 'Til beklædningsbræders montering');
 
-        INSERT INTO test.wood_list (offer_id, wood_type_id, wood_treatment_id, wood_dimension_id, wood_amount)
+        INSERT INTO test.wood_list (offer_id, wood_type_id, wood_treatment_id, wood_dimension_id, wood_amount, wood_description)
         VALUES
-            (1, 1, 1, 1, 100), (2, 2, 2, 2, 200), (3, 3, 3, 3, 150);
+            (1, 1, 1, 1, 100, 'Rem til montering på stolper'), (1, 1, 2, 2, 200, 'Spær til montering på rem'), (3, 3, 3, 3, 150, 'Lægte til Z bag på skurets dør');
         """;
 
         try (Statement stmt = conn.createStatement()) {

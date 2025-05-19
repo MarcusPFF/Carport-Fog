@@ -21,9 +21,15 @@ public class MaterialCalculator {
     private PriceCalculator priceCalculator;
 
     public MaterialCalculator() {
+        mountForCalculator = new MountForCalculator();
+        roofForCalculator = new RoofForCalculator();
+        screwForCalculator = new ScrewForCalculator();
+        woodForCalculator = new WoodForCalculator();
+        offerMapper = new OfferMapper();
+        priceCalculator = new PriceCalculator();
     }
 
-    public int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int roofPlateWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
+    public int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
         ArrayList<MountForCalculator> mountList;
         ArrayList<RoofForCalculator> roofList;
         ArrayList<ScrewForCalculator> screwList;
@@ -42,7 +48,7 @@ public class MaterialCalculator {
         offerId = offerMapper.createOffer(connection, totalOfferExpensePrice, totalOfferSalesPrice, sellerId, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, customerId);
 
         mountList = mountForCalculator.mountListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, amountOfDoorsForTheShed);
-        roofList = roofForCalculator.roofListCalculator(connection,carportLengthInCm, carportWidthInCm, roofPlateWidthInCm, roofName);
+        roofList = roofForCalculator.roofListCalculator(connection,carportLengthInCm, carportWidthInCm, roofSheetWidthInCm, roofName);
         screwList = screwForCalculator.screwListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, shedBoardWidthInMm, amountOfSpareBoardsForShed);
         woodList = woodForCalculator.woodListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, carportHeightInCm, amountOfDoorsForTheShed);
 

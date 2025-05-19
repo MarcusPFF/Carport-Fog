@@ -62,7 +62,7 @@ public class PoleCalculator {
         int lengthBetweenRightAndLeftPoleInCM;
         int amount;
 
-        lengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 70;
+        lengthBetweenRightAndLeftPoleInCM = carportWidthInCM - 60;
         amount = 2;
 
         while (true) {
@@ -80,7 +80,7 @@ public class PoleCalculator {
         int shedPolesXAmount;
         int totalShedPoles;
 
-        betweenPolesWidthInCm = (carportWidthInCM - 70) / (widthAmount - 1);
+        betweenPolesWidthInCm = (carportWidthInCM - 60) / (widthAmount - 1);
         betweenPolesLengthInCm = (carportLengthInCM - 130) / (lengthAmount - 1);
         shedPolesYAmount = 1;
         shedPolesXAmount = 0;

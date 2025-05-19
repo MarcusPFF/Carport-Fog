@@ -17,7 +17,7 @@ class NoggingCalculatorTest {
     @Test
     void noggingForShedFrontAndBackAmountCalculator() {
         // Arrange:
-        int shedWidthInCm = 500;
+        int shedWidthInCm = 510;
         int carportWidthInCm = 570;
         int poleAmountForWidth = 2;
         int expected = 12;

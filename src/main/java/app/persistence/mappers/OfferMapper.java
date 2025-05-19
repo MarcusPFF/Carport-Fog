@@ -5,13 +5,10 @@ import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
-import app.entities.*;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 public class OfferMapper {
@@ -83,7 +80,7 @@ public class OfferMapper {
     }
 
 //todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
-    public int getWoodLengthFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
+    public static int getWoodLengthFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
         String sql = "SELECT wood_length FROM wood_dimensions WHERE wood_dimension_id = ?;";
         int woodLengthInCm;
         try (Connection connection = connectionPool.getConnection();
@@ -104,8 +101,8 @@ public class OfferMapper {
         }
     }
 
-    public int getRoofIdFromRoofLength(ConnectionPool connectionPool, int roofLengthInCm) throws DatabaseException {
-        String sql = "SELECT roof_id FROM roofs WHERE roof_length = ?;";
+    public static int getRoofIdFromRoofLength(ConnectionPool connectionPool, int roofLengthInCm) throws DatabaseException {
+        String sql = "SELECT roof_id FROM roofs WHERE roof_length_cm = ?;";
         int roofId;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -125,7 +122,7 @@ public class OfferMapper {
         }
     }
 
-    public int getMountIdFromMountName(ConnectionPool connectionPool, String mountName) throws DatabaseException {
+    public static int getMountIdFromMountName(ConnectionPool connectionPool, String mountName) throws DatabaseException {
         String sql = "SELECT mount_id FROM mounts WHERE mount_type_name = ?;";
         int mountId;
         try (Connection connection = connectionPool.getConnection();
@@ -146,7 +143,7 @@ public class OfferMapper {
         }
     }
 
-    public int getScrewIdFromScrewName(ConnectionPool connectionPool, String screwName) throws DatabaseException {
+    public static int getScrewIdFromScrewName(ConnectionPool connectionPool, String screwName) throws DatabaseException {
         String sql = "SELECT screw_id FROM screws WHERE screw_type_name = ?;";
         int screwId;
         try (Connection connection = connectionPool.getConnection();
@@ -167,7 +164,7 @@ public class OfferMapper {
         }
     }
 
-    public int getAmountPrContainerFromScrewName(ConnectionPool connectionPool, String screwName) throws DatabaseException {
+    public static int getAmountPrContainerFromScrewName(ConnectionPool connectionPool, String screwName) throws DatabaseException {
         String sql = "SELECT amount_pr_container FROM screws WHERE screw_type_name = ?;";
         int amountPrContainer;
         try (Connection connection = connectionPool.getConnection();
@@ -188,7 +185,7 @@ public class OfferMapper {
         }
     }
 
-    public int getRandomSellerId(ConnectionPool connectionPool) throws DatabaseException {
+    public static int getRandomSellerId(ConnectionPool connectionPool) throws DatabaseException {
         String sql = "SELECT seller_id FROM sellers ORDER BY RANDOM() LIMIT 1;";
         int sellerId;
         try (Connection connection = connectionPool.getConnection();
@@ -207,8 +204,8 @@ public class OfferMapper {
         }
     }
 
-    public String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
-        String sql = "SELECT seller_mail FROM sellers JOIN offers ON sellers.seller_id = offers.seller_id WHERE offerId = ?;";
+    public static String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT seller_mail FROM sellers JOIN offers ON sellers.seller_id = offers.seller_id WHERE offer_id = ?;";
         String sellerMail;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -228,7 +225,28 @@ public class OfferMapper {
         }
     }
 
-    public float getTotalSalesPriceFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static String getCustomerMailFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT customer_mail FROM customer JOIN offers ON customer.customer_id = offers.customer_id WHERE offer_id = ?;";
+        String sellerMail;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    sellerMail = rs.getString("customer_mail");
+                    return sellerMail;
+                }
+            }
+            throw new DatabaseException(null, "Customer Mail not found for Offer Id: " + offerId);
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Customer Mail: ");
+        }
+    }
+
+    public static float getSalesPriceFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "SELECT total_sales_price FROM offers WHERE offer_id = ?;";
         float totalSalesPrice;
         try (Connection connection = connectionPool.getConnection();
@@ -249,7 +267,7 @@ public class OfferMapper {
         }
     }
 
-    public float getTotalExpensesPriceFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static float getTotalExpensesPriceFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "SELECT total_expenses_price FROM offers WHERE offer_id = ?;";
         float totalExpensesPrice;
         try (Connection connection = connectionPool.getConnection();
@@ -271,9 +289,9 @@ public class OfferMapper {
     }
 
 //create mapper metoder
-    public int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode) throws DatabaseException {
+    public static int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode) throws DatabaseException {
         int customerId;
-        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code) VALUES ( ?, ?, ?, ?, ?, ?) WHERE NOT EXISTS (SELECT 1 FROM customer WHERE customer_mail = ?) RETURNING customer_id;";
+        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code) VALUES ( ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO NOTHING RETURNING customer_id;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -313,11 +331,11 @@ public class OfferMapper {
         }
     }
 
-    public int createOffer(ConnectionPool connectionPool, float totalOfferExpensePrice, float totalOfferSalesPrice, int sellerId, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int customerId) throws DatabaseException {
+    public static int createOffer(ConnectionPool connectionPool, float totalOfferExpensePrice, float totalOfferSalesPrice, int sellerId, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int customerId) throws DatabaseException {
         String sql = "INSERT INTO offers (total_expenses_price, total_sales_price, seller_id, expiration_date, carport_length, carport_width, shed_length, shed_width, customer_id) VALUES (?, ?, ?, CURRENT_DATE + INTERVAL '7 days', ?, ?, ?, ?, ?);";
         int offerId;
         try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
                 statement.setFloat(1, totalOfferExpensePrice);
                 statement.setFloat(2, totalOfferSalesPrice);
@@ -328,13 +346,19 @@ public class OfferMapper {
                 statement.setInt(7, shedWidthInCm);
                 statement.setInt(8, customerId);
 
-                try (ResultSet rs = statement.executeQuery();) {
-                    if (rs.next()) {
-                        offerId = rs.getInt("offer_id");
-                        return offerId;
-                    }
+                int affectedRows = statement.executeUpdate();
 
-                    throw new DatabaseException(null, "New offer could not be created.");
+                if (affectedRows == 0) {
+                    throw new DatabaseException(null, "Creating offer failed, no rows affected.");
+                }
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        offerId = generatedKeys.getInt(1);
+                        return offerId;
+                    } else {
+                        throw new DatabaseException(null, "Creating offer failed, no ID obtained.");
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -342,7 +366,7 @@ public class OfferMapper {
         }
     }
 
-    public boolean createMountsList(ConnectionPool connectionPool, ArrayList<MountForCalculator> mountList, int offerId) throws DatabaseException {
+    public static boolean createMountsList(ConnectionPool connectionPool, ArrayList<MountForCalculator> mountList, int offerId) throws DatabaseException {
         String sql = "INSERT INTO mounts_list (offer_id, mount_id, mount_amount, mount_description) VALUES (?, ?, ?, ?);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -361,7 +385,6 @@ public class OfferMapper {
                 }
 
                 if (rowsAffected == expectedRowsAffected) {
-                    System.out.println("Rows inserted: " + rowsAffected);
                     return true;
                 }
                 System.out.println("Not alle Rows inserted, Inserted: " + rowsAffected + ", Expected: " + expectedRowsAffected);
@@ -373,7 +396,7 @@ public class OfferMapper {
         }
     }
 
-    public boolean createRoofList(ConnectionPool connectionPool, ArrayList<RoofForCalculator> roofList, int offerId) throws DatabaseException {
+    public static boolean createRoofList(ConnectionPool connectionPool, ArrayList<RoofForCalculator> roofList, int offerId) throws DatabaseException {
         String sql = "INSERT INTO roof_list (offer_id, roof_id, roof_amount, roof_description) VALUES (?, ?, ?, ?);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -392,7 +415,6 @@ public class OfferMapper {
                 }
 
                 if (rowsAffected == expectedRowsAffected) {
-                    System.out.println("Rows inserted: " + rowsAffected);
                     return true;
                 }
                 System.out.println("Not alle Rows inserted, Inserted " + rowsAffected + ", Expected: " + expectedRowsAffected);
@@ -404,8 +426,8 @@ public class OfferMapper {
         }
     }
 
-    public boolean createScrewsList(ConnectionPool connectionPool, ArrayList<ScrewForCalculator> screwList, int offerId) throws DatabaseException {
-        String sql = "INSERT INTO screws_list (offer_id , screw_id, screw_amount, screw_description) VALUES (?, ?, ?, ?);";
+    public static boolean createScrewsList(ConnectionPool connectionPool, ArrayList<ScrewForCalculator> screwList, int offerId) throws DatabaseException {
+        String sql = "INSERT INTO screws_list (offer_id , screw_id, screws_amount, screw_description) VALUES (?, ?, ?, ?);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 int rowsAffected = 0;
@@ -423,7 +445,6 @@ public class OfferMapper {
                 }
 
                 if (rowsAffected == expectedRowsAffected) {
-                    System.out.println("Rows Inserted: " + rowsAffected);
                     return true;
                 }
                 System.out.println("Not alle Rows inserted, Inserted: " + rowsAffected + ", Expected: " + expectedRowsAffected);
@@ -435,7 +456,7 @@ public class OfferMapper {
         }
     }
 
-    public boolean createWoodList(ConnectionPool connectionPool, ArrayList<WoodForCalculator> woodList, int offerId) throws DatabaseException {
+    public static boolean createWoodList(ConnectionPool connectionPool, ArrayList<WoodForCalculator> woodList, int offerId) throws DatabaseException {
         String sql = "INSERT INTO wood_list (offer_id , wood_type_id, wood_treatment_id, wood_dimension_id, wood_amount, wood_description) VALUES (?, ?, ?, ?, ?, ?);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -456,7 +477,6 @@ public class OfferMapper {
                 }
 
                 if (rowsAffected == expectedRowsAffected) {
-                    System.out.println("Rows Inserted: " + rowsAffected);
                     return true;
                 }
                 System.out.println("Not alle Rows inserted, Inserted: " + rowsAffected + ", Expected: " + expectedRowsAffected);
@@ -469,7 +489,7 @@ public class OfferMapper {
     }
 
 //update metoder
-    public boolean updateTotalExpensesPrice(ConnectionPool connectionPool, float totalOfferExpensePrice, int offerId) throws DatabaseException {
+    public static boolean updateTotalExpensesPrice(ConnectionPool connectionPool, float totalOfferExpensePrice, int offerId) throws DatabaseException {
         String sql = "UPDATE offers SET total_expenses_price = ? WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
@@ -490,7 +510,7 @@ public class OfferMapper {
         }
     }
 
-    public boolean updateTotalSalesPrice(ConnectionPool connectionPool, float totalOfferSalesPrice, int offerId) throws DatabaseException {
+    public static boolean updateTotalSalesPrice(ConnectionPool connectionPool, float totalOfferSalesPrice, int offerId) throws DatabaseException {
         String sql = "UPDATE offers SET total_sales_price = ? WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
@@ -511,13 +531,13 @@ public class OfferMapper {
         }
     }
 
-    public boolean updateExpirationDate(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean updateExpirationDate(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "UPDATE offers SET expiration_date = CURRENT_DATE + INTERVAL '5 years'  WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
@@ -532,14 +552,14 @@ public class OfferMapper {
     }
 
 //delete mapper metoder
-    public boolean deleteOfferAndEveryThinkLinkedToItByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
-        //den kan delte alle rækker i tabeller som har samme offer_id pga foreign Key constrain on action delete køre den cascade
-        String sql = "DELETE FROM offer WHERE offer_id = ?;";
+    public static boolean deleteOfferAndEveryThinkLinkedToItByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        //den kan delete alle rækker i tabeller som har samme offer_id pga foreign Key constrain on action delete køre den cascade
+        String sql = "DELETE FROM offers WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 0) {
@@ -553,13 +573,13 @@ public class OfferMapper {
         }
     }
 
-    public boolean deleteMountListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean deleteMountListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "DELETE FROM mounts_list WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 0) {
@@ -573,13 +593,13 @@ public class OfferMapper {
         }
     }
 
-    public boolean deleteRoofListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean deleteRoofListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "DELETE FROM roof_list WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 0) {
@@ -593,13 +613,13 @@ public class OfferMapper {
         }
     }
 
-    public boolean deleteScrewListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean deleteScrewListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "DELETE FROM screws_list WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 0) {
@@ -613,13 +633,13 @@ public class OfferMapper {
         }
     }
 
-    public boolean deleteWoodListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean deleteWoodListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "DELETE FROM wood_list WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
-                ps.setInt(2, offerId);
+                ps.setInt(1, offerId);
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 0) {

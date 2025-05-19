@@ -20,6 +20,14 @@ public class MountCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
+
+    public MountCalculator() {
+        offerMapper = new OfferMapper();
+        rafterCalculator = new RafterCalculator();
+        poleCalculator = new PoleCalculator();
+        noggingCalculator = new NoggingCalculator();
+    }
+
     public MountForCalculator leftRafterMountCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String mountName) throws DatabaseException {
         int amount;
         int rafterAmount;
@@ -27,7 +35,7 @@ public class MountCalculator {
         int mountId;
 
         rafterAmount = rafterCalculator.rafterAmountForRoofCalculator(carportLengthInCm);
-        rafterBeamAmount = rafterCalculator.rafterAmountForRoofCalculator(carportWidthInCm);
+        rafterBeamAmount = rafterCalculator.rafterBeamAmountCalculator(carportWidthInCm);
 
         amount = leftRafterMountsAmountCalculator(rafterAmount, rafterBeamAmount);
         mountId = offerMapper.getMountIdFromMountName(connection, mountName);
@@ -35,7 +43,7 @@ public class MountCalculator {
         return new MountForCalculator(mountName, amount, mountId, "Til montering af spær på rem.");
     }
 
-    public MountForCalculator rightRafterMountCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, String mountName) throws DatabaseException {
+    public MountForCalculator rightRafterMountCalculator(ConnectionPool connection, int carportLengthInCm, String mountName) throws DatabaseException {
         int amount;
         int rafterAmount;
         int mountId;
@@ -102,7 +110,7 @@ public class MountCalculator {
         amount = hingeForDoorAmountCalculator(amountOfDoorsForShed);
         mountId = offerMapper.getMountIdFromMountName(connection, mountName);
 
-        return new MountForCalculator(mountName, amount, mountId, "Til skurdør.");
+        return new MountForCalculator(mountName, amount, mountId, "Til skurets dør.");
     }
 
     public int leftRafterMountsAmountCalculator(int rafterAmount, int rafterBeamAmount) {

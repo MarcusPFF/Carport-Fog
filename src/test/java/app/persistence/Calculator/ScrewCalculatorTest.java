@@ -31,12 +31,13 @@ class ScrewCalculatorTest {
     @Test
     void screwsForFasciaAndBargeBoardPackAmountCalculator() {
         // Arrange:
-        int boardLength = 4000;
+        int carportLengthInCm = 500;
+        int carportWidthInCm = 250;
         float amountPrContainer = 200;
         int expected = 2;
 
         // Act:
-        int result = calculator.screwsForFasciaAndBargeBoardPackAmountCalculator(boardLength, amountPrContainer);
+        int result = calculator.screwsForFasciaAndBargeBoardPackAmountCalculator(carportLengthInCm, carportWidthInCm, amountPrContainer);
 
         // Assert:
         assertEquals(expected, result);

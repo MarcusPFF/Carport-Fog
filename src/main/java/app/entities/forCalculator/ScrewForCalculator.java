@@ -47,7 +47,7 @@ public class ScrewForCalculator {
         screwList.add(screwCalculator.boltsForRafterBeamCalculator(connection, carportLengthInCm, carportWidthInCm, "Bræddebolt 10 x 120 mm"));
 
         //Hulbånd til vindkryds. (regnes i antal ruller)
-        screwList.add(screwCalculator.plumbersTapeCalculator(connection, shedLengthInCm, "Hulbånd 1x20 mm. 10 mtr", carportLengthInCm, carportWidthInCm));
+        screwList.add(screwCalculator.plumbersTapeCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, "Hulbånd 1x20 mm. 10 mtr"));
 
         return screwList;
     }

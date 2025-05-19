@@ -112,9 +112,8 @@ public class OrderMapper {
         }
     }
 
-//todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
-    public ArrayList<WoodForCalculator> getWoodListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
-        String sql = "SELECT (wood_list.offer_id, wood_list.wood_type_id, wood_list.wood_treatment_id, wood_list.wood_dimension_id, wood_list.wood_amount, wood_list.wood_description, wood_type.wood_type_name) FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN wood_list ON offers.offer_id = wood_list.offer_id JOIN wood_type ON wood_list.wood_type_id = wood_type.wood_type_id WHERE order_id = ?;";
+    public static ArrayList<WoodForCalculator> getWoodListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT wood_list.offer_id, wood_list.wood_type_id, wood_list.wood_treatment_id, wood_list.wood_dimension_id, wood_list.wood_amount, wood_list.wood_description, wood_type.wood_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN wood_list ON offers.offer_id = wood_list.offer_id JOIN wood_type ON wood_list.wood_type_id = wood_type.wood_type_id WHERE order_id = ?;";
         ArrayList<WoodForCalculator> woodList = new ArrayList<>();
         String name;
         int amount;
@@ -147,8 +146,8 @@ public class OrderMapper {
         }
     }
 
-    public ArrayList<RoofForCalculator> getRoofListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
-        String sql = "SELECT (roof_list.offer_id, roof_list.roof_id, roof_list.roof_amount, roof_list.wood_description, roofs.roof_type_name) FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN roof_list ON offers.offer_id = roof_list.offer_id JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE order_id = ?;";
+    public static  ArrayList<RoofForCalculator> getRoofListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT roof_list.offer_id, roof_list.roof_id, roof_list.roof_amount, roof_list.roof_description, roofs.roof_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN roof_list ON offers.offer_id = roof_list.offer_id JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE order_id = ?;";
         ArrayList<RoofForCalculator> roofList = new ArrayList<>();
         String name;
         int amount;
@@ -177,8 +176,8 @@ public class OrderMapper {
         }
     }
 
-    public ArrayList<MountForCalculator> getMountListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
-        String sql = "SELECT (mounts_list.offer_id, mounts_list.mount_id, mounts_list.mount_amount, mounts_list.mount_description, mounts.mount_type_name) FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN mounts_list ON offers.offer_id = mounts_list.offer_id JOIN mounts ON mounts_list.mount_id = mounts.mount_id WHERE order_id = ?;";
+    public static ArrayList<MountForCalculator> getMountListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT mounts_list.offer_id, mounts_list.mount_id, mounts_list.mount_amount, mounts_list.mount_description, mounts.mount_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN mounts_list ON offers.offer_id = mounts_list.offer_id JOIN mounts ON mounts_list.mount_id = mounts.mount_id WHERE order_id = ?;";
         ArrayList<MountForCalculator> mountList = new ArrayList<>();
         String name;
         int amount;
@@ -207,8 +206,8 @@ public class OrderMapper {
         }
     }
 
-    public ArrayList<ScrewForCalculator> getScrewListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
-        String sql = "SELECT (screws_list.offer_id, screws_list.screw_id, screws_list.screw_amount, screws_list.screw_description, screws.screw_type_name) FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN screws_list ON offers.offer_id = screws_list.offer_id JOIN screws ON screws_list.screw_id = screws.screw_id WHERE order_id = ?;";
+    public static ArrayList<ScrewForCalculator> getScrewListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT screws_list.offer_id, screws_list.screw_id, screws_list.screws_amount, screws_list.screw_description, screws.screw_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN screws_list ON offers.offer_id = screws_list.offer_id JOIN screws ON screws_list.screw_id = screws.screw_id WHERE order_id = ?;";
         ArrayList<ScrewForCalculator> screwList = new ArrayList<>();
         String name;
         int amount;
@@ -224,7 +223,7 @@ public class OrderMapper {
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
                     name = rs.getString("screw_type_name");
-                    amount = rs.getInt("screw_amount");
+                    amount = rs.getInt("screws_amount");
                     roofId = rs.getInt("screw_id");
                     description = rs.getString("screw_description");
                     screwList.add(new ScrewForCalculator(name, amount, roofId, description));

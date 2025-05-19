@@ -18,6 +18,8 @@ public class PriceCalculator {
     private PriceAndMaterialMapper priceAndMaterialMapper;
 
     public PriceCalculator() {
+        offerMapper = new OfferMapper();
+        priceAndMaterialMapper = new PriceAndMaterialMapper();
     }
 
     public float calculateTotalOfferSalesPrice (ConnectionPool connection, float totalOfferExpensePrice) throws DatabaseException {
@@ -42,8 +44,6 @@ public class PriceCalculator {
         return totalOfferExpensePrice;
     }
 
-
-//todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
     public float calculateTotalWoodListPrice(ConnectionPool connection, ArrayList<WoodForCalculator> woodList) throws DatabaseException {
         float totalWoodExpensePrice = 0;
 
@@ -60,7 +60,7 @@ public class PriceCalculator {
             pricePrMeter = priceAndMaterialMapper.getTotalWoodPrice(connection, woodTypeId, woodDimensionId, woodTreatmentId);
             quantity = woodForCalculator.getAmount();
 
-            totalWoodExpensePrice += calculateWoodPrice(connection, pricePrMeter, quantity, woodDimensionId);
+            totalWoodExpensePrice = totalWoodExpensePrice + calculateWoodPrice(connection, pricePrMeter, quantity, woodDimensionId);
         }
 
         return totalWoodExpensePrice;
@@ -72,13 +72,13 @@ public class PriceCalculator {
         for (RoofForCalculator roofForCalculator : roofList) {
             int roofId;
             int quantity;
-            float pricePrRoofPlate;
+            float pricePrRoofSheet;
 
             roofId = roofForCalculator.getRoofId();
-            pricePrRoofPlate = priceAndMaterialMapper.getRoofPrice(connection, roofId);
+            pricePrRoofSheet = priceAndMaterialMapper.getRoofPrice(connection, roofId);
             quantity = roofForCalculator.getAmount();
 
-            totalRoofExpensePrice += calculatePriceForEveryCategoryExceptWood(connection, pricePrRoofPlate, quantity);
+            totalRoofExpensePrice += calculatePriceForEveryCategoryExceptWood(connection, pricePrRoofSheet, quantity);
         }
 
         return totalRoofExpensePrice;
@@ -128,7 +128,7 @@ public class PriceCalculator {
 
         woodLengthInCm = offerMapper.getWoodLengthFromWoodDimensionId(connection, woodDimensionId);
         totalWoodLengthInCm = woodLengthInCm * quantity;
-        totalWoodLengthInMeter = (float) (totalWoodLengthInCm / 100);
+        totalWoodLengthInMeter = (float) (totalWoodLengthInCm / 100.0);
         totalPrice = totalWoodLengthInMeter * meterPrice;
 
         return totalPrice;
@@ -145,7 +145,7 @@ public class PriceCalculator {
     public int getMarkupPercentageFromCurrentSalesPrice(float totalSalesPrice, float totalExpensesPrice){
         int markupPercentage;
 
-        markupPercentage = ((int)(totalSalesPrice / totalExpensesPrice) * 100) - 100;
+        markupPercentage = (int)(((totalSalesPrice / totalExpensesPrice) * 100) - 100);
 
         return markupPercentage;
     }

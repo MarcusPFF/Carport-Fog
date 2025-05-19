@@ -70,14 +70,14 @@ public class NoggingCalculator {
 
         if (poleAmountForWidth > 2) {
 
-            if (shedWidthInCm == carportWidthInCm - 70) {
+            if (shedWidthInCm == carportWidthInCm - 60) {
                 return 24;
             }
-            else if (shedWidthInCm > carportWidthInCm - 70 / (poleAmountForWidth - 1)) {
+            else if (shedWidthInCm > (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
                 return 18;
             }
         }
-        else if (shedWidthInCm == carportWidthInCm - 70 / (poleAmountForWidth - 1)) {
+        else if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
             return 12;
         }
 
@@ -86,16 +86,16 @@ public class NoggingCalculator {
 
     public int noggingForShedSidesAmountCalculator(int shedLengthInCm, int shedWidthInCm, int carportLengthInCm, int carportWidthInCm, int poleAmountForLength, int poleAmountForWidth) {
 
-        if (shedLengthInCm > carportLengthInCm - 70 / (poleAmountForLength - 1)) {
+        if (shedLengthInCm > (carportLengthInCm - 60) / (poleAmountForLength - 1)) {
 
-            if (shedWidthInCm == carportWidthInCm - 70 / (poleAmountForWidth - 1)) {
+            if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
                 return 8;
             }
             else {
                 return 10;
             }
         }
-        else if (shedWidthInCm == carportWidthInCm - 70 / (poleAmountForWidth - 1)) {
+        else if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
             return 4;
         }
 

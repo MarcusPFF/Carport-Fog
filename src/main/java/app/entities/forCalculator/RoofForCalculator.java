@@ -25,15 +25,16 @@ public class RoofForCalculator {
     }
 
     public RoofForCalculator() {
+        roofCalculator = new RoofCalculator();
     }
 
-    public ArrayList<RoofForCalculator> roofListCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
+    public ArrayList<RoofForCalculator> roofListCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofSheetWidthInCm, String roofName) throws DatabaseException {
         roofList = new ArrayList<>();
         int carportLengthLeftInCm = carportLengthInCm + 5;
 
         while (carportLengthLeftInCm > 0) {
             //Tagplader beregnes her til taget er dækket. (regnes i stk)
-            roofList.add(roofCalculator.roofCalculator(connection, carportLengthLeftInCm, carportWidthInCm, roofPladeWidthInCm, roofName));
+            roofList.add(roofCalculator.roofCalculator(connection, carportLengthLeftInCm, carportWidthInCm, roofSheetWidthInCm, roofName));
             carportLengthLeftInCm = carportLengthLeftInCm - roofCalculator.roofLengthCalculator(carportLengthLeftInCm) + 20;
         }
 

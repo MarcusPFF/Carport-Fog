@@ -33,7 +33,7 @@ public class MountForCalculator {
         mountList.add(mountCalculator.leftRafterMountCalculator(connection, carportLengthInCm, carportWidthInCm, "Universalbeslag 190 mm venstre"));
 
         //Højre universalbeslag for spærs montering på rem. (regnes i stk)
-        mountList.add(mountCalculator.rightRafterMountCalculator(connection, carportLengthInCm, carportWidthInCm, "Universalbeslag 190 mm højre"));
+        mountList.add(mountCalculator.rightRafterMountCalculator(connection, carportLengthInCm, "Universalbeslag 190 mm højre"));
 
         //Firkantskiver til hvert side af træet hvor boltene kommer til at spænde ind på. (regnes i stk)
         mountList.add(mountCalculator.squareBracketsForRafterMountCalculator(connection, carportLengthInCm, carportWidthInCm, "Firkantskiver 40 x 40 x 11 mm"));

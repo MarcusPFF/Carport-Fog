@@ -21,23 +21,23 @@ public class RoofCalculator {
     //10Cm pr bølge
     //overlap med 2 bølger
 
-    public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
+    public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofSheetWidthInCm, String roofName) throws DatabaseException {
         int amount;
         int roofLengthInCm;
         int roofId;
 
-        amount = roofAmountInWidthCalculator(carportWidthInCm, roofPladeWidthInCm);
+        amount = roofAmountInWidthCalculator(carportWidthInCm, roofSheetWidthInCm);
         roofLengthInCm = roofLengthCalculator(carportLengthInCm);
         roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
 
         return new RoofForCalculator(roofName, amount, roofId, "Tagplader monteres på spær.");
     }
 
-    public int roofAmountInWidthCalculator(int carportWidthInCm, int roofWidthInCm) {
+    public int roofAmountInWidthCalculator(int carportWidthInCm, int roofSheetWidthInCm) {
         int amount;
         amount = 0;
 
-        while (carportWidthInCm > amount * (roofWidthInCm - 20)) {
+        while (carportWidthInCm > 20 + (amount * (roofSheetWidthInCm - 20))) {
             amount++;
         }
 

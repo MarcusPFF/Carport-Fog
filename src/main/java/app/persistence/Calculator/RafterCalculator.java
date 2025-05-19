@@ -61,14 +61,14 @@ public class RafterCalculator {
     public int totalRafterHeightInMmCalculator( int carportWidthInCM) {
         int woodHeightInMm;
 
-        if ((carportWidthInCM - 70)  < 300) {
+        if ((carportWidthInCM - 60)  < 300) {
             woodHeightInMm = 145;
         }
-        else if ((carportWidthInCM - 70)  < 400) {
+        else if ((carportWidthInCM - 60)  < 400) {
             woodHeightInMm = 195;
         }
 
-        else if ((carportWidthInCM - 70)  < 500) {
+        else if ((carportWidthInCM - 60)  < 500) {
             woodHeightInMm = 225;
         }
         else {
@@ -81,7 +81,7 @@ public class RafterCalculator {
     public int totalRafterWidthInMmCalculator( int carportWidthInCM) {
         int woodWidthInMm;
 
-        if ((carportWidthInCM - 70) <= 500) {
+        if ((carportWidthInCM - 60) <= 500) {
             woodWidthInMm = 45;
         }
         else {
@@ -93,7 +93,7 @@ public class RafterCalculator {
 
     public int rafterBeamAmountCalculator(int carportWidthInCM) {
         int amount;
-        amount = 1 + (int) Math.ceil ((carportWidthInCM - 70.0)/600.0);
+        amount = 1 + (int) Math.ceil ((carportWidthInCM - 60.0)/600.0);
 
         return amount;
     }
