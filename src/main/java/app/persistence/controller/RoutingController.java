@@ -68,7 +68,7 @@ public class RoutingController {
     public static void handleSellerAdminLogin(Context ctx) {
         String sellerCode = ctx.formParam("sellerCode");
         // Denne verySecretAdminCode er hardcoded med vilje så alle kan tilgå admin-page
-        String verySecretAdminCode = "1111";
+        String verySecretAdminCode = String.valueOf(getSellerCode());
 
         if (sellerCode.equals(verySecretAdminCode)) {
             showSellerAdminPage(ctx);
@@ -85,7 +85,6 @@ public class RoutingController {
     }
 
     public static void handleSellerAdminPage(Context ctx) {
-
     }
 
     public static void showFinalAcceptOfferPage(Context ctx) {
@@ -101,7 +100,11 @@ public class RoutingController {
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
             ctx.sessionAttribute("offerDenied", false);
-            //Handlingskode her
+            try {
+                mailSender.sendSecondMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         } else if ("deny".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", false);
@@ -123,6 +126,7 @@ public class RoutingController {
 
         try {
             int offerId = Integer.parseInt(offerIdStr);
+            String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
 
             float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
             String email = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, offerId);
@@ -130,6 +134,7 @@ public class RoutingController {
 
             if (salesPriceFromOfferId > 0.1) {
                 ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
+                mailSender.sendSellerMail(sellerMail, getCustomerFirstName(ctx), getCustomerEmail(ctx), getCustomerTelephoneNumber(ctx), offerIdStr);
                 showFinalAcceptOfferPage(ctx);
             } else {
                 ctx.status(400);
@@ -140,6 +145,8 @@ public class RoutingController {
             ctx.status(400);
             ctx.attribute("errorMessage", "Tilbudsnummeret er ugyldigt.");
             ctx.render("accept-offer.html");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -261,5 +268,22 @@ public class RoutingController {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static String getCustomerFirstName(Context ctx) {
+        return ctx.sessionAttribute("firstname");
+    }
+
+    public static String getCustomerEmail(Context ctx) {
+        return ctx.sessionAttribute("email");
+    }
+
+    public static String getCustomerTelephoneNumber(Context ctx) {
+        return ctx.sessionAttribute("telephone");
+    }
+
+    public static int getSellerCode() {
+        //very secret
+        return 1111;
     }
 }
