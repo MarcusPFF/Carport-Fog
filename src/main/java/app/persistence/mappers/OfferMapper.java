@@ -83,4 +83,9 @@ public class OfferMapper {
     public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId){
         return "test@kunde.dk";
     }
+
+    public static String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId){
+        return "sellersatjohannesfog@gmail.com";
+    }
+
 }
