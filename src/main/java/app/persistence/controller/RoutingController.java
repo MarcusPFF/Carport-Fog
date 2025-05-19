@@ -9,6 +9,8 @@ import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import java.io.IOException;
+
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
     private static OfferMapper offerMapper = new OfferMapper();
@@ -41,6 +43,8 @@ public class RoutingController {
 
         app.get("/confirmation", ctx -> showConfirmationPage(ctx));
         app.post("/confirmation", ctx -> handleConfirmationPage(ctx));
+
+        app.get("/mail-sent", ctx -> showMailSentPage(ctx));
     }
 
     private static void handleIndexPage(Context ctx) {
@@ -49,7 +53,6 @@ public class RoutingController {
     private static void showIndexPage(Context ctx) {
         ctx.render("/index.html");
     }
-
 
     public static void getShowIndexPage(Context ctx) {
         showIndexPage(ctx);
@@ -131,12 +134,13 @@ public class RoutingController {
 
     private static void handleQuickBygPage(Context ctx) {
         if (ctx.formParam("carportWidth") != null) {
-            String carportWidth = ctx.formParam("carportWidth");
-            String carportLength = ctx.formParam("carportLength");
+            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
             String carportTrapezRoof = ctx.formParam("carportTrapezroof");
             boolean redskabsrumCheckbox = ctx.formParam("redskabsrumCheckbox") != null;
-            String redskabsrumLength = ctx.formParam("redskabsrumLength");
-            String redskabsrumWidth = ctx.formParam("redskabsrumWidth");
+            int redskabsrumLength = Integer.parseInt(ctx.formParam("redskabsrumLength"));
+            int redskabsrumWidth = Integer.parseInt(ctx.formParam("redskabsrumWidth"));
+            int redskabsrumDoors = Integer.parseInt(ctx.formParam("redskabsrumDoors"));
 
             ctx.sessionAttribute("carportWidth", carportWidth);
             ctx.sessionAttribute("carportLength", carportLength);
@@ -144,8 +148,9 @@ public class RoutingController {
             ctx.sessionAttribute("redskabsrumCheckbox", redskabsrumCheckbox);
             ctx.sessionAttribute("redskabsrumLength", redskabsrumLength);
             ctx.sessionAttribute("redskabsrumWidth", redskabsrumWidth);
+            ctx.sessionAttribute("redskabsrumDoors", redskabsrumDoors);
         }
-        ctx.render("/contact-information.html");
+        ctx.render("/quick-byg-contact-information.html");
     }
 
     private static void showQuickBygPage(Context ctx) {
@@ -167,6 +172,10 @@ public class RoutingController {
         if (ctx.sessionAttribute("redskabsrumWidth") != null) {
             ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
         }
+        if (ctx.sessionAttribute("redskabsrumDoors") !=null) {
+            ctx.attribute("redskabsrumDoors", ctx.sessionAttribute("redskabsrumDoors"));
+        }
+
         ctx.render("/quick-byg.html");
     }
 
@@ -179,13 +188,13 @@ public class RoutingController {
         String firstname = ctx.formParam("firstname");
         String lastname = ctx.formParam("lastname");
         String address = ctx.formParam("address");
-        String zipcode = ctx.formParam("zipcode");
+        int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
         String city = ctx.formParam("city");
         String phone = ctx.formParam("phone");
         String email = ctx.formParam("email");
         boolean samtykke = ctx.formParam("samtykkeCheckbox") != null;
-        ctx.sessionAttribute("samtykke", samtykke);
 
+        ctx.sessionAttribute("samtykke", samtykke);
         ctx.sessionAttribute("firstname", firstname);
         ctx.sessionAttribute("lastname", lastname);
         ctx.sessionAttribute("address", address);
@@ -207,7 +216,7 @@ public class RoutingController {
         ctx.attribute("email", ctx.sessionAttribute("email"));
         ctx.attribute("samtykke", ctx.sessionAttribute("samtykke"));
 
-        ctx.render("/contact-information.html");
+        ctx.render("/quick-byg-contact-information.html");
     }
 
     public static void handleConfirmationPage(Context ctx) {
@@ -221,7 +230,20 @@ public class RoutingController {
         ctx.attribute("redskabsrumCheckbox", ctx.sessionAttribute("redskabsrumCheckbox"));
         ctx.attribute("redskabsrumLength", ctx.sessionAttribute("redskabsrumLength"));
         ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
+        ctx.attribute("redskabsrumDoors", ctx.sessionAttribute("redskabsrumDoors"));
 
-        ctx.render("/confirmation.html");
+        ctx.render("/quick-byg-confirmation.html");
+    }
+
+    public static void handleMailSentPage(Context ctx) {
+    }
+
+    public static void showMailSentPage(Context ctx) {
+        ctx.render("/quick-byg-mail-sent.html");
+        try  {
+            mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
