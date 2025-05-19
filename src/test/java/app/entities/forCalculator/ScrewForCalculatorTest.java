@@ -143,14 +143,14 @@ class ScrewForCalculatorTest {
         int shedTwoWidth = 180;     // Skrue 2
         int expectedAmountTwo = 2;  // Skrue 2
         int expectedScrewId = 4;    // Skrue 1 og 2
-        int boardWidthInMmm = 200;  // Skrue 1 og 2
+        int boardWidthInMm = 200;  // Skrue 1 og 2
         int spareBoardAmount = 10; // Skrue 1 og 2
         String screwName = "4,5 x 50 mm. Skruer 300 stk.";
         String description = "Til montering af skurets beklædning.";
 
         // Act
-        ScrewForCalculator screwOne = screwCalculator.screwsForShedBoardsCalculator(connectionPool, shedOneLength, shedOneWidth, screwName,boardWidthInMmm, spareBoardAmount);
-        ScrewForCalculator screwTwo = screwCalculator.screwsForShedBoardsCalculator(connectionPool, shedTwoLength, shedTwoWidth, screwName, boardWidthInMmm, spareBoardAmount);
+        ScrewForCalculator screwOne = screwCalculator.screwsForShedBoardsCalculator(connectionPool, shedOneLength, shedOneWidth, screwName,boardWidthInMm, spareBoardAmount);
+        ScrewForCalculator screwTwo = screwCalculator.screwsForShedBoardsCalculator(connectionPool, shedTwoLength, shedTwoWidth, screwName, boardWidthInMm, spareBoardAmount);
 
         // Assert
         assertEquals(screwName, screwOne.getName());           // Skrue 1

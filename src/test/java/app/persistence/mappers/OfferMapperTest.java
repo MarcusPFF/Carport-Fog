@@ -1,5 +1,6 @@
 package app.persistence.mappers;
 
+import app.entities.CustomerInformation;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
@@ -194,6 +195,26 @@ class OfferMapperTest {
     }
 
     @Test
+    void getCustomerInformationFromOfferId() throws SQLException, DatabaseException {
+        //Arrange
+        int offerId = 1;
+        CustomerInformation expectedCustomer = new CustomerInformation("john.doe@example.com", "John", "Doe", "Main Street", 123, 1000, "Copenhagen",60606060);
+
+        //Act
+        CustomerInformation actualCustomer = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+
+        //Assert
+        assertEquals(expectedCustomer.getCustomerMail(), actualCustomer.getCustomerMail());
+        assertEquals(expectedCustomer.getFirstName(), actualCustomer.getFirstName());
+        assertEquals(expectedCustomer.getLastName(), actualCustomer.getLastName());
+        assertEquals(expectedCustomer.getStreetName(), actualCustomer.getStreetName());
+        assertEquals(expectedCustomer.getHouseNumber(), actualCustomer.getHouseNumber());
+        assertEquals(expectedCustomer.getZipCode(), actualCustomer.getZipCode());
+        assertEquals(expectedCustomer.getCity(), actualCustomer.getCity());
+        assertEquals(expectedCustomer.getPhoneNumber(), actualCustomer.getPhoneNumber());
+    }
+
+    @Test
     void getSalesPriceFromOfferId() throws SQLException, DatabaseException {
         //Arrange
         int offerId = 1;
@@ -226,14 +247,14 @@ class OfferMapperTest {
 
 
         //Act
-        int newId = OfferMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connectionPool, mail, "test", "test", "test", 1, 1000);
-        int existingId = OfferMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connectionPool, mail, "test", "test", "test", 1, 1000);
+        int newId = OfferMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connectionPool, mail, "test", "test", "test", 1, 1000, 50505050);
+        int existingId = OfferMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connectionPool, mail, "test", "test", "test", 1, 1000, 60606060);
 
 
         //Assert
         assertEquals(4, existingId, "Skal hente id=1 for eksisterende john.doe@example.com");
         System.out.println(newId);
-        assertTrue(newId == 4, "Forventes at ny customer_id > 3, var " + newId);
+        assertTrue(newId == 4, "Forventes at ny customer_id = 4, var " + newId);
     }
 
     @Test
@@ -574,4 +595,6 @@ class OfferMapperTest {
             }
         }
     }
+
+
 }

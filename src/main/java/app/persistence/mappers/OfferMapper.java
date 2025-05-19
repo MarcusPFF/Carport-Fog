@@ -1,5 +1,6 @@
 package app.persistence.mappers;
 
+import app.entities.CustomerInformation;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
@@ -227,7 +228,7 @@ public class OfferMapper {
 
     public static String getCustomerMailFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "SELECT customer_mail FROM customer JOIN offers ON customer.customer_id = offers.customer_id WHERE offer_id = ?;";
-        String sellerMail;
+        String customerMail;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -235,14 +236,41 @@ public class OfferMapper {
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    sellerMail = rs.getString("customer_mail");
-                    return sellerMail;
+                    customerMail = rs.getString("customer_mail");
+                    return customerMail;
                 }
             }
             throw new DatabaseException(null, "Customer Mail not found for Offer Id: " + offerId);
 
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching Customer Mail: ");
+        }
+    }
+
+    public static CustomerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT customer_mail, customer_firstname, customer_lastname, street_name, house_number, customer.zip_code, city_name, phone_number FROM cities JOIN customer ON cities.zip_code = customer.zip_code JOIN offers ON customer.customer_id = offers.customer_id WHERE offer_id = ?;";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    String customerMail = rs.getString("customer_mail");
+                    String firstName = rs.getString("customer_firstname");
+                    String lastName = rs.getString("customer_lastname");
+                    String streetName = rs.getString("street_name");
+                    int houseNumber = rs.getInt("house_number");
+                    int zipCode = rs.getInt("zip_code");
+                    String cityName = rs.getString("city_name");
+                    int phoneNumber = rs.getInt("phone_number");
+                    return new CustomerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
+                }
+            }
+            throw new DatabaseException(null, "Customer Information not found for Offer Id: " + offerId);
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Customer Information: ");
         }
     }
 
@@ -289,9 +317,9 @@ public class OfferMapper {
     }
 
 //create mapper metoder
-    public static int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode) throws DatabaseException {
+    public static int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int phoneNumber) throws DatabaseException {
         int customerId;
-        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code) VALUES ( ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO NOTHING RETURNING customer_id;";
+        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number) VALUES ( ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO NOTHING RETURNING customer_id;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -302,6 +330,7 @@ public class OfferMapper {
                 statement.setString(4, customerStreetName);
                 statement.setInt(5, customerHouseNumber);
                 statement.setInt(6, customerZipCode);
+                statement.setInt(7, phoneNumber);
 
                 try (ResultSet rs = statement.executeQuery();) {
                     if (rs.next()) {

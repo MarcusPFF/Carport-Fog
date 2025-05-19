@@ -24,7 +24,8 @@ public class CreateTestSchemaDatabase {
             customer_lastname VARCHAR(255) NOT NULL,
             street_name VARCHAR(255) NOT NULL,
             house_number INT NOT NULL,
-            zip_code INT NOT NULL
+            zip_code INT NOT NULL, 
+            phone_number INT NOT NULL
         );
 
         CREATE TABLE test.sellers (
@@ -141,11 +142,11 @@ public class CreateTestSchemaDatabase {
         INSERT INTO test.cities (zip_code, city_name)
         VALUES (1000, 'Copenhagen'), (2000, 'Aarhus'), (3000, 'Odense');
 
-        INSERT INTO test.customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code)
+        INSERT INTO test.customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number)
         VALUES
-            ('john.doe@example.com', 'John', 'Doe', 'Main Street', 123, 1000),
-            ('jane.smith@example.com', 'Jane', 'Smith', 'Oak Avenue', 456, 2000),
-            ('alice.johnson@example.com', 'Alice', 'Johnson', 'Pine Road', 789, 3000);
+            ('john.doe@example.com', 'John', 'Doe', 'Main Street', 123, 1000, 60606060),
+            ('jane.smith@example.com', 'Jane', 'Smith', 'Oak Avenue', 456, 2000, 70707070),
+            ('alice.johnson@example.com', 'Alice', 'Johnson', 'Pine Road', 789, 3000, 80808080);
 
         INSERT INTO test.sellers (seller_mail, seller_firstname, seller_lastname)
         VALUES

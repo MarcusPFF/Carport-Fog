@@ -29,7 +29,7 @@ public class MaterialCalculator {
         priceCalculator = new PriceCalculator();
     }
 
-    public int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
+    public int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int customerPhoneNumber, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
         ArrayList<MountForCalculator> mountList;
         ArrayList<RoofForCalculator> roofList;
         ArrayList<ScrewForCalculator> screwList;
@@ -42,7 +42,7 @@ public class MaterialCalculator {
         LocalDate expirationDate;
 
 
-        customerId = offerMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connection, customerMail, customerFirstName, customerLastName, customerStreetName, customerHouseNumber, customerZipCode);
+        customerId = offerMapper.createNewCustomerIfAlreadyExistGetCustomerIdFromMail(connection, customerMail, customerFirstName, customerLastName, customerStreetName, customerHouseNumber, customerZipCode, customerPhoneNumber);
         sellerId = offerMapper.getRandomSellerId(connection);
 
         offerId = offerMapper.createOffer(connection, totalOfferExpensePrice, totalOfferSalesPrice, sellerId, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, customerId);

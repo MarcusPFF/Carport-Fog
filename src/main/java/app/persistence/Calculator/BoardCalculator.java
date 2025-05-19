@@ -17,102 +17,107 @@ public class BoardCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-    public WoodForCalculator shedBoardCalculator(ConnectionPool connection, int shedLengthInCm, int shedWidthInCm, String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm, int boardLengthInCM, int spareBoardAmount) throws DatabaseException {
+
+    public BoardCalculator() {
+        offerMapper = new OfferMapper();
+    }
+
+    public WoodForCalculator shedBoardCalculator(ConnectionPool connection, int shedLengthInCm, int shedWidthInCm, String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm, int boardLengthInCM, int spareBoardAmount) throws DatabaseException {
        int amount;
        int woodDimensionId;
        int treatmentId;
        int woodTypeId;
 
        amount = shedBoardAmountCalculator(shedLengthInCm,shedWidthInCm, boardWidthInMm, spareBoardAmount);
-       woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, boardLengthInCM, boardWidthInMm, boardHeightInMm);
+       woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, boardLengthInCM, boardDepthInMm, boardWidthInMm);
        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-       return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "til beklædning af skur.");
+       return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Til beklædning af skur.");
     }
 
-    public WoodForCalculator fasciaBoardFrontAndBackCalculator(ConnectionPool connection, int carportWidthInCm,String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
+    public WoodForCalculator fasciaBoardFrontAndBackCalculator(ConnectionPool connection, int carportWidthInCm, String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
         int amount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
         amount = fasciaAndBargeBoardAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardWidthInMm, boardHeightInMm);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardDepthInMm, boardWidthInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "understernbrædder til for & bag ende.");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Understernbrædder til for & bag ende.");
     }
 
-    public WoodForCalculator fasciaBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm,String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
+    public WoodForCalculator fasciaBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm,String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
         int amount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
         amount = fasciaAndBargeBoardAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardWidthInMm, boardHeightInMm);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardDepthInMm, boardWidthInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "understernbrædder til siderne.");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Understernbrædder til siderne.");
     }
 
-    public WoodForCalculator bargeBoardFrontCalculator(ConnectionPool connection, int carportWidthInCm,String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
+    public WoodForCalculator bargeBoardFrontCalculator(ConnectionPool connection, int carportWidthInCm,String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
         int amount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
         amount = fasciaAndBargeBoardFrontAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardWidthInMm, boardHeightInMm);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardDepthInMm, boardWidthInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "oversternbrædder til forende.");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Oversternbrædder til forende.");
     }
 
-    public WoodForCalculator bargeBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm,String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
+    public WoodForCalculator bargeBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm,String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
         int amount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
         amount = fasciaAndBargeBoardAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardWidthInMm, boardHeightInMm);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardDepthInMm, boardWidthInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "oversternbrædder til siderne.");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Oversternbrædder til siderne.");
     }
 
-    public WoodForCalculator dripCapForBoardFrontCalculator(ConnectionPool connection, int carportWidthInCm,String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
+    public WoodForCalculator dripCapForBoardFrontCalculator(ConnectionPool connection, int carportWidthInCm,String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
+        int amount;
+        int woodDimensionId;
+        int treatmentId;
+        int woodTypeId;
+
+        amount = fasciaAndBargeBoardFrontAmountCalculator();
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardDepthInMm, boardWidthInMm);
+        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
+
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Vandbræt til stern i forende.");
+    }
+
+    public WoodForCalculator dripCapForBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm, String woodTypeName, String treatmentName, int boardDepthInMm, int boardWidthInMm) throws DatabaseException {
         int amount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
         amount = fasciaAndBargeBoardAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportWidthInCm + 30, boardWidthInMm, boardHeightInMm);
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardDepthInMm, boardWidthInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "vandbræt til stern i forende.");
-    }
-
-    public WoodForCalculator dripCapForBoardSidesCalculator(ConnectionPool connection, int carportLengthInCm, String woodTypeName, String treatmentName, int boardWidthInMm, int boardHeightInMm) throws DatabaseException {
-        int amount;
-        int woodDimensionId;
-        int treatmentId;
-        int woodTypeId;
-
-        amount = fasciaAndBargeBoardAmountCalculator();
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, boardWidthInMm, boardHeightInMm);
-        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
-        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
-
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "vandbræt til stern i siderne.");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Vandbræt til stern i siderne.");
     }
 
     public int shedBoardAmountCalculator(int shedLengthInCm, int shedWidthInCm, int boardWidthInMm, int spareBoardAmount) {
