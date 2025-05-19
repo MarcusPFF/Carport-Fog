@@ -64,7 +64,7 @@ public class RoutingController {
 
     public static void handleSellerAdminLogin(Context ctx) {
         String sellerCode = ctx.formParam("sellerCode");
-        //Dette et med vilje ikke lavet til en system env variable, så alle kan få adgang til admin siden
+        // Denne verySecretAdminCode er hardcoded med vilje så alle kan tilgå admin-page
         String verySecretAdminCode = "1111";
 
         if (sellerCode.equals(verySecretAdminCode)) {
