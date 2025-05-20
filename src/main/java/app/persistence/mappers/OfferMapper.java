@@ -680,6 +680,6 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");
         }
 
-    
+    }
 
 }
