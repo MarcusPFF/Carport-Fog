@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class OfferMapper {
 
-//getter mapper metoder
+    //getter mapper metoder
     public int getTreatmentIdFromTreatmentName(ConnectionPool connectionPool, String treatmentName) throws DatabaseException {
         String sql = "SELECT wood_treatment_id FROM wood_treatment WHERE wood_treatment_type_name = ?;";
 
@@ -80,7 +80,7 @@ public class OfferMapper {
         }
     }
 
-//todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
+    //todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
     public static int getWoodLengthFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
         String sql = "SELECT wood_length FROM wood_dimensions WHERE wood_dimension_id = ?;";
         int woodLengthInCm;
@@ -316,7 +316,7 @@ public class OfferMapper {
         }
     }
 
-//create mapper metoder
+    //create mapper metoder
     public static int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int phoneNumber) throws DatabaseException {
         int customerId;
         String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number) VALUES ( ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO NOTHING RETURNING customer_id;";
@@ -336,8 +336,7 @@ public class OfferMapper {
                     if (rs.next()) {
                         customerId = rs.getInt("customer_id");
                         return customerId;
-                    }
-                    else {
+                    } else {
                         String secondSql = "SELECT customer_id FROM customer WHERE customer_mail = ?";
                         try (PreparedStatement secondStmt = connection.prepareStatement(secondSql)) {
 
@@ -409,7 +408,7 @@ public class OfferMapper {
                     statement.setInt(3, mountForCalculator.getAmount());
                     statement.setString(4, mountForCalculator.getDescription());
 
-                    expectedRowsAffected ++;
+                    expectedRowsAffected++;
                     rowsAffected += statement.executeUpdate();
                 }
 
@@ -439,7 +438,7 @@ public class OfferMapper {
                     statement.setInt(3, roofForCalculator.getAmount());
                     statement.setString(4, roofForCalculator.getDescription());
 
-                    expectedRowsAffected ++;
+                    expectedRowsAffected++;
                     rowsAffected += statement.executeUpdate();
                 }
 
@@ -469,7 +468,7 @@ public class OfferMapper {
                     statement.setInt(3, screwForCalculator.getAmount());
                     statement.setString(4, screwForCalculator.getDescription());
 
-                    expectedRowsAffected ++;
+                    expectedRowsAffected++;
                     rowsAffected += statement.executeUpdate();
                 }
 
@@ -501,7 +500,7 @@ public class OfferMapper {
                     statement.setInt(5, woodForCalculator.getAmount());
                     statement.setString(6, woodForCalculator.getDescription());
 
-                    expectedRowsAffected ++;
+                    expectedRowsAffected++;
                     rowsAffected += statement.executeUpdate();
                 }
 
@@ -517,7 +516,7 @@ public class OfferMapper {
         }
     }
 
-//update metoder
+    //update metoder
     public static boolean updateTotalExpensesPrice(ConnectionPool connectionPool, float totalOfferExpensePrice, int offerId) throws DatabaseException {
         String sql = "UPDATE offers SET total_expenses_price = ? WHERE offer_id = ?;";
 
@@ -580,7 +579,7 @@ public class OfferMapper {
         }
     }
 
-//delete mapper metoder
+    //delete mapper metoder
     public static boolean deleteOfferAndEveryThinkLinkedToItByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         //den kan delete alle rækker i tabeller som har samme offer_id pga foreign Key constrain on action delete køre den cascade
         String sql = "DELETE FROM offers WHERE offer_id = ?;";
@@ -682,4 +681,5 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");
         }
     }
+}
 }
