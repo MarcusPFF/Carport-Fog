@@ -116,7 +116,6 @@ public class RoutingController {
         ctx.redirect("/final-accept-offer");
     }
 
-
     public static void showAcceptOfferPage(Context ctx) {
         ctx.render("/accept-offer.html");
     }
