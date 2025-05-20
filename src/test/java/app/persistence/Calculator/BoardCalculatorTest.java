@@ -13,6 +13,7 @@ class BoardCalculatorTest {
         calculator = new BoardCalculator();
     }
 
+
     @Test
     void shedBoardAmountCalculator() {
         // Arrange:

@@ -41,6 +41,7 @@ class MountCalculatorTest {
     @BeforeEach
     void setUp() { calculator = new MountCalculator(); }
 
+
     @Test
     void leftRafterMountsAmountCalculator() {
         // Arrange

@@ -45,7 +45,7 @@ class MountForCalculatorTest {
 
     }
 
-//TODO
+
 //Mounts calculator
     @Test
     void leftRafterMountCalculator() throws SQLException, DatabaseException {

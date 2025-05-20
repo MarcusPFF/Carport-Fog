@@ -47,6 +47,7 @@ class OfferMapperTest {
 
     }
 
+
     @Test
     void getTreatmentIdFromTreatmentName() throws SQLException, DatabaseException {
         //Arrange
@@ -595,6 +596,4 @@ class OfferMapperTest {
             }
         }
     }
-
-
 }

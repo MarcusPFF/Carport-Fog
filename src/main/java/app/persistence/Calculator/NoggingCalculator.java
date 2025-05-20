@@ -18,38 +18,45 @@ public class NoggingCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-    public WoodForCalculator noggingForShedFrontAndBackCalculator(ConnectionPool connection, int rafterWidthInMm, int rafterHeightInMm, int carportLength, int carportWidthInCm, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
-        int poleAmountForWidth;
-        int noggingAmount;
-        int woodDimensionId;
-        int treatmentId;
-        int woodTypeId;
 
-        poleAmountForWidth = poleCalculator.poleAmountYCalculator(carportWidthInCm);
-        noggingAmount = noggingForShedFrontAndBackAmountCalculator(shedWidthInCm, carportLength, poleAmountForWidth);
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedWidthInCm, rafterWidthInMm, rafterHeightInMm);
-        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
-        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
-
-        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "løsholter til forside og bagside af skur.");
+    public NoggingCalculator() {
+        offerMapper = new OfferMapper();
+        poleCalculator = new PoleCalculator();
     }
 
-    public WoodForCalculator noggingForShedSidesCalculator(ConnectionPool connection, int rafterWidthInMm, int rafterHeightInMm, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
-        int poleAmountForWidth;
-        int poleAmountForLength;
+    public WoodForCalculator noggingForShedFrontAndBackCalculator(ConnectionPool connection, int noggingWidthInMm, int noggingHeightInMm, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
         int noggingAmount;
         int woodDimensionId;
         int treatmentId;
         int woodTypeId;
 
-        poleAmountForLength = poleCalculator.poleAmountYCalculator(carportLengthInCm);
-        poleAmountForWidth = poleCalculator.poleAmountYCalculator(carportWidthInCm);
-        noggingAmount = noggingForShedSidesAmountCalculator(shedLengthInCm, shedWidthInCm, carportLengthInCm, carportWidthInCm, poleAmountForLength, poleAmountForWidth);
-        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedLengthInCm, rafterWidthInMm, rafterHeightInMm);
+        noggingAmount = 6;
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedWidthInCm, noggingWidthInMm, noggingHeightInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "løsholter til siderne af skur.");
+        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "Løsholter til forside og bagside af skur (Skal skæres til).");
+    }
+
+    public WoodForCalculator noggingForShedSidesCalculator(ConnectionPool connection, int noggingWidthInMm, int noggingHeightInMm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, String woodTypeName, String treatmentName) throws DatabaseException {
+        int poleAmountForWidth;
+        int noggingAmount;
+        int woodDimensionId;
+        int treatmentId;
+        int woodTypeId;
+
+        poleAmountForWidth = poleCalculator.poleAmountYCalculator(carportWidthInCm);
+        if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
+            noggingAmount = 4;
+        }
+        else {
+            noggingAmount = 5;
+        }
+        woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedLengthInCm, noggingWidthInMm, noggingHeightInMm);
+        treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
+        woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
+
+        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "Løsholter til siderne af skur (Skal skæres til).");
     }
 
     public WoodForCalculator noggingForZOnTheDoorCalculator(ConnectionPool connection, int noggingWidthInMm, int noggingHeightInMm, int noggingLengthInCm, String woodTypeName, String treatmentName, int amountOfDoorsForTheShed) throws DatabaseException {
@@ -63,21 +70,24 @@ public class NoggingCalculator {
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "til z på bagside af dør.");
+        return new WoodForCalculator(woodTypeName, noggingAmount, woodDimensionId, treatmentId, woodTypeId, "Til z på bagside af dør.");
     }
 
     public int noggingForShedFrontAndBackAmountCalculator(int shedWidthInCm, int carportWidthInCm, int poleAmountForWidth) {
+        int poleAmountWidthForDividing = poleAmountForWidth - 1;
+        int carportWidthWithoutRoofOverhang = carportWidthInCm - 60;
 
         if (poleAmountForWidth > 2) {
 
-            if (shedWidthInCm == carportWidthInCm - 60) {
+            if (shedWidthInCm == carportWidthInCm) {
                 return 24;
             }
-            else if (shedWidthInCm > (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
+            else if (shedWidthInCm > carportWidthWithoutRoofOverhang / poleAmountWidthForDividing) {
                 return 18;
             }
         }
-        else if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
+
+        if (shedWidthInCm == carportWidthWithoutRoofOverhang / poleAmountWidthForDividing) {
             return 12;
         }
 
@@ -86,7 +96,7 @@ public class NoggingCalculator {
 
     public int noggingForShedSidesAmountCalculator(int shedLengthInCm, int shedWidthInCm, int carportLengthInCm, int carportWidthInCm, int poleAmountForLength, int poleAmountForWidth) {
 
-        if (shedLengthInCm > (carportLengthInCm - 60) / (poleAmountForLength - 1)) {
+        if (shedLengthInCm > (carportLengthInCm - 130) / (poleAmountForLength - 1)) {
 
             if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
                 return 8;
@@ -95,7 +105,7 @@ public class NoggingCalculator {
                 return 10;
             }
         }
-        else if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
+        if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
             return 4;
         }
 

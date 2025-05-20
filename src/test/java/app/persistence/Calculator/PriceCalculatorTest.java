@@ -46,6 +46,7 @@ class PriceCalculatorTest {
         priceCalculator = new PriceCalculator();
     }
 
+
     @Test
     void calculateTotalOfferSalesPrice() throws DatabaseException {
         //Arrange
@@ -178,10 +179,4 @@ class PriceCalculatorTest {
         //Assert
         assertEquals(expected, actual);
     }
-
-
-
-
-
-
 }

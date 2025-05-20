@@ -86,14 +86,16 @@ public class PriceAndMaterialMapper {
         }
     }
 
-    public static boolean updateDimensionMeterPrice(ConnectionPool connectionPool, float newPrice, int dimensionId) throws DatabaseException {
-        String sql = "UPDATE wood_dimensions SET wood_dimension_meter_price = ? WHERE wood_dimension_id = ?;";
+    public static boolean updateDimensionMeterPrice(ConnectionPool connectionPool, float newPrice, int woodWidthInMm, int woodHeightInMm) throws DatabaseException {
+        String sql = "UPDATE wood_dimensions SET wood_dimension_meter_price = ? WHERE wood_width = ? AND wood_height = ?;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setFloat(1, newPrice);
-                ps.setInt(2, dimensionId);
+                ps.setInt(2, woodWidthInMm);
+                ps.setInt(3, woodHeightInMm);
+
                 int rowsAffected = ps.executeUpdate();
-                if (rowsAffected == 1) {
+                if (rowsAffected >= 1) {
                     return true;
                 }
                 return false;

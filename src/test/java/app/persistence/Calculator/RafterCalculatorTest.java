@@ -27,7 +27,6 @@ class RafterCalculatorTest {
 
     }
 
-
     @Test
     void totalRafterHeightInMmCalculator() {
         // Arrange:

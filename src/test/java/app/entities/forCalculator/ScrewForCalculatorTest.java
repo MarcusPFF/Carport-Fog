@@ -44,6 +44,7 @@ class ScrewForCalculatorTest {
         screwCalculator = new ScrewCalculator();
     }
 
+
 //Screw Calculator
     @Test
     void screwForRoofCalculator() throws SQLException, DatabaseException {
@@ -162,7 +163,6 @@ class ScrewForCalculatorTest {
         assertEquals(expectedScrewId, screwTwo.getScrewId());  // Skrue 2
         assertEquals(description, screwTwo.getDescription());  // Skrue 2
     }
-
 
     @Test
     void boltsForRafterBeamCalculator() throws SQLException, DatabaseException {

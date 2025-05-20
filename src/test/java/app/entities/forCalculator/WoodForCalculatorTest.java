@@ -49,6 +49,7 @@ class WoodForCalculatorTest {
         rafterCalculator = new RafterCalculator();
     }
 
+
 //Board calculator
     @Test
     void shedBoardCalculator() throws SQLException, DatabaseException {
@@ -239,29 +240,166 @@ class WoodForCalculatorTest {
 //Nogging calculator
     @Test
     void noggingForShedFrontAndBackCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int shedWidth = 180;
+        int noggingWidthInMm = 45;
+        int noggingHeightInMm = 95;
+        String woodTypeName = "Reglar";
+        String woodTreatmentName = "Ubehandlet";
+        String expectedDescription = "Løsholter til forside og bagside af skur (Skal skæres til).";
+        int expectedAmountOne = 6;
+        int expectedDimensionId = 322;
+        int expectedTreatmentId = 2;
+        int expectedWoodTypeId = 3;
+
+        // Act
+        WoodForCalculator wood = noggingCalculator.noggingForShedFrontAndBackCalculator(connectionPool, noggingWidthInMm, noggingHeightInMm, shedWidth, woodTypeName, woodTreatmentName);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 
     @Test
     void noggingForShedSidesCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int carportWidth = 240;
+        int shedLength = 150;
+        int shedWidth = 180;
+        int noggingWidthInMm = 45;
+        int noggingHeightInMm = 95;
+        String woodTypeName = "Reglar";
+        String woodTreatmentName = "Ubehandlet";
+        String expectedDescription = "Løsholter til siderne af skur (Skal skæres til).";
+        int expectedAmountOne = 4;
+        int expectedDimensionId = 321;
+        int expectedTreatmentId = 2;
+        int expectedWoodTypeId = 3;
+
+        // Act
+        WoodForCalculator wood = noggingCalculator.noggingForShedSidesCalculator(connectionPool, noggingWidthInMm, noggingHeightInMm, carportWidth, shedLength, shedWidth, woodTypeName, woodTreatmentName);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 
     @Test
     void noggingForZOnTheDoorCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int noggingWidthInMm = 40;
+        int noggingHeightInMm = 75;
+        int noggingLengthInCm = 420;
+        int amountOfDoorsForTheShed = 2;
+        String woodTypeName = "Lægte";
+        String woodTreatmentName = "Ubehandlet";
+        String expectedDescription = "Til z på bagside af dør.";
+        int expectedAmountOne = 2;
+        int expectedDimensionId = 310;
+        int expectedTreatmentId = 2;
+        int expectedWoodTypeId = 2;
+
+        // Act
+        WoodForCalculator wood = noggingCalculator.noggingForZOnTheDoorCalculator(connectionPool, noggingWidthInMm, noggingHeightInMm, noggingLengthInCm, woodTypeName, woodTreatmentName, amountOfDoorsForTheShed);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 
 
 //Pole calculator
     @Test
     void poleCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int carportLength = 300;
+        int carportWidth = 270;
+        int shedLength = 150;
+        int shedWidth = 180;
+        int carportHeightInCm = 210;
+        int poleWidthInMm = 100;
+        int poleHeightInMm = 100;
+        String woodTypeName = "Stolpe";
+        String woodTreatmentName = "Trykimprægneret";
+        String expectedDescription = "Stolper nedgraves 90-100 cm. i jord.";
+        int expectedAmountOne = 8;
+        int expectedDimensionId = 926;
+        int expectedTreatmentId = 1;
+        int expectedWoodTypeId = 4;
+
+        // Act
+        WoodForCalculator wood = poleCalculator.poleCalculator(connectionPool, carportLength, carportWidth, shedLength, shedWidth, carportHeightInCm, poleWidthInMm, poleHeightInMm, woodTypeName, woodTreatmentName);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 
 
 //Rafter Calculator
     @Test
     void rafterForRoofCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int carportLength = 300;
+        int carportWidth = 270;
+        String woodTypeName = "Spær";
+        String woodTreatmentName = "Ubehandlet";
+        String expectedDescription = "Monteres på rem.";
+        int expectedAmountOne = 6;
+        int expectedDimensionId = 365;
+        int expectedTreatmentId = 2;
+        int expectedWoodTypeId = 1;
+
+        // Act
+        WoodForCalculator wood = rafterCalculator.rafterForRoofCalculator(connectionPool, carportLength, carportWidth, woodTypeName, woodTreatmentName);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 
     @Test
     void rafterBeamCalculator() throws SQLException, DatabaseException {
+        // Arrange
+        int carportLength = 300;
+        int carportWidth = 690;
+        String woodTypeName = "Spær";
+        String woodTreatmentName = "Ubehandlet";
+        String expectedDescription = "Remme, sadles ned i stolper.";
+        int expectedAmountOne = 3;
+        int expectedDimensionId = 366;
+        int expectedTreatmentId = 2;
+        int expectedWoodTypeId = 1;
+
+        // Act
+        WoodForCalculator wood = rafterCalculator.rafterBeamCalculator(connectionPool, carportLength, carportWidth, woodTypeName, woodTreatmentName);
+
+        // Assert
+        assertEquals(woodTypeName, wood.getName());
+        assertEquals(expectedAmountOne, wood.getAmount());
+        assertEquals(expectedDimensionId, wood.getWoodDimensionId());
+        assertEquals(expectedTreatmentId, wood.getWoodTreatmentId());
+        assertEquals(expectedWoodTypeId, wood.getWoodTypeId());
+        assertEquals(expectedDescription, wood.getDescription());
     }
 }

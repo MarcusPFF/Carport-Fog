@@ -53,4 +53,5 @@ public class PoleCalculatorTest {
         // Assert:
         assertEquals(8, result, "Der bør være 4 stolper til skuret.");
     }
+
 }

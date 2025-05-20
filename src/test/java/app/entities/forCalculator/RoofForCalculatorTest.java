@@ -48,6 +48,7 @@ class RoofForCalculatorTest {
 
     }
 
+
     @Test
     void roofListCalculator() throws DatabaseException {
         // Arrange
@@ -70,7 +71,6 @@ class RoofForCalculatorTest {
         }
 
     }
-
 
 //Roof Calculator
     @Test

@@ -232,7 +232,7 @@ public class CreateTestSchemaDatabase {
         
         INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount, mount_description)
         VALUES
-            (1, 1, 10, 'Spær monterings beslag'), (1, 4, 6, 'Firkantskive til montering af rem'), (3, 3, 8, 'staldørsgreb til skur');
+            (1, 1, 10, 'Spær monterings beslag'), (1, 3, 6, 'Firkantskive til montering af rem'), (3, 4, 8, 'staldørsgreb til skur');
 
         INSERT INTO test.roof_list (offer_id, roof_id, roof_amount, roof_description)
         VALUES

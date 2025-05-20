@@ -38,7 +38,7 @@ class NoggingCalculatorTest {
         int carportWidthInCm = 600;
         int poleAmountForWidth = 2;
         int poleAmountForLength = 3;
-        int expected = 5;
+        int expected = 10;
 
         // Act:
         int result = calculator.noggingForShedSidesAmountCalculator(shedLengthInCm, shedWidthInCm, carportLengthInCm, carportWidthInCm, poleAmountForLength, poleAmountForWidth);

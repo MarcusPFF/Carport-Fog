@@ -40,6 +40,7 @@ class PriceAndMaterialMapperTest {
         }
     }
 
+
     @Test
     void updateRoofPrice() throws SQLException, DatabaseException {
         // Arrange:
@@ -118,17 +119,23 @@ class PriceAndMaterialMapperTest {
     @Test
     void updateDimensionMeterPrice() throws SQLException, DatabaseException {
         // Arrange
-        int dimensionId = 1;
-        float updatedPrice = 25;
+        int woodWidthInMm = 20;
+        int woodHeightInMm = 100;
+        float updatedPrice = 14.95f;
 
         // Act
-        boolean updated = PriceAndMaterialMapper.updateDimensionMeterPrice(connectionPool, updatedPrice, dimensionId);
+        boolean updated = PriceAndMaterialMapper.updateDimensionMeterPrice(connectionPool, updatedPrice, woodWidthInMm, woodHeightInMm);
 
         // Assert
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT wood_dimension_meter_price FROM wood_dimensions WHERE wood_dimension_id = ?")) {
-            ps.setInt(1, dimensionId);
+             PreparedStatement ps = conn.prepareStatement("SELECT wood_dimension_meter_price FROM wood_dimensions WHERE wood_width = ? AND wood_height = ?")) {
+
+            ps.setInt(1, woodWidthInMm);
+            ps.setInt(2, woodHeightInMm);
             try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    assertEquals(updatedPrice, rs.getFloat("wood_dimension_meter_price"), 0.001f);
+                }
                 assertTrue(updated);
             }
         }

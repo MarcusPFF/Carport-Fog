@@ -13,6 +13,7 @@ class RoofCalculatorTest {
         calculator = new RoofCalculator();
     }
 
+
     @Test
     void roofAmountInWidthCalculator() {
         // Arrange:

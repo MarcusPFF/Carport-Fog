@@ -17,6 +17,11 @@ public class PoleCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
+
+    public PoleCalculator() {
+        offerMapper = new OfferMapper();
+    }
+
     public WoodForCalculator poleCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int poleWidthInMm, int poleHeightInMm, String woodTypeName, String treatmentName) throws DatabaseException {
         int amount;
         int lengthAmount;
@@ -40,7 +45,7 @@ public class PoleCalculator {
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
 
-        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Stolper nedgraves 90-100 cm. i jord");
+        return new WoodForCalculator(woodTypeName, amount, woodDimensionId, treatmentId, woodTypeId, "Stolper nedgraves 90-100 cm. i jord.");
     }
 
     public int poleAmountXCalculator(int carportLengthInCM) {
