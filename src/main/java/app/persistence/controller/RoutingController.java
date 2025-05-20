@@ -215,7 +215,7 @@ public class RoutingController {
         String lastname = ctx.formParam("lastname");
         String address = ctx.formParam("address");
         int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
-        String city = ctx.formParam("city");
+        int housenumber = Integer.parseInt(ctx.formParam("housenumber"));
         String phone = ctx.formParam("phone");
         String email = ctx.formParam("email");
         boolean samtykke = ctx.formParam("samtykkeCheckbox") != null;
@@ -237,7 +237,7 @@ public class RoutingController {
         ctx.attribute("lastname", ctx.sessionAttribute("lastname"));
         ctx.attribute("address", ctx.sessionAttribute("address"));
         ctx.attribute("zipcode", ctx.sessionAttribute("zipcode"));
-        ctx.attribute("city", ctx.sessionAttribute("city"));
+        ctx.attribute("housenumber", ctx.sessionAttribute("housenumber"));
         ctx.attribute("phone", ctx.sessionAttribute("phone"));
         ctx.attribute("email", ctx.sessionAttribute("email"));
         ctx.attribute("samtykke", ctx.sessionAttribute("samtykke"));
