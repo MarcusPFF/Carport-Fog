@@ -38,6 +38,8 @@
     min-height: 500px;
     flex-direction: column;
     align-items: center;
+    color: black;
+    text-decoration: none;
 }
 
 .buttons button {
@@ -51,8 +53,8 @@
     background-color: #FF0000;
 }
 
-.buttons button:nth-child(3):hover {
-    background-color: #B22222FF;
+.sales-men-button:hover {
+    background-color: #9f1818;
 }
 
 .buttons button:hover {
@@ -65,10 +67,9 @@ h1 {
     margin-top: 25px;
 }
 
-
 @media (max-width: 650px) {
 
-    .main{
+    .main {
         align-items: normal;
         justify-content: normal;
     }
@@ -104,6 +105,4 @@ h1 {
         min-width: 270px;
         font-size: 1rem;
     }
-
-
 }

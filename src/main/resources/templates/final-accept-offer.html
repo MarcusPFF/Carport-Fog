@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<title>!Fog</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
-<link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" th:href="@{/css/final-accept-offer-body-styling.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+    <title>Afslut tilbud</title>
 </head>
-
 <body>
 <header class="header">
     <div class="header-top animate-in">
@@ -27,6 +28,7 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
+
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
@@ -49,6 +51,7 @@
                     </nav>
                 </div>
             </div>
+
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -71,24 +74,40 @@
         </div>
     </div>
 </header>
+
 <div class="main">
     <div class="wrapper">
         <div class="title-box">
-            <h1>!Fog (temp)</h1>
+            <h1>Godkendelse af tilbud</h1>
         </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
-            </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <form method="get" th:action="@{/seller-admin-login}">
-                <button class="sales-men-button" type="submit">Sælger</button>
-            </form>
+        <div class="content-box">
+            <p th:text="'Tilbuds nr: ' + ${session.offerId}"></p>
+            <p th:text="'Email: ' + ${session.email}"></p>
+            <p th:text="'Din Pris: ' + ${session.salesPriceFromOfferId} + ' DKK'"></p>
+
+            <div class="button-group">
+                <!-- Skjuler den ene knap ved at tilføje 'invisible', når den anden handling er valgt -->
+                <form th:action="@{/final-accept-offer}" method="post"
+                      th:classappend="${actionConfirmed} ? ' invisible' : ''">
+                    <input type="hidden" name="action" value="deny"/>
+                    <button type="submit" class="btn-deny">Nej tak</button>
+                </form>
+                <form th:action="@{/final-accept-offer}" method="post"
+                      th:classappend="${actionDenied} ? ' invisible' : ''">
+                    <input type="hidden" name="action" value="confirm"/>
+                    <button type="submit" class="btn-confirm">Bekræft</button>
+                </form>
+            </div>
+
+            <div th:if="${actionConfirmed}" class="confirmation">
+                <p>Du har sagt ja til tilbuddet på:
+                    <span th:text="${session.salesPriceFromOfferId} + ' DKK'"></span>
+                </p>
+                <span>Hold øje med en mail fra os.</span>
+            </div>
+
+            <div th:if="${actionDenied}" class="deny">
+                <p>Du har afvist tilbuddet. Kontakt os gerne, hvis du ændrer mening.</p>
             </div>
         </div>
     </div>

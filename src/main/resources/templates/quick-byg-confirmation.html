@@ -3,9 +3,11 @@
 <title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/quick-byg-confirmation-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<script th:src="@{/js/go-back-action-listener.js}"></script>
 </head>
+
 
 <body>
 <header class="header">
@@ -27,6 +29,7 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
+
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
@@ -49,6 +52,7 @@
                     </nav>
                 </div>
             </div>
+
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -71,26 +75,55 @@
         </div>
     </div>
 </header>
+
+
 <div class="main">
+    <div class="side-menu">
+        <ul>
+            <li>Din Carport</li>
+            <li>Kontaktoplysninger</li>
+            <li>》 Bekræftelse</li>
+        </ul>
+    </div>
     <div class="wrapper">
+        <div class="progress-bar">
+            <div class="progress-step">Din Carport</div>
+            <div class="progress-step">Kontaktoplysninger</div>
+            <div class="progress-step active">Bekræftelse</div>
+        </div>
         <div class="title-box">
-            <h1>!Fog (temp)</h1>
+            <h1>
+                Bekræft information
+            </h1>
         </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
-            </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <form method="get" th:action="@{/seller-admin-login}">
-                <button class="sales-men-button" type="submit">Sælger</button>
-            </form>
-            </div>
-        </div>
+
+        <ul class="confirmation-list">
+            <b>Her er dine valgte mål til din carport:</b>
+            <li>Længde: <span th:text="${carportLength + ' cm'}">[mangler længde]</span></li>
+            <li>Bredde: <span th:text="${carportWidth + ' cm'}">[mangler bredde]</span></li>
+            <li>Tagtype: <span th:text="${carportTrapezRoof}">[mangler tagtype]</span></li>
+
+            <li>
+                Redskabsrum:
+                <span th:if="${redskabsrumCheckbox}">Ja</span>
+                <span th:unless="${redskabsrumCheckbox}">Nej</span>
+            </li>
+
+            <li th:if="${redskabsrumCheckbox}">
+                <ul>
+                    <li>Længde: <span th:text="${redskabsrumLength + ' cm'}">[mangler længde]</span></li>
+                    <li>Bredde: <span th:text="${redskabsrumWidth + ' cm'}">[mangler bredde]</span></li>
+                    <li>Døre: <span th:text="${redskabsrumDoors}">[mangler døre]</span></li>
+                </ul>
+            </li>
+        </ul>
+        <button class="next-page-button" name="nextPageButton" onclick="goToMailSent()">
+            Næste →
+        </button>
+        <button type="button" class="former-page-button" onclick="goToContactInformation()">
+            ← Tilbage
+        </button>
+        </form>
     </div>
 </div>
 </body>

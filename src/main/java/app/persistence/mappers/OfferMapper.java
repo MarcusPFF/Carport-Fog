@@ -80,7 +80,6 @@ public class OfferMapper {
         }
     }
 
-//todo lav test til alle metoder under denne kommentar så du sikker på de faktisk virker
     public static int getWoodLengthFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
         String sql = "SELECT wood_length FROM wood_dimensions WHERE wood_dimension_id = ?;";
         int woodLengthInCm;
@@ -680,5 +679,7 @@ public class OfferMapper {
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");
         }
-    }
+
+    
+
 }

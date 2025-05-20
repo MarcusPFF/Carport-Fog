@@ -3,9 +3,12 @@
 <title>!Fog</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/index-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/quick-byg-contact-information-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<script th:src="@{/js/check-box-action-listener.js}"></script>
+<script th:src="@{/js/go-back-action-listener.js}"></script>
 </head>
+
 
 <body>
 <header class="header">
@@ -27,6 +30,7 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
+
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
@@ -49,6 +53,8 @@
                     </nav>
                 </div>
             </div>
+
+
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -71,27 +77,59 @@
         </div>
     </div>
 </header>
+
+
 <div class="main">
+    <div class="side-menu">
+        <ul>
+            <li>Din Carport</li>
+            <li>》 Kontaktoplysninger</li>
+            <li>Bekræftelse</li>
+        </ul>
+    </div>
     <div class="wrapper">
-        <div class="title-box">
-            <h1>!Fog (temp)</h1>
+        <div class="progress-bar">
+            <div class="progress-step">Din Carport</div>
+            <div class="progress-step active">Kontaktoplysninger</div>
+            <div class="progress-step">Bekræftelse</div>
         </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
+        <div class="title-box">
+            <h1>
+                Kontaktoplysninger
+            </h1>
+        </div>
+
+        <div class="information-fields">
+            <form action="/contact-information" method="post">
+                <div class="form-grid">
+                    <input type="text" name="firstname" placeholder="Fornavn" th:value="${firstname}" required>
+                    <input type="text" name="lastname" placeholder="Efternavn" th:value="${lastname}" required>
+                    <input type="text" name="address" placeholder="Adresse" th:value="${address}" required>
+                    <input type="text" name="zipcode" placeholder="Postnummer" th:value="${zipcode}" required>
+                    <input type="text" name="city" placeholder="By" th:value="${city}" required>
+                    <input type="tel" name="phone" placeholder="Telefonnummer" pattern="\d{8}" th:value="${phone}" required title="Telefonnummer skal være præcis 8 cifre">
+
+                    <input type="email" name="email" class="email-input" placeholder="Email" th:value="${email}" required>
+                </div>
+
+                <label class="checkbox-label">
+                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox" th:checked="${samtykke} ? true : false" required title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
+                    Kontakt Samtykke
+                    <p class="checkbox-description">
+                        !Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg
+                        carport.
+                    </p>
+                </label>
+                <button type="submit" class="next-page-button" name="nextPageButton">
+                    Næste →
+                </button>
+                <button type="button" class="former-page-button" onclick="goToQuickByg()">
+                    ← Tilbage
+                </button>
             </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <form method="get" th:action="@{/seller-admin-login}">
-                <button class="sales-men-button" type="submit">Sælger</button>
-            </form>
-            </div>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>
