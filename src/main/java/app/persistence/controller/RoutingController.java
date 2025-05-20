@@ -265,8 +265,7 @@ public class RoutingController {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
-        int offerId = app.persistence.mappers.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);
-        ;
+        int offerId = app.persistence.mappers.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);;
         setOfferId(offerId);
         ctx.render("/quick-byg-mail-sent.html");
         String searchForOfferLink = "becontactedbyaseller.com";
@@ -297,15 +296,15 @@ public class RoutingController {
         return ctx.sessionAttribute("lastname");
     }
 
-    public static String getStreetName(Context ctx) {
+    public static String getCustomerStreetName(Context ctx) {
         return ctx.sessionAttribute("adresse");
     }
 
-    public static int getHouseNumber(Context ctx) {
+    public static int getCustomerHouseNumber(Context ctx) {
         return ctx.sessionAttribute("housenumber");
     }
 
-    public static String getZipcode(Context ctx) {
+    public static String getCustomerZipCode(Context ctx) {
         return ctx.sessionAttribute("zipcode");
     }
 
@@ -357,9 +356,5 @@ public class RoutingController {
             return ctx.sessionAttribute("redskabsrumDoors");
         }
         return 0;
-    }
-
-    public static void offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int customerPhoneNumber, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
-        System.out.println("hej");
     }
 }
