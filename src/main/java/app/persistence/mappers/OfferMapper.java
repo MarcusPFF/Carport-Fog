@@ -1,9 +1,13 @@
 package app.persistence.mappers;
 
-import app.persistence.connection.ConnectionPool;
+import app.entities.CustomerInformation;
 import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class OfferMapper {
 
@@ -72,20 +76,29 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Database error while fetching dimension ID: ");
         }
     }
+
     public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
         return 1;
     }
+
     //TEST KODE SOM MIDLERTIDIGT ER HER, Kan ikke fjernes
-    public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId){
+    public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId) {
         return 999.99F;
     }
 
-    public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId){
+    public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId) {
         return "test@kunde.dk";
     }
 
-    public static String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId){
+    public static String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId) {
         return "sellersatjohannesfog@gmail.com";
     }
 
+    public static CustomerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        return new CustomerInformation("testMail@test", "firstName", "lastName", "streetName" , 25, 3000, "Helsingør", 40404040);
+    }
+
+    public static int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int customerPhoneNumber, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
+        return 1;
+    }
 }

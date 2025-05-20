@@ -1,5 +1,7 @@
 package app.persistence.controller;
 
+import app.entities.CustomerInformation;
+import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.SVGgenerator;
 import app.persistence.mappers.OfferMapper;
@@ -95,13 +97,16 @@ public class RoutingController {
         ctx.render("/final-accept-offer.html");
     }
 
-    public static void handleFinalAcceptOfferPage(Context ctx) {
+    public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
+        int offerId = getOfferId();
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
             ctx.sessionAttribute("offerDenied", false);
             try {
-                mailSender.sendSecondMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+                mailSender.sendSellerMailAccept(sellerMail, customerInformation);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -120,20 +125,12 @@ public class RoutingController {
         ctx.render("/accept-offer.html");
     }
 
-    public static void handleAcceptOfferPage(Context ctx) {
-        String offerIdStr = ctx.sessionAttribute("offerId");
-
+    public static void handleAcceptOfferPage(Context ctx) throws DatabaseException {
+        int offerId = getOfferId();
         try {
-            int offerId = Integer.parseInt(offerIdStr);
-            String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
-
             float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
-            String email = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, offerId);
-            ctx.sessionAttribute("email", email);
-
             if (salesPriceFromOfferId > 0.1) {
                 ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
-                mailSender.sendSellerMail(sellerMail, getCustomerFirstName(ctx), getCustomerEmail(ctx), getCustomerTelephoneNumber(ctx), offerIdStr);
                 showFinalAcceptOfferPage(ctx);
             } else {
                 ctx.status(400);
@@ -144,19 +141,20 @@ public class RoutingController {
             ctx.status(400);
             ctx.attribute("errorMessage", "Tilbudsnummeret er ugyldigt.");
             ctx.render("accept-offer.html");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
     public static void showSellerContactPage(Context ctx) {
-        String offerId = ctx.sessionAttribute("offerId");
         ctx.render("/seller-contact.html");
     }
 
-    public static void handleSellerContactPage(Context ctx) {
-        String offerId = ctx.formParam("offerId");
-        ctx.sessionAttribute("offerId", offerId);
+    public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
+        int offerId = getOfferId();
+        String acceptOfferTempLink = "acceptoffertemplink.com";
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
+        mailSender.sendSellerMailContact(sellerMail, customerInformation);
         showIndexPage(ctx);
     }
 
@@ -260,10 +258,14 @@ public class RoutingController {
     public static void handleMailSentPage(Context ctx) {
     }
 
-    public static void showMailSentPage(Context ctx) {
+    public static void showMailSentPage(Context ctx) throws DatabaseException {
         ctx.render("/quick-byg-mail-sent.html");
+        String searchForOfferLink = "templink.com";
+        //Det her skal laves om til at tage imod session attributes på de forskellige lænder (BLOT TEST DATA)
+        int offerId = getOfferId();
+        float salesPrice = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
         try {
-            mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+            mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), salesPrice, offerId, searchForOfferLink);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -294,5 +296,10 @@ public class RoutingController {
     public static int getSellerCode() {
         //very secret
         return 1111;
+    }
+
+    public static int getOfferId() throws DatabaseException {
+        int offerId = OfferMapper.offerCalculator(connectionPool, 600, 300, 250, 200, 200, 1, "testkunde@example.com", "Anders", "Andersen", "Testvej", 12, 8000, 12345678, 109, "Plasttrapez Klar", 100, 5);
+        return offerId;
     }
 }
