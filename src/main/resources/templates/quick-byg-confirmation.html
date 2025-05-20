@@ -99,12 +99,17 @@
 
         <ul class="confirmation-list">
             <b>Her er dine valgte mål til din carport:</b>
-            <li></li>
             <li>Længde: <span th:text="${carportLength + ' cm'}">[mangler længde]</span></li>
             <li>Bredde: <span th:text="${carportWidth + ' cm'}">[mangler bredde]</span></li>
             <li>Tagtype: <span th:text="${carportTrapezRoof}">[mangler tagtype]</span></li>
-            <li th:if="${redskabsrumCheckbox}">
+
+            <li>
                 Redskabsrum:
+                <span th:if="${redskabsrumCheckbox}">Ja</span>
+                <span th:unless="${redskabsrumCheckbox}">Nej</span>
+            </li>
+
+            <li th:if="${redskabsrumCheckbox}">
                 <ul>
                     <li>Længde: <span th:text="${redskabsrumLength + ' cm'}">[mangler længde]</span></li>
                     <li>Bredde: <span th:text="${redskabsrumWidth + ' cm'}">[mangler bredde]</span></li>

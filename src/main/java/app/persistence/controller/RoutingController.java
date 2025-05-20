@@ -162,49 +162,56 @@ public class RoutingController {
     }
 
     private static void handleQuickBygPage(Context ctx) {
-        if (ctx.formParam("carportWidth") != null) {
-            int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
-            int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
-            String carportTrapezRoof = ctx.formParam("carportTrapezroof");
-            boolean redskabsrumCheckbox = ctx.formParam("redskabsrumCheckbox") != null;
-            int redskabsrumLength = Integer.parseInt(ctx.formParam("redskabsrumLength"));
-            int redskabsrumWidth = Integer.parseInt(ctx.formParam("redskabsrumWidth"));
-            int redskabsrumDoors = Integer.parseInt(ctx.formParam("redskabsrumDoors"));
+        String widthStr = ctx.formParam("carportWidth");
+        String lengthStr = ctx.formParam("carportLength");
+        String roofStr = ctx.formParam("carportTrapezroof");
+        String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
+        String shedLenStr = ctx.formParam("redskabsrumLength");
+        String shedWidStr = ctx.formParam("redskabsrumWidth");
+        String shedDoorsStr = ctx.formParam("redskabsrumDoors");
 
-            ctx.sessionAttribute("carportWidth", carportWidth);
-            ctx.sessionAttribute("carportLength", carportLength);
-            ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
-            ctx.sessionAttribute("redskabsrumCheckbox", redskabsrumCheckbox);
-            ctx.sessionAttribute("redskabsrumLength", redskabsrumLength);
-            ctx.sessionAttribute("redskabsrumWidth", redskabsrumWidth);
-            ctx.sessionAttribute("redskabsrumDoors", redskabsrumDoors);
+        int carportWidth = 0;
+        int carportLength = 0;
+        String carportTrapezRoof = "";
+        boolean hasShed = false;
+        int shedLen = 0;
+        int shedWid = 0;
+        int shedDoors = 0;
+
+        if (widthStr != null && !widthStr.isEmpty()) {
+            carportWidth = Integer.parseInt(widthStr);
         }
+        if (lengthStr != null && !lengthStr.isEmpty()) {
+            carportLength = Integer.parseInt(lengthStr);
+        }
+        if (roofStr != null) {
+            carportTrapezRoof = roofStr;
+        }
+        if (shedCheckbox != null) {
+            hasShed = true;
+            if (shedLenStr != null && !shedLenStr.isEmpty()) {
+                shedLen = Integer.parseInt(shedLenStr);
+            }
+            if (shedWidStr != null && !shedWidStr.isEmpty()) {
+                shedWid = Integer.parseInt(shedWidStr);
+            }
+            if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
+                shedDoors = Integer.parseInt(shedDoorsStr);
+            }
+        }
+        ctx.sessionAttribute("carportWidth", carportWidth);
+        ctx.sessionAttribute("carportLength", carportLength);
+        ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
+        ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
+        ctx.sessionAttribute("redskabsrumLength", shedLen);
+        ctx.sessionAttribute("redskabsrumWidth", shedWid);
+        ctx.sessionAttribute("redskabsrumDoors", shedDoors);
+
         ctx.render("/quick-byg-contact-information.html");
     }
 
     private static void showQuickBygPage(Context ctx) {
-        if (ctx.sessionAttribute("carportWidth") != null) {
-            ctx.attribute("carportWidth", ctx.sessionAttribute("carportWidth"));
-        }
-        if (ctx.sessionAttribute("carportLength") != null) {
-            ctx.attribute("carportLength", ctx.sessionAttribute("carportLength"));
-        }
-        if (ctx.sessionAttribute("carportTrapezRoof") != null) {
-            ctx.attribute("carportTrapezRoof", ctx.sessionAttribute("carportTrapezRoof"));
-        }
-        if (ctx.sessionAttribute("redskabsrumCheckbox") != null) {
-            ctx.attribute("redskabsrumCheckbox", ctx.sessionAttribute("redskabsrumCheckbox"));
-        }
-        if (ctx.sessionAttribute("redskabsrumLength") != null) {
-            ctx.attribute("redskabsrumLength", ctx.sessionAttribute("redskabsrumLength"));
-        }
-        if (ctx.sessionAttribute("redskabsrumWidth") != null) {
-            ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
-        }
-        if (ctx.sessionAttribute("redskabsrumDoors") !=null) {
-            ctx.attribute("redskabsrumDoors", ctx.sessionAttribute("redskabsrumDoors"));
-        }
-
+        carportAttributes(ctx);
         ctx.render("/quick-byg.html");
     }
 
@@ -247,14 +254,7 @@ public class RoutingController {
     }
 
     public static void showConfirmationPage(Context ctx) {
-        ctx.attribute("carportWidth", ctx.sessionAttribute("carportWidth"));
-        ctx.attribute("carportLength", ctx.sessionAttribute("carportLength"));
-        ctx.attribute("carportTrapezRoof", ctx.sessionAttribute("carportTrapezRoof"));
-        ctx.attribute("redskabsrumCheckbox", ctx.sessionAttribute("redskabsrumCheckbox"));
-        ctx.attribute("redskabsrumLength", ctx.sessionAttribute("redskabsrumLength"));
-        ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
-        ctx.attribute("redskabsrumDoors", ctx.sessionAttribute("redskabsrumDoors"));
-
+        carportAttributes(ctx);
         ctx.render("/quick-byg-confirmation.html");
     }
 
@@ -263,11 +263,21 @@ public class RoutingController {
 
     public static void showMailSentPage(Context ctx) {
         ctx.render("/quick-byg-mail-sent.html");
-        try  {
+        try {
             mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void carportAttributes(Context ctx) {
+        ctx.attribute("carportWidth", ctx.sessionAttribute("carportWidth"));
+        ctx.attribute("carportLength", ctx.sessionAttribute("carportLength"));
+        ctx.attribute("carportTrapezRoof", ctx.sessionAttribute("carportTrapezRoof"));
+        ctx.attribute("redskabsrumCheckbox", ctx.sessionAttribute("redskabsrumCheckbox"));
+        ctx.attribute("redskabsrumLength", ctx.sessionAttribute("redskabsrumLength"));
+        ctx.attribute("redskabsrumWidth", ctx.sessionAttribute("redskabsrumWidth"));
+        ctx.attribute("redskabsrumDoors", ctx.sessionAttribute("redskabsrumDoors"));
     }
 
     public static String getCustomerFirstName(Context ctx) {
