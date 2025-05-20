@@ -26,9 +26,6 @@ public class MailSender {
 
         Personalization personalization = new Personalization();
 
-        //Her skal man indsætte værdier som man kan bruge i mailen. F.eks.
-        //Hej {name} !
-        //Her skal vi hente sessionattributes ind, så vi kan bruge dem som en værdi
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
         personalization.addDynamicTemplateData("salesPrice", salesPrice);
@@ -182,7 +179,7 @@ public class MailSender {
         try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
-            mail.templateId = "6c551c3b0c3d406f9d53dd37e1a954a9";
+            mail.templateId = "d-6c551c3b0c3d406f9d53dd37e1a954a9";
             request.setBody(mail.build());
             Response response = sg.api(request);
             System.out.println(response.getStatusCode());

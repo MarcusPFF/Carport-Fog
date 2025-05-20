@@ -20,6 +20,7 @@ public class RoutingController {
     private static PriceAndMaterialMapper priceAndMaterialMapper = new PriceAndMaterialMapper();
     private static MailSender mailSender = new MailSender();
     private static SVGgenerator svgGenerator = new SVGgenerator();
+    private int offerId;
 
     public static void routes(Javalin app) {
         //skabelon
@@ -98,7 +99,6 @@ public class RoutingController {
     }
 
     public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
-        int offerId = getOfferId();
         CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
         String action = ctx.formParam("action");
@@ -126,7 +126,6 @@ public class RoutingController {
     }
 
     public static void handleAcceptOfferPage(Context ctx) throws DatabaseException {
-        int offerId = getOfferId();
         try {
             float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
             if (salesPriceFromOfferId > 0.1) {
@@ -149,7 +148,6 @@ public class RoutingController {
     }
 
     public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
-        int offerId = getOfferId();
         String acceptOfferTempLink = "acceptoffertemplink.com";
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
         CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
@@ -161,18 +159,18 @@ public class RoutingController {
     private static void handleQuickBygPage(Context ctx) {
         String widthStr = ctx.formParam("carportWidth");
         String lengthStr = ctx.formParam("carportLength");
-        String roofStr = ctx.formParam("carportTrapezroof");
+        String roofStr = ctx.formParam("carportTrapezRoof");
         String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
-        String shedLenStr = ctx.formParam("redskabsrumLength");
-        String shedWidStr = ctx.formParam("redskabsrumWidth");
+        String shedLengthStr = ctx.formParam("redskabsrumLength");
+        String shedWidthStr = ctx.formParam("redskabsrumWidth");
         String shedDoorsStr = ctx.formParam("redskabsrumDoors");
 
         int carportWidth = 0;
         int carportLength = 0;
         String carportTrapezRoof = "";
         boolean hasShed = false;
-        int shedLen = 0;
-        int shedWid = 0;
+        int shedLength = 0;
+        int shedWidth = 0;
         int shedDoors = 0;
 
         if (widthStr != null && !widthStr.isEmpty()) {
@@ -186,11 +184,11 @@ public class RoutingController {
         }
         if (shedCheckbox != null) {
             hasShed = true;
-            if (shedLenStr != null && !shedLenStr.isEmpty()) {
-                shedLen = Integer.parseInt(shedLenStr);
+            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
+                shedLength = Integer.parseInt(shedLengthStr);
             }
-            if (shedWidStr != null && !shedWidStr.isEmpty()) {
-                shedWid = Integer.parseInt(shedWidStr);
+            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
+                shedWidth = Integer.parseInt(shedWidthStr);
             }
             if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
                 shedDoors = Integer.parseInt(shedDoorsStr);
@@ -200,8 +198,8 @@ public class RoutingController {
         ctx.sessionAttribute("carportLength", carportLength);
         ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
         ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
-        ctx.sessionAttribute("redskabsrumLength", shedLen);
-        ctx.sessionAttribute("redskabsrumWidth", shedWid);
+        ctx.sessionAttribute("redskabsrumLength", shedLength);
+        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
         ctx.sessionAttribute("redskabsrumDoors", shedDoors);
 
         ctx.render("/quick-byg-contact-information.html");
@@ -227,8 +225,8 @@ public class RoutingController {
         ctx.sessionAttribute("lastname", lastname);
         ctx.sessionAttribute("address", address);
         ctx.sessionAttribute("zipcode", zipcode);
-        ctx.sessionAttribute("city", city);
-        ctx.sessionAttribute("phone", phone);
+        ctx.sessionAttribute("housenumber", housenumber);
+        ctx.sessionAttribute("phonenumber", phone);
         ctx.sessionAttribute("email", email);
 
         ctx.redirect("/confirmation");
@@ -259,10 +257,11 @@ public class RoutingController {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
+        offerId = app.persistence.mappers.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx), getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5); ;
+
         ctx.render("/quick-byg-mail-sent.html");
-        String searchForOfferLink = "templink.com";
-        //Det her skal laves om til at tage imod session attributes på de forskellige lænder (BLOT TEST DATA)
-        int offerId = getOfferId();
+        String searchForOfferLink = "becontactedbyaseller.com";
+
         float salesPrice = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
         try {
             mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), salesPrice, offerId, searchForOfferLink);
@@ -285,12 +284,28 @@ public class RoutingController {
         return ctx.sessionAttribute("firstname");
     }
 
+    public static String getCustomerLastName(Context ctx) {
+        return ctx.sessionAttribute("lastname");
+    }
+
+    public static String getStreetName(Context ctx) {
+        return ctx.sessionAttribute("adresse");
+    }
+
+    public static int getHouseNumber(Context ctx) {
+        return ctx.sessionAttribute("housenumber");
+    }
+
+    public static String getZipcode(Context ctx) {
+        return ctx.sessionAttribute("zipcode");
+    }
+
     public static String getCustomerEmail(Context ctx) {
         return ctx.sessionAttribute("email");
     }
 
-    public static String getCustomerTelephoneNumber(Context ctx) {
-        return ctx.sessionAttribute("telephone");
+    public static String getCustomerPhoneNumber(Context ctx) {
+        return ctx.sessionAttribute("phonenumber");
     }
 
     public static int getSellerCode() {
@@ -298,8 +313,40 @@ public class RoutingController {
         return 1111;
     }
 
-    public static int getOfferId() throws DatabaseException {
-        int offerId = OfferMapper.offerCalculator(connectionPool, 600, 300, 250, 200, 200, 1, "testkunde@example.com", "Anders", "Andersen", "Testvej", 12, 8000, 12345678, 109, "Plasttrapez Klar", 100, 5);
-        return offerId;
+    public static int getCarportWidth(Context ctx) {
+        return ctx.sessionAttribute("carportWidth");
+    }
+
+    public static int getCarportLength(Context ctx) {
+        return ctx.sessionAttribute("carportLength");
+    }
+
+    public static String getCarportTrapezRoof(Context ctx) {
+        return ctx.sessionAttribute("carportTrapezRoof");
+    }
+
+    public static Boolean getShedCheckbox(Context ctx) {
+        return ctx.sessionAttribute("redskabsrumCheckbox");
+    }
+
+    public static int getShedLength(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumLength");
+        }
+        return 0;
+    }
+
+    public static int getShedWidth(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumWidth");
+        }
+        return 0;
+    }
+
+    public static int getShedDoors(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumDoors");
+        }
+        return 0;
     }
 }
