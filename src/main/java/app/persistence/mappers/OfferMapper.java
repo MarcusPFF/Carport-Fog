@@ -662,6 +662,7 @@ public class OfferMapper {
         }
     }
 
+
     public static boolean deleteWoodListByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "DELETE FROM wood_list WHERE offer_id = ?;";
 
