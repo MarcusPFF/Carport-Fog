@@ -27,8 +27,9 @@ public class MailSender {
         //Her skal vi hente sessionattributes ind, så vi kan bruge dem som en værdi
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
-        personalization.addDynamicTemplateData("email", email);
-
+       // personalization.addDynamicTemplateData("price", price);
+      //  personalization.addDynamicTemplateData("offerId", offerId);
+        //personalization.addDynamicTemplateData("offerIdLink", offerIdLink);
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 

@@ -98,7 +98,7 @@
         <div class="carport-dropdown-menus">
             <form method="post" th:action="@{/quickByg}">
                 <p>Carport bredde</p>
-                <select name="carportWidth">
+                <select name="carportWidth" required>
                     <option value="">Vælg Bredde</option>
                     <th:block th:each="width : ${#numbers.sequence(240, 600, 30)}">
                         <option th:value="${width}"
@@ -108,7 +108,7 @@
                 </select>
 
                 <p>Carport længde</p>
-                <select name="carportLength">
+                <select name="carportLength" required>
                     <option value="">Vælg Længde</option>
                     <th:block th:each="length : ${#numbers.sequence(240, 780, 30)}">
                         <option th:value="${length}"
@@ -120,7 +120,7 @@
                 </select>
 
                 <p>Carport trapeztag</p>
-                <select name="carportTrapezroof">
+                <select name="carportTrapezroof" required>
                     <option value="">Vælg Tagplader</option>
                     <option value="Plastmo Ecolite blåtonet"
                             th:selected="${carportTrapezRoof == 'Plastmo Ecolite blåtonet'}">Plastmo Ecolite blåtonet</option>
