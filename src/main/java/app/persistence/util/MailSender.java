@@ -2,6 +2,7 @@ package app.persistence.util;
 
 import app.entities.CustomerInformation;
 import app.exceptions.DatabaseException;
+import app.persistence.controller.RoutingController;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -10,10 +11,11 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
+import javax.management.relation.RoleUnresolved;
 import java.io.IOException;
 
 public class MailSender {
-    private int offerId = 0;
+    private static RoutingController routingController = new RoutingController();
 
     public void sendFirstMail(String to, String name, float salesPrice, int offerId, String searchForOfferLink) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
@@ -63,11 +65,8 @@ public class MailSender {
 
         String to = customerInformation.getCustomerMail();
         String name = customerInformation.getFirstName();
-        try {
-            offerId = app.persistence.controller.RoutingController.getOfferId();
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
+        int offerId = routingController.getOfferId();
+
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
@@ -113,11 +112,8 @@ public class MailSender {
         String city = customerInformation.getCity();
         int phoneNumber = customerInformation.getPhoneNumber();
         int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
-        try {
-            offerId = app.persistence.controller.RoutingController.getOfferId();
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
+        int offerId = routingController.getOfferId();
+
         personalization.addTo(new Email(to));
         mail.addPersonalization(personalization);
         personalization.addDynamicTemplateData("customerEmail", customerEmail);
@@ -159,11 +155,8 @@ public class MailSender {
         String customerEmail = customerInformation.getCustomerMail();
         String firstName = customerInformation.getFirstName();
         int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
-        try {
-            offerId = app.persistence.controller.RoutingController.getOfferId();
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
+        int offerId = routingController.getOfferId();
+
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(to));
         mail.addPersonalization(personalization);
