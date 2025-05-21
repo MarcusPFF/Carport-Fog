@@ -37,10 +37,6 @@ public class PoleCalculator {
         widthAmount = poleAmountYCalculator(carportWidthInCm);
         shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
 
-        System.out.println(lengthAmount);
-        System.out.println(widthAmount);
-        System.out.println(shedAmount);
-
         amount = (lengthAmount * widthAmount) + shedAmount;
         digDepthOfPoleInCm = 90;
         poleLengthInCm = digDepthOfPoleInCm + carportHeightInCm;

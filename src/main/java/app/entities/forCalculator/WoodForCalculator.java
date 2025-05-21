@@ -82,9 +82,6 @@ public class WoodForCalculator {
         //Vandbrædder til siderne af carport. (regnes i stk)
         woodList.add(boardCalculator.dripCapForBoardSidesCalculator(connection, carportLengthInCm,"Bræt", "Trykimprægneret", 20, 100));
 
-        for (WoodForCalculator wood : woodList) {
-            System.out.println(wood.getWoodDimensionId());
-        }
 
         return woodList;
     }
