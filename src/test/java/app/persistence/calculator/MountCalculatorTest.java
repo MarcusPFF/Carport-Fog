@@ -1,7 +1,6 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.persistence.connection.ConnectionPool;
-import app.persistence.mappers.OfferMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

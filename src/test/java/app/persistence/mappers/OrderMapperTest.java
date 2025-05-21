@@ -167,7 +167,7 @@ class OrderMapperTest {
         // Arrange
         int testOrderId = 1;
         ArrayList<MountForCalculator> expectedMountList = new ArrayList<>();
-        expectedMountList.add(new MountForCalculator("Universal 190 mm højre", 10, 1, "Spær monterings beslag"));
+        expectedMountList.add(new MountForCalculator("Universalbeslag 190 mm højre", 10, 1, "Spær monterings beslag"));
         expectedMountList.add(new MountForCalculator("Firkantskiver 40 x 40 x 11 mm", 6, 3, "Firkantskive til montering af rem"));
         int positionInArray = 0;
         // Act

@@ -2,9 +2,9 @@ package app.persistence.controller;
 
 import app.entities.CustomerInformation;
 import app.exceptions.DatabaseException;
+import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.SVGgenerator;
-import app.persistence.Calculator.MaterialCalculator;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
@@ -21,6 +21,7 @@ public class RoutingController {
     private static PriceAndMaterialMapper priceAndMaterialMapper = new PriceAndMaterialMapper();
     private static MailSender mailSender = new MailSender();
     private static SVGgenerator svgGenerator = new SVGgenerator();
+    private static MaterialCalculator materialCalculator = new MaterialCalculator();
     private static int offerId;
 
     public static int getOfferId() {
@@ -100,6 +101,7 @@ public class RoutingController {
     }
 
     public static void showFinalAcceptOfferPage(Context ctx) {
+        ctx.sessionAttribute("offerId");
         Boolean denied = ctx.sessionAttribute("offerDenied");
         Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
         ctx.attribute("actionDenied", denied != null && denied);
@@ -124,8 +126,8 @@ public class RoutingController {
         } else if ("deny".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", false);
             ctx.sessionAttribute("offerDenied", true);
+            app.persistence.mappers.OfferMapper.deleteOfferAndEveryThinkLinkedToItByOfferId(connectionPool, getOfferId());
             ctx.sessionAttribute("offerId", null);
-            //Handlingskode her
 
         }
         ctx.redirect("/final-accept-offer");
@@ -144,6 +146,7 @@ public class RoutingController {
             } else {
                 ctx.status(400);
                 ctx.attribute("errorMessage", "Tilbud " + getOfferId() + " findes ikke.");
+                ctx.sessionAttribute("offerId", getOfferId());
                 ctx.render("accept-offer.html");
             }
         } catch (NumberFormatException e) {
@@ -223,20 +226,20 @@ public class RoutingController {
     public static void handleContactInformationPage(Context ctx) {
         String firstname = ctx.formParam("firstname");
         String lastname = ctx.formParam("lastname");
-        String address = ctx.formParam("address");
+        String streetname = ctx.formParam("streetname");
         int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
         int housenumber = Integer.parseInt(ctx.formParam("housenumber"));
-        String phone = ctx.formParam("phone");
+        int phonenumber = Integer.parseInt(ctx.formParam("phonenumber"));
         String email = ctx.formParam("email");
         boolean samtykke = ctx.formParam("samtykkeCheckbox") != null;
 
         ctx.sessionAttribute("samtykke", samtykke);
         ctx.sessionAttribute("firstname", firstname);
         ctx.sessionAttribute("lastname", lastname);
-        ctx.sessionAttribute("address", address);
+        ctx.sessionAttribute("streetname", streetname);
         ctx.sessionAttribute("zipcode", zipcode);
         ctx.sessionAttribute("housenumber", housenumber);
-        ctx.sessionAttribute("phonenumber", phone);
+        ctx.sessionAttribute("phonenumber", phonenumber);
         ctx.sessionAttribute("email", email);
 
         ctx.redirect("/confirmation");
@@ -245,7 +248,7 @@ public class RoutingController {
     public static void showContactInformationPage(Context ctx) {
         ctx.attribute("firstname", ctx.sessionAttribute("firstname"));
         ctx.attribute("lastname", ctx.sessionAttribute("lastname"));
-        ctx.attribute("address", ctx.sessionAttribute("address"));
+        ctx.attribute("streetname", ctx.sessionAttribute("streetname"));
         ctx.attribute("zipcode", ctx.sessionAttribute("zipcode"));
         ctx.attribute("housenumber", ctx.sessionAttribute("housenumber"));
         ctx.attribute("phone", ctx.sessionAttribute("phone"));
@@ -267,7 +270,8 @@ public class RoutingController {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
-        int offerId = app.persistence.calculator.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);;
+        int offerId = materialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);
+        ;
         setOfferId(offerId);
         ctx.render("/quick-byg-mail-sent.html");
         String searchForOfferLink = "becontactedbyaseller.com";
@@ -299,14 +303,14 @@ public class RoutingController {
     }
 
     public static String getCustomerStreetName(Context ctx) {
-        return ctx.sessionAttribute("adresse");
+        return ctx.sessionAttribute("streetname");
     }
 
     public static int getCustomerHouseNumber(Context ctx) {
         return ctx.sessionAttribute("housenumber");
     }
 
-    public static String getCustomerZipCode(Context ctx) {
+    public static int getCustomerZipCode(Context ctx) {
         return ctx.sessionAttribute("zipcode");
     }
 
@@ -314,7 +318,7 @@ public class RoutingController {
         return ctx.sessionAttribute("email");
     }
 
-    public static String getCustomerPhoneNumber(Context ctx) {
+    public static int getCustomerPhoneNumber(Context ctx) {
         return ctx.sessionAttribute("phonenumber");
     }
 

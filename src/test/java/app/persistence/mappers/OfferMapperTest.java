@@ -121,7 +121,7 @@ class OfferMapperTest {
     @Test
     void getMountIdFromMountName() throws SQLException, DatabaseException {
         //Arrange
-        String mountName = "Universal 190 mm højre";
+        String mountName = "Universalbeslag 190 mm højre";
         int expectedMountId = 1;
 
         //Act
@@ -269,7 +269,7 @@ class OfferMapperTest {
         int carpWidth = 300;
         int shedLength = 200;
         int shedWidth = 150;
-        String sql = "SELECT total_expenses_price, total_sales_price, expiration_date FROM test.offers WHERE offer_id = ?;";
+        String sql = "SELECT total_expense_price, total_sales_price, expiration_date FROM test.offers WHERE offer_id = ?;";
         LocalDate expectedExp = LocalDate.now().plusDays(7);
 
         //Act
@@ -282,7 +282,7 @@ class OfferMapperTest {
             ps.setInt(1, offerId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next(), "Kunne ikke finde det nye tilbud i DB");
-                assertEquals(expensePrice, rs.getFloat("total_expenses_price"), 0.001f);
+                assertEquals(expensePrice, rs.getFloat("total_expense_price"), 0.001f);
                 assertEquals(salesPrice, rs.getFloat("total_sales_price"), 0.001f);
                 assertEquals(Date.valueOf(expectedExp), rs.getDate("expiration_date"));
             }
@@ -390,7 +390,7 @@ class OfferMapperTest {
         //Arrange
         int offerId = 1;
         float newExpenses = 12345.67f;
-        String sql = "SELECT total_expenses_price FROM test.offers WHERE offer_id = ?;";
+        String sql = "SELECT total_expense_price FROM test.offers WHERE offer_id = ?;";
 
         //Act
         boolean ok = OfferMapper.updateTotalExpensesPrice(connectionPool, newExpenses, offerId);
@@ -402,7 +402,7 @@ class OfferMapperTest {
             ps.setInt(1, offerId);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(rs.next());
-                assertEquals(newExpenses, rs.getFloat("total_expenses_price"), 0.1f);
+                assertEquals(newExpenses, rs.getFloat("total_expense_price"), 0.1f);
             }
         }
     }

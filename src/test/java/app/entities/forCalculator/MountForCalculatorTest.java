@@ -1,8 +1,7 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.MountCalculator;
-import app.persistence.Calculator.ScrewCalculator;
+import app.persistence.calculator.MountCalculator;
 import app.persistence.connection.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -54,7 +53,7 @@ class MountForCalculatorTest {
         int carportWidth = 320;
         int expectedAmount = 11;
         int expectedRoofId = 2;
-        String mountName = "Universal 190 mm venstre";
+        String mountName = "Universalbeslag 190 mm venstre";
         String description = "Til montering af spær på rem.";
 
         // Act
@@ -73,7 +72,7 @@ class MountForCalculatorTest {
         int carportLength = 540;
         int expectedAmount = 10;
         int expectedRoofId = 1;
-        String mountName = "Universal 190 mm højre";
+        String mountName = "Universalbeslag 190 mm højre";
         String description = "Til montering af spær på rem.";
 
         // Act
@@ -153,7 +152,7 @@ class MountForCalculatorTest {
         int amountOfDoorsForShed = 2;
         int expectedAmount = 4;
         int expectedRoofId = 5;
-        String mountName = "T-hængsel 390 mm";
+        String mountName = "T-Hængsel 390 mm";
         String description = "Til skurets dør.";
 
         // Act

@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -6,7 +6,6 @@ import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
-import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
 import org.junit.jupiter.api.*;
 
@@ -51,7 +50,7 @@ class PriceCalculatorTest {
     void calculateTotalOfferSalesPrice() throws DatabaseException {
         //Arrange
         float expense = 100.0f;
-        float expected = 1500.0f;
+        float expected = 150.0f;
 
         //Act
         float actual = priceCalculator.calculateTotalOfferSalesPrice(connectionPool, expense);

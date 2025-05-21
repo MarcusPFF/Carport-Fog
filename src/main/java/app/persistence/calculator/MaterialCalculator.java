@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -9,16 +9,15 @@ import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ArrayList;
 
 public class MaterialCalculator {
-    private MountForCalculator mountForCalculator;
-    private RoofForCalculator roofForCalculator;
-    private ScrewForCalculator screwForCalculator;
-    private WoodForCalculator woodForCalculator;
-    private OfferMapper offerMapper;
-    private PriceCalculator priceCalculator;
+    private static MountForCalculator mountForCalculator;
+    private static RoofForCalculator roofForCalculator;
+    private static ScrewForCalculator screwForCalculator;
+    private static WoodForCalculator woodForCalculator;
+    private static OfferMapper offerMapper;
+    private static PriceCalculator priceCalculator;
 
     public MaterialCalculator() {
         mountForCalculator = new MountForCalculator();
@@ -29,7 +28,7 @@ public class MaterialCalculator {
         priceCalculator = new PriceCalculator();
     }
 
-    public int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int customerPhoneNumber, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
+    public static int offerCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int carportHeightInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForTheShed, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int customerPhoneNumber, int roofSheetWidthInCm, String roofName, int shedBoardWidthInMm, int amountOfSpareBoardsForShed) throws DatabaseException {
         ArrayList<MountForCalculator> mountList;
         ArrayList<RoofForCalculator> roofList;
         ArrayList<ScrewForCalculator> screwList;
