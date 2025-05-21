@@ -1,5 +1,8 @@
 package app.persistence.util;
 
+import app.entities.CustomerInformation;
+import app.exceptions.DatabaseException;
+import app.persistence.controller.RoutingController;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -8,10 +11,13 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
+import javax.management.relation.RoleUnresolved;
 import java.io.IOException;
 
 public class MailSender {
-    public void sendFirstMail(String to, String name, String email) throws IOException {
+    private static RoutingController routingController = new RoutingController();
+
+    public void sendFirstMail(String to, String name, float salesPrice, int offerId, String searchForOfferLink) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
 
@@ -22,14 +28,11 @@ public class MailSender {
 
         Personalization personalization = new Personalization();
 
-        //Her skal man indsætte værdier som man kan bruge i mailen. F.eks.
-        //Hej {name} !
-        //Her skal vi hente sessionattributes ind, så vi kan bruge dem som en værdi
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
-       // personalization.addDynamicTemplateData("price", price);
-      //  personalization.addDynamicTemplateData("offerId", offerId);
-        //personalization.addDynamicTemplateData("offerIdLink", offerIdLink);
+        personalization.addDynamicTemplateData("salesPrice", salesPrice);
+        personalization.addDynamicTemplateData("offerId", offerId);
+        personalization.addDynamicTemplateData("searchForOfferLink", searchForOfferLink);
         mail.addPersonalization(personalization);
         mail.addCategory("carportapp");
 
@@ -51,7 +54,7 @@ public class MailSender {
         }
     }
 
-    public void sendSecondMail(String to, String name, String email) throws IOException {
+    public void sendSecondMail(CustomerInformation customerInformation, String acceptOfferTempLink) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
 
@@ -60,14 +63,15 @@ public class MailSender {
 
         String API_KEY = System.getenv("SENDGRID_API_KEY");
 
-        Personalization personalization = new Personalization();
+        String to = customerInformation.getCustomerMail();
+        String name = customerInformation.getFirstName();
+        int offerId = routingController.getOfferId();
 
-        //Her skal man indsætte værdier som man kan bruge i mailen. F.eks.
-        //Hej {name} !
-        //Her skal vi hente sessionattributes ind, så vi kan bruge dem som en værdi
+        Personalization personalization = new Personalization();
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
-        personalization.addDynamicTemplateData("email", email);
+        personalization.addDynamicTemplateData("offerId", offerId);
+        personalization.addDynamicTemplateData("acceptOfferLink", acceptOfferTempLink);
 
         mail.addPersonalization(personalization);
 
@@ -91,38 +95,84 @@ public class MailSender {
         }
     }
 
-    public void sendSellerMail(String to, String customerName, String customerEmail, String customerTelephoneNumber, String customerOfferId) throws IOException {
+    public void sendSellerMailContact(String to, CustomerInformation customerInformation) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
-        int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
-
         Mail mail = new Mail();
         mail.setFrom(from);
-
         String API_KEY = System.getenv("SENDGRID_API_KEY");
-
         Personalization personalization = new Personalization();
 
-        //Her skal man indsætte værdier som man kan bruge i mailen. F.eks.
-        //Hej {name} !
-        //Her skal vi hente sessionattributes ind, så vi kan bruge dem som en værdi
+        String customerEmail = customerInformation.getCustomerMail();
+        String firstName = customerInformation.getFirstName();
+        String lastName = customerInformation.getLastName();
+        String streetName = customerInformation.getStreetName();
+        int houseNumber = customerInformation.getHouseNumber();
+        int zipCode = customerInformation.getZipCode();
+        String city = customerInformation.getCity();
+        int phoneNumber = customerInformation.getPhoneNumber();
+        int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
+        int offerId = routingController.getOfferId();
+
         personalization.addTo(new Email(to));
         mail.addPersonalization(personalization);
-        personalization.addDynamicTemplateData("customerName", customerName);
         personalization.addDynamicTemplateData("customerEmail", customerEmail);
-        personalization.addDynamicTemplateData("customerTelephoneNumber", customerTelephoneNumber);
-        personalization.addDynamicTemplateData("customerOfferid", customerOfferId);
+        personalization.addDynamicTemplateData("firstName", firstName);
+        personalization.addDynamicTemplateData("lastName", lastName);
+        personalization.addDynamicTemplateData("streetName", streetName);
+        personalization.addDynamicTemplateData("houseNumber", houseNumber);
+        personalization.addDynamicTemplateData("zipCode", zipCode);
+        personalization.addDynamicTemplateData("city", city);
+        personalization.addDynamicTemplateData("phoneNumber", phoneNumber);
         personalization.addDynamicTemplateData("sellerCode", sellerCode);
+        personalization.addDynamicTemplateData("offerId", offerId);
 
         mail.addCategory("carportapp");
-
         SendGrid sg = new SendGrid(API_KEY);
         Request request = new Request();
         try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
-
             mail.templateId = "d-fd3f5e09f2804d1a8c911d6eb8ab2c25";
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            System.out.println("Error sending mail 3");
+            throw ex;
+        }
+    }
+
+    public void sendSellerMailAccept(String to, CustomerInformation customerInformation) throws IOException {
+        Email from = new Email("no-reply@marcuspff.com");
+        from.setName("!Johannes Fog - Team");
+        Mail mail = new Mail();
+        mail.setFrom(from);
+        String API_KEY = System.getenv("SENDGRID_API_KEY");
+
+        String customerEmail = customerInformation.getCustomerMail();
+        String firstName = customerInformation.getFirstName();
+        int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
+        int offerId = routingController.getOfferId();
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(new Email(to));
+        mail.addPersonalization(personalization);
+        personalization.addDynamicTemplateData("customerEmail", customerEmail);
+        personalization.addDynamicTemplateData("firstName", firstName);
+        personalization.addDynamicTemplateData("sellerCode", sellerCode);
+        personalization.addDynamicTemplateData("offerId", offerId);
+
+
+        mail.addCategory("carportapp");
+        SendGrid sg = new SendGrid(API_KEY);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            mail.templateId = "d-6c551c3b0c3d406f9d53dd37e1a954a9";
             request.setBody(mail.build());
             Response response = sg.api(request);
             System.out.println(response.getStatusCode());

@@ -1,9 +1,13 @@
 package app.persistence.mappers;
 
-import app.persistence.connection.ConnectionPool;
+import app.entities.CustomerInformation;
 import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class OfferMapper {
 
@@ -72,20 +76,4 @@ public class OfferMapper {
             throw new DatabaseException(ex, "Database error while fetching dimension ID: ");
         }
     }
-    public int getRoofIdFromRoofLength(ConnectionPool connection, int roofLengthInCm) {
-        return 1;
-    }
-    //TEST KODE SOM MIDLERTIDIGT ER HER, Kan ikke fjernes
-    public static float getSalesPriceFromOfferId(ConnectionPool connection, int offerId){
-        return 999.99F;
-    }
-
-    public static String getCustomerMailFromOfferId(ConnectionPool connection, int offerId){
-        return "test@kunde.dk";
-    }
-
-    public static String getSellerMailFromOfferId(ConnectionPool connectionPool, int offerId){
-        return "sellersatjohannesfog@gmail.com";
-    }
-
 }
