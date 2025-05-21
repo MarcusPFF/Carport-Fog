@@ -7,6 +7,8 @@ import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
+
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -681,5 +683,4 @@ public class OfferMapper {
         }
 
     }
-
 }

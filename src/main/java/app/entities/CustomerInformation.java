@@ -20,6 +20,7 @@ public class CustomerInformation {
         this.city = city;
         this.phoneNumber = phoneNumber;
     }
+
     public String getCustomerMail() {
         return customerMail;
     }
@@ -91,9 +92,10 @@ public class CustomerInformation {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", streetName='" + streetName + '\'' +
-                ", houseNumber'=" + houseNumber + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", phoneNumber'=" + phoneNumber + '\'' +
+                ", houseNumber=" + houseNumber + '\'' +
+                ", zipCode=" + zipCode + '\'' +
+                ", city='" + city + '\'' +
+                ", phoneNumber=" + phoneNumber +
                 '}';
     }
 }

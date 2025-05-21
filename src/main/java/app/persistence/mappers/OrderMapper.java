@@ -15,7 +15,7 @@ public class OrderMapper {
 
     // This method is called when an offer is created
     // Status_id is always 1 when created
-    public boolean createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static boolean createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,CURRENT_DATE);";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class OrderMapper {
 
 
     //Orderfetcher
-    public Order getOrderDetailsFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+    public static Order getOrderDetailsFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
         String sql = "SELECT orders.order_id, orders.offer_id, orders.tracking_number, orders.purchase_date, status.status_description "
                 + "FROM orders "
                 + "JOIN status ON orders.status_id = status.status_id "
@@ -63,7 +63,7 @@ public class OrderMapper {
         }
     }
 
-    public UUID getTrackingNumberFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+    public static UUID getTrackingNumberFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
         String sql = "SELECT tracking_number FROM orders WHERE order_id = ?;";
 
         try (Connection connection = connectionPool.getConnection();
@@ -87,7 +87,7 @@ public class OrderMapper {
 
 
     //This method is used, when a customer has bought their product and needs to see the status.
-    public Status getStatusFromTrackingNumber(ConnectionPool connectionPool, UUID trackingNumber) throws DatabaseException {
+    public static Status getStatusFromTrackingNumber(ConnectionPool connectionPool, UUID trackingNumber) throws DatabaseException {
         String sql = "SELECT status.status_id, status.status_description, status.message_for_mail FROM orders orders " +
                     "JOIN status status ON orders.status_id = orders.status_id " +
                     "WHERE orders.tracking_number = ?";
