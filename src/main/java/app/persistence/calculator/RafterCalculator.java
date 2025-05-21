@@ -85,7 +85,7 @@ public class RafterCalculator {
             woodHeightInMm = 245;
         }
         else {
-            woodHeightInMm = 275;
+            woodHeightInMm = 270;
         }
 
         return woodHeightInMm;

@@ -90,7 +90,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Trykimprægneret";
         String expectedDescription = "Understernbrædder til for & bag ende.";
         int expectedAmountOne = 2;
-        int expectedDimensionId = 185;
+        int expectedDimensionId = 203;
         int expectedTreatmentId = 1;
         int expectedWoodTypeId = 5;
 
@@ -116,7 +116,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Trykimprægneret";
         String expectedDescription = "Understernbrædder til siderne.";
         int expectedAmountOne = 2;
-        int expectedDimensionId = 186;
+        int expectedDimensionId = 204;
         int expectedTreatmentId = 1;
         int expectedWoodTypeId = 5;
 
@@ -142,7 +142,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Trykimprægneret";
         String expectedDescription = "Oversternbrædder til forende.";
         int expectedAmountOne = 1;
-        int expectedDimensionId = 125;
+        int expectedDimensionId = 137;
         int expectedTreatmentId = 1;
         int expectedWoodTypeId = 5;
 
@@ -168,7 +168,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Trykimprægneret";
         String expectedDescription = "Oversternbrædder til siderne.";
         int expectedAmountOne = 2;
-        int expectedDimensionId = 126;
+        int expectedDimensionId = 138;
         int expectedTreatmentId = 1;
         int expectedWoodTypeId = 5;
 
@@ -248,7 +248,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Ubehandlet";
         String expectedDescription = "Løsholter til forside og bagside af skur (Skal skæres til).";
         int expectedAmountOne = 6;
-        int expectedDimensionId = 322;
+        int expectedDimensionId = 354;
         int expectedTreatmentId = 2;
         int expectedWoodTypeId = 3;
 
@@ -276,7 +276,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Ubehandlet";
         String expectedDescription = "Løsholter til siderne af skur (Skal skæres til).";
         int expectedAmountOne = 4;
-        int expectedDimensionId = 321;
+        int expectedDimensionId = 353;
         int expectedTreatmentId = 2;
         int expectedWoodTypeId = 3;
 
@@ -303,7 +303,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Ubehandlet";
         String expectedDescription = "Til z på bagside af dør.";
         int expectedAmountOne = 2;
-        int expectedDimensionId = 310;
+        int expectedDimensionId = 340;
         int expectedTreatmentId = 2;
         int expectedWoodTypeId = 2;
 
@@ -335,7 +335,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Trykimprægneret";
         String expectedDescription = "Stolper nedgraves 90-100 cm. i jord.";
         int expectedAmountOne = 8;
-        int expectedDimensionId = 926;
+        int expectedDimensionId = 1018;
         int expectedTreatmentId = 1;
         int expectedWoodTypeId = 4;
 
@@ -362,7 +362,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Ubehandlet";
         String expectedDescription = "Monteres på rem.";
         int expectedAmountOne = 6;
-        int expectedDimensionId = 365;
+        int expectedDimensionId = 401;
         int expectedTreatmentId = 2;
         int expectedWoodTypeId = 1;
 
@@ -387,7 +387,7 @@ class WoodForCalculatorTest {
         String woodTreatmentName = "Ubehandlet";
         String expectedDescription = "Remme, sadles ned i stolper.";
         int expectedAmountOne = 3;
-        int expectedDimensionId = 366;
+        int expectedDimensionId = 402;
         int expectedTreatmentId = 2;
         int expectedWoodTypeId = 1;
 
