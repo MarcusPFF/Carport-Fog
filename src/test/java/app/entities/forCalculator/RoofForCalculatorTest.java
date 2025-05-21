@@ -1,9 +1,8 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.RoofCalculator;
+import app.persistence.calculator.RoofCalculator;
 import app.persistence.connection.ConnectionPool;
-import app.persistence.mappers.OfferMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

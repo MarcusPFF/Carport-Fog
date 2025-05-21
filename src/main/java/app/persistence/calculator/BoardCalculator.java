@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
@@ -150,7 +150,7 @@ public class BoardCalculator {
         return boardAmount;
     }
 
-    public int  totalFasciaAndBargeBoardAndDripCapLengthCalculator(int carportLengthInCm, int carportWidthInCm) {
+    public int totalFasciaAndBargeBoardAndDripCapLengthCalculator(int carportLengthInCm, int carportWidthInCm) {
         int lengthOfFasciaBoardFrontAndBack;
         int lengthOfFasciaBoardSides;
         int lengthOfBargeBoardFront;

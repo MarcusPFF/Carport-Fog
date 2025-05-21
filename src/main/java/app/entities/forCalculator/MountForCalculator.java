@@ -1,7 +1,7 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.MountCalculator;
+import app.persistence.calculator.MountCalculator;
 import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;

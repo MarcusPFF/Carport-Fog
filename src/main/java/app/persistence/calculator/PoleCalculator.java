@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;

@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.MountForCalculator;
 import app.exceptions.DatabaseException;

@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -8,7 +8,6 @@ import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 

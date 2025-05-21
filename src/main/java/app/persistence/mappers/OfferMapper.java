@@ -682,4 +682,4 @@ public class OfferMapper {
         }
     }
 }
-}
+

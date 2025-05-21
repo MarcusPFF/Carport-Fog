@@ -1,10 +1,10 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.BoardCalculator;
-import app.persistence.Calculator.NoggingCalculator;
-import app.persistence.Calculator.PoleCalculator;
-import app.persistence.Calculator.RafterCalculator;
+import app.persistence.calculator.BoardCalculator;
+import app.persistence.calculator.NoggingCalculator;
+import app.persistence.calculator.PoleCalculator;
+import app.persistence.calculator.RafterCalculator;
 import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;

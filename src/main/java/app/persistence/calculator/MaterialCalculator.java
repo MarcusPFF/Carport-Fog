@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -9,7 +9,6 @@ import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ArrayList;
 
 public class MaterialCalculator {

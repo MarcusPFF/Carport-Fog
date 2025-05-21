@@ -1,8 +1,7 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.RoofCalculator;
-import app.persistence.Calculator.ScrewCalculator;
+import app.persistence.calculator.ScrewCalculator;
 import app.persistence.connection.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
