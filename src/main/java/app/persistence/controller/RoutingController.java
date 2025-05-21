@@ -1,15 +1,18 @@
 package app.persistence.controller;
 
 import app.persistence.connection.ConnectionPool;
-import app.persistence.documentCreation.SVGgenerator;
+import app.persistence.documentCreation.CarportSvg;
+import app.persistence.documentCreation.Svg;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import app.persistence.documentCreation.Svg;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -17,7 +20,6 @@ public class RoutingController {
     private static OrderMapper orderMapper = new OrderMapper();
     private static PriceAndMaterialMapper priceAndMaterialMapper = new PriceAndMaterialMapper();
     private static MailSender mailSender = new MailSender();
-    private static SVGgenerator svgGenerator = new SVGgenerator();
 
     public static void routes(Javalin app) {
         //skabelon
@@ -48,6 +50,8 @@ public class RoutingController {
         app.post("/confirmation", ctx -> handleConfirmationPage(ctx));
 
         app.get("/mail-sent", ctx -> showMailSentPage(ctx));
+
+        app.get("/svg-drawing", ctx -> showSvgDrawingPage(ctx));
     }
 
     private static void handleIndexPage(Context ctx) {
@@ -295,4 +299,25 @@ public class RoutingController {
         //very secret
         return 1111;
     }
+
+    public static void showSvgDrawingPage(Context ctx) {
+        Locale.setDefault(new Locale("US"));
+
+        int ekstraMargin = 60;
+        int carportWidth = 780;
+        int carportHeight = 600;
+
+        int svgWidth = carportWidth + ekstraMargin;
+        int svgHeight = carportHeight + ekstraMargin;
+
+        // Selve tegningen laves her
+        CarportSvg svg = new CarportSvg(carportWidth, carportHeight);
+
+        // Brug præcis samme viewBox og størrelse til canvas
+        Svg carportSvg = new Svg(0, 0, "0 0 " + svgWidth + " " + svgHeight, svgWidth + "px", svgHeight + "px");
+
+        ctx.attribute("svg", svg.toString());
+        ctx.render("svg-drawing");
+    }
+
 }
