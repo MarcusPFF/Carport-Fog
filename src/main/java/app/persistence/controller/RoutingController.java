@@ -4,6 +4,7 @@ import app.entities.CustomerInformation;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.SVGgenerator;
+import app.persistence.Calculator.MaterialCalculator;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
@@ -266,7 +267,7 @@ public class RoutingController {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
-        int offerId = app.persistence.mappers.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);;
+        int offerId = app.persistence.calculator.MaterialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);;
         setOfferId(offerId);
         ctx.render("/quick-byg-mail-sent.html");
         String searchForOfferLink = "becontactedbyaseller.com";
