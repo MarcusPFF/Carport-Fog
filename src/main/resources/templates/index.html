@@ -38,14 +38,14 @@
                 </label>
                 <div class="dropdown-wrapper">
                     <nav class="nav-menu">
-                        <a th:href="@{#}">Bolig & design</a>
-                        <a th:href="@{#}">Byggematerialer</a>
-                        <a th:href="@{#}">EL & belysning</a>
-                        <a th:href="@{#}">Have & fritid</a>
+                        <a th:href="@{#}">Bolig</a>
+                        <a th:href="@{#}">Materialer</a>
+                        <a th:href="@{#}">El</a>
                         <a th:href="@{#}">Værktøj</a>
-                        <a th:href="@{#}">Mærker</a>
-                        <a th:href="@{#}">Carport</a>
-                        <a th:href="@{#}">Fog Pro</a>
+                        <a th:href="@{/quickByg}">QuickByg Carport</a>
+                        <a th:href="@{/accept-offer}">Bekræft tilbud</a>
+                        <a th:href="@{/seller-contact}">Kontakt af sælger</a>
+                        <a th:href="@{/seller-admin-login}">Sælger Login</a>
                     </nav>
                 </div>
             </div>
@@ -71,27 +71,70 @@
         </div>
     </div>
 </header>
-<div class="main">
-    <div class="wrapper">
-        <div class="title-box">
-            <h1>!Fog (temp)</h1>
+<main>
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Velkommen til !Fog</h2>
+            <p>Nyhed - Prøv vores Quick-Byg Carport system, og få et uforpligtet tilbud på netop din carport</p>
+            <a class="btn" th:href="@{/quickByg}">Prøv den her</a>
         </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
-            </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <form method="get" th:action="@{/seller-admin-login}">
-                <button class="sales-men-button" type="submit">Sælger</button>
-            </form>
+    </section>
+
+    <section class="featured-categories">
+        <h3>Udforsk Kategorier</h3>
+        <div class="category-grid">
+            <div class="category-item">
+                <img th:src="@{/images/categories/materialer.png}" alt="Materialer" />
+                <span>Materialer</span>
+            </div>
+            <div class="category-item">
+                <img th:src="@{/images/categories/vaerktoj.png}" alt="Værktøj" />
+                <span>Værktøj</span>
+            </div>
+            <div class="category-item">
+                <img th:src="@{/images/categories/el.png}" alt="El" />
+                <span>El</span>
+            </div>
+            <div class="category-item">
+                <img th:src="@{/images/categories/bolig.png}" alt="Bolig" />
+                <span>Bolig</span>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <section class="featured-products">
+        <h3>Ugens Favorit Produkter</h3>
+        <div class="product-grid">
+            <div class="product-card">
+                <img th:src="@{/images/products/product1.png}" alt="Produkt 1" />
+                <h4>Milwaukee M18</h4>
+                <p>18V kulfri bore-/skruemaskine med høj moment og REDLINK™ elektronik for optimal ydeevne og beskyttelse mod overbelastning.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+            <div class="product-card">
+                <img th:src="@{/images/products/product2.png}" alt="Produkt 2" />
+                <h4>Makita Power Tools set</h4>
+                <p>Professionelt 18V LXT værktøjssæt med slagboremaskine, vinkelsliber og lygte – alle med børsteløse motorer og hurtigopladelig batteriteknologi.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+            <div class="product-card">
+                <img th:src="@{/images/products/product3.png}" alt="Produkt 3" />
+                <h4>Elite bordsav</h4>
+                <p>Robust bordsav med 2000W motor, præcisionsjusterbart anhug og integreret støvudsug – velegnet til præcisionssnit i hårdt træ og finerplader.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <h3>Tilmeld dig vores nyhedsbrev</h3>
+        <p>Få de seneste tilbud og nyheder direkte i din indbakke.</p>
+        <form method="post" th:action="@{#}">
+            <input type="email" name="email" placeholder="Din email" required />
+            <button type="submit">Tilmeld</button>
+        </form>
+    </section>
+</main>
+</body>
 </body>
 </html>
