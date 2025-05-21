@@ -92,8 +92,8 @@ public class CustomerInformation {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", streetName='" + streetName + '\'' +
-                ", houseNumber=" + houseNumber +
-                ", zipCode=" + zipCode +
+                ", houseNumber=" + houseNumber + '\'' +
+                ", zipCode=" + zipCode + '\'' +
                 ", city='" + city + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 '}';

@@ -1,9 +1,14 @@
 package app.persistence.mappers;
 
+import app.entities.forCalculator.MountForCalculator;
+import app.entities.forCalculator.RoofForCalculator;
+import app.entities.forCalculator.ScrewForCalculator;
+import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.entities.*;
 import app.exceptions.DatabaseException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class OrderMapper {
@@ -104,6 +109,130 @@ public class OrderMapper {
             }
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching status: ");
+        }
+    }
+
+    public static ArrayList<WoodForCalculator> getWoodListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT wood_list.offer_id, wood_list.wood_type_id, wood_list.wood_treatment_id, wood_list.wood_dimension_id, wood_list.wood_amount, wood_list.wood_description, wood_type.wood_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN wood_list ON offers.offer_id = wood_list.offer_id JOIN wood_type ON wood_list.wood_type_id = wood_type.wood_type_id WHERE order_id = ?;";
+        ArrayList<WoodForCalculator> woodList = new ArrayList<>();
+        String name;
+        int amount;
+        int woodDimensionId;
+        int woodTreatmentId;
+        int woodTypeId;
+        String description;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, orderId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("wood_type_name");
+                    amount = rs.getInt("wood_amount");
+                    woodDimensionId = rs.getInt("wood_dimension_id");
+                    woodTreatmentId = rs.getInt("wood_treatment_id");
+                    woodTypeId = rs.getInt("wood_type_id");
+                    description = rs.getString("wood_description");
+                    woodList.add(new WoodForCalculator(name, amount, woodDimensionId, woodTreatmentId, woodTypeId, description));
+                }
+                return woodList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
+        }
+    }
+
+    public static  ArrayList<RoofForCalculator> getRoofListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT roof_list.offer_id, roof_list.roof_id, roof_list.roof_amount, roof_list.roof_description, roofs.roof_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN roof_list ON offers.offer_id = roof_list.offer_id JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE order_id = ?;";
+        ArrayList<RoofForCalculator> roofList = new ArrayList<>();
+        String name;
+        int amount;
+        int roofId;
+        String description;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, orderId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("roof_type_name");
+                    amount = rs.getInt("roof_amount");
+                    roofId = rs.getInt("roof_id");
+                    description = rs.getString("roof_description");
+                    roofList.add(new RoofForCalculator(name, amount, roofId, description));
+                }
+                return roofList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
+        }
+    }
+
+    public static ArrayList<MountForCalculator> getMountListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT mounts_list.offer_id, mounts_list.mount_id, mounts_list.mount_amount, mounts_list.mount_description, mounts.mount_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN mounts_list ON offers.offer_id = mounts_list.offer_id JOIN mounts ON mounts_list.mount_id = mounts.mount_id WHERE order_id = ?;";
+        ArrayList<MountForCalculator> mountList = new ArrayList<>();
+        String name;
+        int amount;
+        int roofId;
+        String description;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, orderId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("mount_type_name");
+                    amount = rs.getInt("mount_amount");
+                    roofId = rs.getInt("mount_id");
+                    description = rs.getString("mount_description");
+                    mountList.add(new MountForCalculator(name, amount, roofId, description));
+                }
+                return mountList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
+        }
+    }
+
+    public static ArrayList<ScrewForCalculator> getScrewListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+        String sql = "SELECT screws_list.offer_id, screws_list.screw_id, screws_list.screws_amount, screws_list.screw_description, screws.screw_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN screws_list ON offers.offer_id = screws_list.offer_id JOIN screws ON screws_list.screw_id = screws.screw_id WHERE order_id = ?;";
+        ArrayList<ScrewForCalculator> screwList = new ArrayList<>();
+        String name;
+        int amount;
+        int roofId;
+        String description;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, orderId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("screw_type_name");
+                    amount = rs.getInt("screws_amount");
+                    roofId = rs.getInt("screw_id");
+                    description = rs.getString("screw_description");
+                    screwList.add(new ScrewForCalculator(name, amount, roofId, description));
+                }
+                return screwList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
         }
     }
 }
