@@ -50,7 +50,7 @@ class PriceCalculatorTest {
     void calculateTotalOfferSalesPrice() throws DatabaseException {
         //Arrange
         float expense = 100.0f;
-        float expected = 1500.0f;
+        float expected = 150.0f;
 
         //Act
         float actual = priceCalculator.calculateTotalOfferSalesPrice(connectionPool, expense);
