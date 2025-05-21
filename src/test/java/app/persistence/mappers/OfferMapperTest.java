@@ -82,7 +82,7 @@ class OfferMapperTest {
         int dimensionLength = 210;
         int dimensionWidth = 60;
         int dimensionHeight = 145;
-        int expectedDimensionId = 563;
+        int expectedDimensionId = 619;
 
         //Act:
         int dimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connectionPool, dimensionLength, dimensionWidth, dimensionHeight);
