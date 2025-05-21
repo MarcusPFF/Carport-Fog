@@ -54,6 +54,9 @@ public class RafterCalculator {
         rafterHeightInMm = totalRafterHeightInMmCalculator(carportLengthInCm);
         rafterBeamAmount = rafterBeamAmountCalculator(carportWidthInCm);
 
+        System.out.println(rafterHeightInMm);
+        System.out.println(rafterWidthInMm);
+        System.out.println(carportLengthInCm);
         woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, carportLengthInCm, rafterWidthInMm, rafterHeightInMm);
         treatmentId = offerMapper.getTreatmentIdFromTreatmentName(connection, treatmentName);
         woodTypeId = offerMapper.getWoodTypeIdFromWoodTypeName(connection, woodTypeName);
@@ -85,7 +88,7 @@ public class RafterCalculator {
             woodHeightInMm = 245;
         }
         else {
-            woodHeightInMm = 275;
+            woodHeightInMm = 270;
         }
 
         return woodHeightInMm;
