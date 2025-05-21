@@ -102,18 +102,78 @@
         <div class="information-fields">
             <form action="/contact-information" method="post">
                 <div class="form-grid">
-                    <input type="text" name="firstname" placeholder="Fornavn" th:value="${firstname}" required>
-                    <input type="text" name="lastname" placeholder="Efternavn" th:value="${lastname}" required>
-                    <input type="text" name="address" placeholder="Adresse" th:value="${address}" required>
-                    <input type="text" name="zipcode" placeholder="Postnummer" th:value="${zipcode}" required>
-                    <input type="text" name="housenumber" placeholder="Husnummer" th:value="${housenumber}" required>
-                    <input type="tel" name="phone" placeholder="Telefonnummer" pattern="\d{8}" th:value="${phone}" required title="Telefonnummer skal være præcis 8 cifre">
-
-                    <input type="email" name="email" class="email-input" placeholder="Email" th:value="${email}" required>
+                    <input
+                            type="text"
+                            name="firstname"
+                            placeholder="Fornavn"
+                            th:value="${firstname}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="lastname"
+                            placeholder="Efternavn"
+                            th:value="${lastname}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="streetname"
+                            placeholder="Adresse"
+                            th:value="${address}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="zipcode"
+                            placeholder="Postnummer"
+                            pattern="[0-9]+"
+                            inputmode="numeric"
+                            minlength="4"
+                            maxlength="4"
+                            th:value="${zipcode}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal og 4 cifre')"
+                            oninput="this.setCustomValidity('')"
+                    />
+                    <input
+                            type="text"
+                            name="housenumber"
+                            placeholder="Husnummer"
+                            pattern="[0-9]+"
+                            inputmode="numeric"
+                            maxlength="4"
+                            th:value="${housenumber}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                            oninput="this.setCustomValidity('')"
+                    />
+                    <input
+                            type="tel"
+                            name="phonenumber"
+                            placeholder="Telefonnummer"
+                            pattern="\d{8}"
+                            inputmode="numeric"
+                            th:value="${phonenumber}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                            oninput="this.setCustomValidity('')"
+                            title="Telefonnummer skal være præcis 8 cifre"
+                    />
+                    <input
+                            type="email"
+                            name="email"
+                            class="email-input"
+                            placeholder="Email"
+                            th:value="${email}"
+                            required
+                    />
                 </div>
 
                 <label class="checkbox-label">
-                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox" th:checked="${samtykke} ? true : false" required title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
+                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox"
+                           th:checked="${samtykke} ? true : false" required
+                           title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
                     Kontakt Samtykke
                     <p class="checkbox-description">
                         !Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg

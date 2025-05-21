@@ -89,7 +89,7 @@ public class CreateTestSchemaDatabase {
 
         CREATE TABLE test.offers (
             offer_id BIGSERIAL PRIMARY KEY,
-            total_expenses_price DECIMAL(10, 2) NOT NULL,
+            total_expense_price DECIMAL(10, 2) NOT NULL,
             total_sales_price DECIMAL(10, 2) NOT NULL,
             seller_id INT REFERENCES test.sellers(seller_id),
             customer_id INT REFERENCES test.customer(customer_id),
@@ -165,11 +165,11 @@ public class CreateTestSchemaDatabase {
 
         INSERT INTO test.mounts (mount_price, mount_type_name)
         VALUES 
-            (15.00, 'Universal 190 mm højre'),
-            (15.00, 'Universal 190 mm venstre'),
+            (15.00, 'Universalbeslag 190 mm højre'),
+            (15.00, 'Universalbeslag 190 mm venstre'),
             (12.00, 'Firkantskiver 40 x 40 x 11 mm'),
             (49.00, 'Stalddørsgreb 50 x 75 mm'),
-            (29.00, 'T-hængsel 390 mm'),
+            (29.00, 'T-Hængsel 390 mm'),
             (8.00,  'Vinkelbeslag 50 x 50 x 35 mm');
                
         INSERT INTO test.roofs (roof_length_cm, roof_width_cm, roof_price, roof_type_name)
@@ -215,7 +215,7 @@ public class CreateTestSchemaDatabase {
             (100, 100, 35.00)
         )AS dims(w, h, price);
         
-        INSERT INTO test.offers (total_expenses_price, total_sales_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
+        INSERT INTO test.offers (total_expense_price, total_sales_price, seller_id, customer_id, expiration_date, carport_length, carport_width, shed_length, shed_width)
         VALUES
             (5000.00, 6000.00, 1, 1, '2025-12-31', 500, 300, 200, 150),
             (7000.00, 8000.00, 2, 2, '2025-12-31', 600, 400, 250, 200),

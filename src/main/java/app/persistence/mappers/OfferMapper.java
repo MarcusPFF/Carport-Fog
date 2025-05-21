@@ -297,7 +297,7 @@ public class OfferMapper {
     }
 
     public static float getTotalExpensesPriceFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
-        String sql = "SELECT total_expenses_price FROM offers WHERE offer_id = ?;";
+        String sql = "SELECT total_expense_price FROM offers WHERE offer_id = ?;";
         float totalExpensesPrice;
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -306,11 +306,11 @@ public class OfferMapper {
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
-                    totalExpensesPrice = rs.getFloat("total_expenses_price");
+                    totalExpensesPrice = rs.getFloat("total_expense_price");
                     return totalExpensesPrice;
                 }
             }
-            throw new DatabaseException(null, "Total Expenses Price not found for Offer Id: " + offerId);
+            throw new DatabaseException(null, "Total Expense Price not found for Offer Id: " + offerId);
 
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching Total Expenses Price: ");
@@ -362,7 +362,7 @@ public class OfferMapper {
     }
 
     public static int createOffer(ConnectionPool connectionPool, float totalOfferExpensePrice, float totalOfferSalesPrice, int sellerId, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int customerId) throws DatabaseException {
-        String sql = "INSERT INTO offers (total_expenses_price, total_sales_price, seller_id, expiration_date, carport_length, carport_width, shed_length, shed_width, customer_id) VALUES (?, ?, ?, CURRENT_DATE + INTERVAL '7 days', ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO offers (total_expense_price, total_sales_price, seller_id, expiration_date, carport_length, carport_width, shed_length, shed_width, customer_id) VALUES (?, ?, ?, CURRENT_DATE + INTERVAL '7 days', ?, ?, ?, ?, ?);";
         int offerId;
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -520,7 +520,7 @@ public class OfferMapper {
 
 //update metoder
     public static boolean updateTotalExpensesPrice(ConnectionPool connectionPool, float totalOfferExpensePrice, int offerId) throws DatabaseException {
-        String sql = "UPDATE offers SET total_expenses_price = ? WHERE offer_id = ?;";
+        String sql = "UPDATE offers SET total_expense_price = ? WHERE offer_id = ?;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {

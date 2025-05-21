@@ -1,7 +1,7 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.MountCalculator;
+import app.persistence.calculator.MountCalculator;
 import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class MountForCalculator {
     }
 
     public MountForCalculator() {
+        mountCalculator = new MountCalculator();
     }
 
     public ArrayList<MountForCalculator> mountListCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int amountOfDoorsForShed) throws DatabaseException {

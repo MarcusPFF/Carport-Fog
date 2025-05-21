@@ -121,7 +121,7 @@ class OfferMapperTest {
     @Test
     void getMountIdFromMountName() throws SQLException, DatabaseException {
         //Arrange
-        String mountName = "Universal 190 mm højre";
+        String mountName = "Universalbeslag 190 mm højre";
         int expectedMountId = 1;
 
         //Act
