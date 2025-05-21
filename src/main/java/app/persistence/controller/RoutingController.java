@@ -115,6 +115,7 @@ public class RoutingController {
             ctx.sessionAttribute("offerDenied", false);
             try {
                 mailSender.sendSellerMailAccept(sellerMail, customerInformation);
+                app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
