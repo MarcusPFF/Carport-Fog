@@ -674,8 +674,8 @@ public class OfferMapper {
                 if (rowsAffected == 0) {
                     return false;
                 }
-                return true;
 
+                return true;
             }
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");
