@@ -3,6 +3,7 @@
 }
 
 .main {
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,11 +11,11 @@
 }
 
 .wrapper {
+    margin-top: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 150px;
     height: 100%;
     max-width: 962px;
     width: 576px;
@@ -27,7 +28,7 @@
     height: 115px;
     background-color: #013d7a;
     color: white;
-    text-align: center;
+    text-align: start;
     margin: 0 auto;
     padding: 20px 10px;
 }
@@ -87,6 +88,7 @@
 h1 {
     font-size: 2.5rem;
     margin-top: 40px;
+    text-align: center;
 }
 
 @media (max-width: 650px) {
