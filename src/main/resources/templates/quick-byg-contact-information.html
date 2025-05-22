@@ -119,8 +119,8 @@
                     <input
                             type="text"
                             name="streetname"
-                            placeholder="Adresse"
-                            th:value="${address}"
+                            placeholder="streetname"
+                            th:value="${streetname}"
                             required
                     />
                     <input
@@ -151,6 +151,8 @@
                             name="phonenumber"
                             placeholder="Telefonnummer"
                             pattern="\d{8}"
+                            maxlength="8"
+                            minlength="8"
                             inputmode="numeric"
                             th:value="${phonenumber}"
                             required

@@ -257,7 +257,7 @@ public class RoutingController {
         ctx.attribute("streetname", ctx.sessionAttribute("streetname"));
         ctx.attribute("zipcode", ctx.sessionAttribute("zipcode"));
         ctx.attribute("housenumber", ctx.sessionAttribute("housenumber"));
-        ctx.attribute("phone", ctx.sessionAttribute("phone"));
+        ctx.attribute("phonenumber", ctx.sessionAttribute("phonenumber"));
         ctx.attribute("email", ctx.sessionAttribute("email"));
         ctx.attribute("samtykke", ctx.sessionAttribute("samtykke"));
 
