@@ -17,8 +17,6 @@ import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-
-import javax.xml.xpath.XPath;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -152,6 +150,7 @@ public class RoutingController {
 
                 mailSender.sendSellerMailAccept(sellerMail, customerInformation);
                 mailSender.sendLastAcceptMailAndMaterialList(customerEmail, getOrderId(), customerInformation, pdfBytes, trackingNumber);
+                showAcceptedMailPage(ctx);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -160,12 +159,21 @@ public class RoutingController {
             ctx.sessionAttribute("offerConfirmed", false);
             ctx.sessionAttribute("offerDenied", true);
             app.persistence.mappers.OfferMapper.deleteOfferAndEveryThinkLinkedToItByOfferId(connectionPool, getOfferId());
-            ctx.sessionAttribute("offerId", null);
+            showDeniedMailPage(ctx);
 
         }
         ctx.redirect("/final-accept-offer");
     }
 
+    public static void showAcceptedMailPage(Context ctx) {
+        ctx.render("/accepted-page.html");
+        ctx.req().getSession().invalidate();
+    }
+
+    public static void showDeniedMailPage(Context ctx) {
+        ctx.render("/denied-page.html");
+        ctx.req().getSession().invalidate();
+    }
     public static void showAcceptOfferPage(Context ctx) {
         ctx.render("/accept-offer.html");
     }
