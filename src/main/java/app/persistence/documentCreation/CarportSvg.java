@@ -11,7 +11,6 @@ public class CarportSvg {
     private RafterCalculator rafterCalculator = new RafterCalculator();
     private PoleCalculator poleCalculator = new PoleCalculator();
 
-    //TODO det her kan vi ændre
     private int rafterThickness;
     private int beamThickness;
     private float rafterSpacing;
