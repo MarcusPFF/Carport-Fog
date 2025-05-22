@@ -8,34 +8,50 @@ import app.persistence.mappers.OfferMapper;
 public class RoofCalculator {
     private OfferMapper offerMapper;
 
+    //Pole = Stolpe
+    //Nogging = Reglar
+    //Rafter = Spær
+    //RafterBeam = Rem
+    //Fascia board = Understernbræt
+    //Barge board = Oversternbræt
+    //Drip cap = Vandbræt
+    //PlumbersTape = Hulbånd
+
     //10Cm pr bølge
     //overlap med 2 bølger
 
-    //todo test den her
-    public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofPladeWidthInCm, String roofName) throws DatabaseException {
+    public RoofForCalculator roofCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int roofSheetWidthInCm, String roofName) throws DatabaseException {
+        int amount;
+        int roofLengthInCm;
+        int roofId;
 
-        int amount = roofAmountInWidthCalculator(carportWidthInCm, roofPladeWidthInCm);
-        int roofLengthInCm = roofLengthCalculator(carportLengthInCm);
+        amount = roofAmountInWidthCalculator(carportWidthInCm, roofSheetWidthInCm);
+        roofLengthInCm = roofLengthCalculator(carportLengthInCm);
+        roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
 
-        int roofId = offerMapper.getRoofIdFromRoofLength(connection, roofLengthInCm);
-
-        return new RoofForCalculator(roofName + "monteres på rem.", amount, roofId);
+        return new RoofForCalculator(roofName, amount, roofId, "Tagplader monteres på spær.");
     }
 
+    public int roofAmountInWidthCalculator(int carportWidthInCm, int roofSheetWidthInCm) {
+        int amount;
+        amount = 0;
 
-    public int roofAmountInWidthCalculator(int carportWidthInCm, int roofWidthInCm) {
-        int amount = 0;
-        while (carportWidthInCm > amount * (roofWidthInCm - 20)) {
+        while (carportWidthInCm > 20 + (amount * (roofSheetWidthInCm - 20))) {
             amount++;
         }
+
         return amount;
     }
 
     public int roofLengthCalculator(int carportLengthInCm) {
-        int shortestLengthInCm = 300;
-        int mediumLengthInCm = 450;
-        int longestLengthInCm = 600;
+        int shortestLengthInCm;
+        int mediumLengthInCm;
+        int longestLengthInCm;
         int roofLengthInCm;
+
+        shortestLengthInCm = 300;
+        mediumLengthInCm = 450;
+        longestLengthInCm = 600;
 
         if (carportLengthInCm + 5 < shortestLengthInCm) {
             roofLengthInCm = shortestLengthInCm;

@@ -13,14 +13,15 @@ class RoofCalculatorTest {
         calculator = new RoofCalculator();
     }
 
+
     @Test
     void roofAmountInWidthCalculator() {
         // Arrange:
         int carportWidthInCm = 500;
-        int roofPladeWidthInCm = 120;
+        int roofSheetWidthInCm = 120;
 
         // Act:
-        int result = calculator.roofAmountInWidthCalculator(carportWidthInCm, roofPladeWidthInCm);
+        int result = calculator.roofAmountInWidthCalculator(carportWidthInCm, roofSheetWidthInCm);
 
         // Assert:
         assertEquals(5, result, "Der bør være 5 stolper i længden.");

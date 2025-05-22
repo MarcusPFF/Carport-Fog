@@ -31,21 +31,26 @@
         <div class="section">
             <div class="left-section">
                 <input type="checkbox" id="toggle-dropdown" hidden>
-                <label for="toggle-dropdown" class="left-section-logo" style="cursor: pointer;">
+                <a th:href="@{/}" class="desktop-logo">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </a>
+                <label for="toggle-dropdown" class="mobile-logo">
                     <div class="logo">
                         <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
                     </div>
                 </label>
                 <div class="dropdown-wrapper">
                     <nav class="nav-menu">
-                        <a th:href="@{#}">Bolig & design</a>
-                        <a th:href="@{#}">Byggematerialer</a>
-                        <a th:href="@{#}">EL & belysning</a>
-                        <a th:href="@{#}">Have & fritid</a>
+                        <a th:href="@{#}">Bolig</a>
+                        <a th:href="@{#}">Materialer</a>
+                        <a th:href="@{#}">El</a>
                         <a th:href="@{#}">Værktøj</a>
-                        <a th:href="@{#}">Mærker</a>
-                        <a th:href="@{#}">Carport</a>
-                        <a th:href="@{#}">Fog Pro</a>
+                        <a th:href="@{/quickByg}">QuickByg Carport</a>
+                        <a th:href="@{/accept-offer}">Bekræft tilbud</a>
+                        <a th:href="@{/seller-contact}">Kontakt af sælger</a>
+                        <a th:href="@{/seller-admin-login}">Sælger side</a>
                     </nav>
                 </div>
             </div>
@@ -71,30 +76,57 @@
         </div>
     </div>
 </header>
-<div class="main">
-    <div class="wrapper">
-        <div class="title-box">
-            <h1>!Fog (temp)</h1>
-        </div>
-        <div class="buttons">
-            <form method="get" th:action="@{/quickByg}">
-                <button type="submit"> Quick-Byg Carport med fladt tag</button>
-            </form>
-            <form method="get" th:action="@{/seller-contact}">
-                <button type="submit">Kontakt af sælger</button>
-            </form>
-            <form method="get" th:action="@{/accept-offer}">
-                <button type="submit">Bekræft tilbud</button>
-            </form>
-            <form method="get" th:action="@{/seller-admin-login}">
-                <button class="sales-men-button" type="submit">Sælger</button>
-            </form>
-            <form method="get" th:action="@{/svg-drawing}">
-                <button class="sales-men-button" type="submit">SVG TEST KNAP FRA INDEX</button>
-            </form>
+
+<main>
+    <section class="hero">
+        <div class="hero-image">
+            <div class="hero-svg">
+                <a th:href="@{/quickByg}" class="carport-link">
+                    <img th:src="@{/images/body/carport.svg}" alt="Quick-Byg Carport" class="carport-icon"/>
+                </a>
             </div>
         </div>
-    </div>
-</div>
+        <div class="hero-text">
+            <h2>Velkommen til !Fog</h2>
+            <p>Nyhed – Prøv vores Quick-Byg Carport-system og få et uforpligtende tilbud skræddersyet til netop din
+                carport.
+                <br>Du skal blot trykke på billedet forneden.</p>
+        </div>
+    </section>
+    <section class="featured-products">
+        <h3>Ugens Favorit Produkter</h3>
+        <div class="product-grid">
+            <div class="product-card">
+                <img th:src="@{/images/products/product1.png}" alt="Produkt 1"/>
+                <h4>Milwaukee M18</h4>
+                <p>18V kulfri bore-/skruemaskine med høj moment og REDLINK™ elektronik for optimal ydeevne og
+                    beskyttelse mod overbelastning.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+            <div class="product-card">
+                <img th:src="@{/images/products/product2.png}" alt="Produkt 2"/>
+                <h4>Makita Power Tools set</h4>
+                <p>Professionelt 18V LXT værktøjssæt med slagboremaskine, vinkelsliber og lygte – alle med børsteløse
+                    motorer og hurtigopladelig batteriteknologi.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+            <div class="product-card">
+                <img th:src="@{/images/products/product3.png}" alt="Produkt 3"/>
+                <h4>Elite bordsav</h4>
+                <p>Robust bordsav med 2000W motor, præcisionsjusterbart anhug og integreret støvudsug – velegnet til
+                    præcisionssnit i hårdt træ og finerplader.</p>
+                <a class="btn-sm" th:href="@{#}">Se mere</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <h3>Tilmeld dig vores nyhedsbrev</h3>
+        <p>Få de seneste tilbud og nyheder direkte i din indbakke.</p>
+        <input type="email" name="email" placeholder="Din email" required/>
+        <button type="submit">Tilmeld</button>
+    </section>
+</main>
+</body>
 </body>
 </html>

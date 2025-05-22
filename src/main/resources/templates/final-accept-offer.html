@@ -28,30 +28,33 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
-
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
                 <input type="checkbox" id="toggle-dropdown" hidden>
-                <label for="toggle-dropdown" class="left-section-logo" style="cursor: pointer;">
+                <a th:href="@{/}" class="desktop-logo">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </a>
+                <label for="toggle-dropdown" class="mobile-logo">
                     <div class="logo">
                         <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
                     </div>
                 </label>
                 <div class="dropdown-wrapper">
                     <nav class="nav-menu">
-                        <a th:href="@{#}">Bolig & design</a>
-                        <a th:href="@{#}">Byggematerialer</a>
-                        <a th:href="@{#}">EL & belysning</a>
-                        <a th:href="@{#}">Have & fritid</a>
+                        <a th:href="@{#}">Bolig</a>
+                        <a th:href="@{#}">Materialer</a>
+                        <a th:href="@{#}">El</a>
                         <a th:href="@{#}">Værktøj</a>
-                        <a th:href="@{#}">Mærker</a>
-                        <a th:href="@{#}">Carport</a>
-                        <a th:href="@{#}">Fog Pro</a>
+                        <a th:href="@{/quickByg}">QuickByg Carport</a>
+                        <a th:href="@{/accept-offer}">Bekræft tilbud</a>
+                        <a th:href="@{/seller-contact}">Kontakt af sælger</a>
+                        <a th:href="@{/seller-admin-login}">Sælger side</a>
                     </nav>
                 </div>
             </div>
-
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
