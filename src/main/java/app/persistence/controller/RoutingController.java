@@ -1,10 +1,15 @@
 package app.persistence.controller;
 
 import app.entities.CustomerInformation;
+import app.entities.forCalculator.MountForCalculator;
+import app.entities.forCalculator.RoofForCalculator;
+import app.entities.forCalculator.ScrewForCalculator;
+import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.CarportSvg;
+import app.persistence.documentCreation.GenerateMaterialPdf;
 import app.persistence.documentCreation.Svg;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
@@ -12,10 +17,12 @@ import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import app.persistence.documentCreation.Svg;
 
+import javax.xml.xpath.XPath;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -25,6 +32,7 @@ public class RoutingController {
     private static MailSender mailSender = new MailSender();
     private static MaterialCalculator materialCalculator = new MaterialCalculator();
     private static int offerId;
+    private static int orderId;
 
     public static int getOfferId() {
         return offerId;
@@ -34,6 +42,13 @@ public class RoutingController {
         RoutingController.offerId = offerId;
     }
 
+    public static int getOrderId() {
+        return orderId;
+    }
+
+    public static void setOrderId(int orderId) {
+        RoutingController.orderId = orderId;
+    }
 
     public static void routes(Javalin app) {
         //skabelon
@@ -105,8 +120,10 @@ public class RoutingController {
     public static void handleSellerAdminPage(Context ctx) {
     }
 
-    public static void showFinalAcceptOfferPage(Context ctx) {
+    public static void showFinalAcceptOfferPage(Context ctx) throws DatabaseException {
         ctx.sessionAttribute("offerId");
+        String customerMail = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, getOfferId());
+        ctx.sessionAttribute("email", customerMail);
         Boolean denied = ctx.sessionAttribute("offerDenied");
         Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
         ctx.attribute("actionDenied", denied != null && denied);
@@ -117,13 +134,24 @@ public class RoutingController {
     public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
         CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
+        String customerEmail = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, getOfferId());
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
             ctx.sessionAttribute("offerDenied", false);
             try {
+                setOrderId(app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId()));
+                UUID trackingNumber = app.persistence.mappers.OrderMapper.getTrackingNumberFromOrderId(connectionPool, getOrderId());
+                ArrayList<MountForCalculator> mounts = OrderMapper.getMountListFromOrderId(connectionPool, getOrderId());
+                ArrayList<RoofForCalculator> roofs = OrderMapper.getRoofListFromOrderId(connectionPool, getOrderId());
+                ArrayList<ScrewForCalculator> screws = OrderMapper.getScrewListFromOrderId(connectionPool, getOrderId());
+                ArrayList<WoodForCalculator> woods = OrderMapper.getWoodListFromOrderId(connectionPool, getOrderId());
+
+                GenerateMaterialPdf pdfGenerator = new GenerateMaterialPdf();
+                byte[] pdfBytes = pdfGenerator.generateMaterialPdf(mounts, roofs, screws, woods);
+
                 mailSender.sendSellerMailAccept(sellerMail, customerInformation);
-                app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId());
+                mailSender.sendLastAcceptMailAndMaterialList(customerEmail, getOrderId(), customerInformation, pdfBytes, trackingNumber);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -144,13 +172,16 @@ public class RoutingController {
 
     public static void handleAcceptOfferPage(Context ctx) throws DatabaseException {
         try {
-            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
+            int offerId = Integer.parseInt(ctx.formParam("offerId"));
+            ctx.sessionAttribute("offerId", offerId);
+            setOfferId(offerId);
+            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
             if (salesPriceFromOfferId > 0.1) {
                 ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
                 showFinalAcceptOfferPage(ctx);
             } else {
                 ctx.status(400);
-                ctx.attribute("errorMessage", "Tilbud " + getOfferId() + " findes ikke.");
+                ctx.attribute("errorMessage", "Tilbuds nr " + getOfferId() + " findes ikke.");
                 ctx.sessionAttribute("offerId", getOfferId());
                 ctx.render("accept-offer.html");
             }
@@ -167,11 +198,20 @@ public class RoutingController {
 
     public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
         String acceptOfferTempLink = "acceptoffertemplink.com";
-        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
-        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
-        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
-        mailSender.sendSellerMailContact(sellerMail, customerInformation);
-        showIndexPage(ctx);
+        int offerId = Integer.parseInt(ctx.formParam("offerId"));
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        if (sellerMail != null) {
+            mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
+            mailSender.sendSellerMailContact(sellerMail, customerInformation);
+            showIndexPage(ctx);
+        } else {
+            ctx.status(400);
+            ctx.attribute("errorMessage", "Tilbuds nr " + offerId + " findes ikke.");
+            ctx.sessionAttribute("offerId", offerId);
+            ctx.render("seller-contact.html");
+        }
+
     }
 
     private static void handleQuickBygPage(Context ctx) {
@@ -352,7 +392,7 @@ public class RoutingController {
         ctx.attribute("svg", svg.toString());
     }
 
-  
+
     public static int getCarportWidth(Context ctx) {
         return ctx.sessionAttribute("carportWidth");
     }
@@ -388,5 +428,9 @@ public class RoutingController {
             return ctx.sessionAttribute("redskabsrumDoors");
         }
         return 0;
+    }
+
+    public static ConnectionPool getConnectionPool() {
+        return connectionPool;
     }
 }

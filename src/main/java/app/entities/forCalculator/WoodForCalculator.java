@@ -42,27 +42,28 @@ public class WoodForCalculator {
 
     public ArrayList<WoodForCalculator> woodListCalculator(ConnectionPool connection, int carportLengthInCm, int carportWidthInCm, int shedLengthInCm, int shedWidthInCm, int carportHeightInCm, int amountOfDoorsForTheShed) throws DatabaseException {
         woodList = new ArrayList<>();
-
         //Stolper. (regnes i stk)
         woodList.add(poleCalculator.poleCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, carportHeightInCm, 100, 100,"Stolpe", "Trykimprægneret"));
 
-        //Regler for siderne af skur. (regnes i stk)
-        woodList.add(noggingCalculator.noggingForShedSidesCalculator(connection, 45, 95, shedLengthInCm, carportWidthInCm, shedLengthInCm,"Reglar", "Ubehandlet"));
+        if (shedLengthInCm > 0) {
+            //Regler for siderne af skur. (regnes i stk)
+            woodList.add(noggingCalculator.noggingForShedSidesCalculator(connection, 45, 95, shedLengthInCm, carportWidthInCm, shedLengthInCm, "Reglar", "Ubehandlet"));
 
-        //Regler for forsiden og bagsiden af skur. (regnes i stk)
-        woodList.add(noggingCalculator.noggingForShedFrontAndBackCalculator(connection, 45, 95, carportLengthInCm,"Reglar", "Ubehandlet"));
+            //Regler for forsiden og bagsiden af skur. (regnes i stk)
+            woodList.add(noggingCalculator.noggingForShedFrontAndBackCalculator(connection, 45, 95, carportLengthInCm, "Reglar", "Ubehandlet"));
 
-        //Lægter for z bag på døren til skuret (regnes i stk)
-        woodList.add(noggingCalculator.noggingForZOnTheDoorCalculator(connection, 40, 75, 420,"Lægte","Ubehandlet", amountOfDoorsForTheShed));
+            //Lægter for z bag på døren til skuret (regnes i stk)
+            woodList.add(noggingCalculator.noggingForZOnTheDoorCalculator(connection, 40, 75, 420, "Lægte", "Ubehandlet", amountOfDoorsForTheShed));
+
+            //Brædder til beklædning af skur. (regnes i stk)
+            woodList.add(boardCalculator.shedBoardCalculator(connection, shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 20, 100, carportHeightInCm, 10));
+        }
 
         //Spær som Taget skal monteres på. (regnes i stk)
         woodList.add(rafterCalculator.rafterForRoofCalculator(connection, carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
 
         //Remme som spær skal monteres på. (regnes i stk)
         woodList.add(rafterCalculator.rafterBeamCalculator(connection, carportLengthInCm, carportWidthInCm, "Spær", "Ubehandlet"));
-
-        //Brædder til beklædning af skur. (regnes i stk)
-        woodList.add(boardCalculator.shedBoardCalculator(connection, shedLengthInCm, shedWidthInCm, "Bræt", "Trykimprægneret", 20, 100, carportHeightInCm, 10));
 
         //Understernbrædder til forenden og bagende af carport. (regnes i stk)
         woodList.add(boardCalculator.fasciaBoardFrontAndBackCalculator(connection, carportWidthInCm,"Bræt", "Trykimprægneret", 25, 100));

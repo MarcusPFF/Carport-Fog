@@ -93,6 +93,9 @@
             </div>
             <button type="submit" class="button-accept">Bekræft</button>
         </form>
+        <div th:if="${errorMessage}" class="error">
+            <p th:text="${errorMessage}"></p>
+        </div>
     </div>
 </div>
 </body>

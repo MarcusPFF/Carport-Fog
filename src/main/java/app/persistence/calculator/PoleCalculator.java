@@ -36,6 +36,9 @@ public class PoleCalculator {
         lengthAmount = poleAmountXCalculator(carportLengthInCm);
         widthAmount = poleAmountYCalculator(carportWidthInCm);
         shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
+        if (shedLengthInCm == 0){
+            shedAmount = 0;
+        }
 
         amount = (lengthAmount * widthAmount) + shedAmount;
         digDepthOfPoleInCm = 90;

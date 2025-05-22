@@ -39,14 +39,18 @@ public class MountForCalculator {
         //Firkantskiver til hvert side af træet hvor boltene kommer til at spænde ind på. (regnes i stk)
         mountList.add(mountCalculator.squareBracketsForRafterMountCalculator(connection, carportLengthInCm, carportWidthInCm, "Firkantskiver 40 x 40 x 11 mm"));
 
-        //Vinkelbeslag til at montere regler i skuret til stolper. (regnes i stk)
-        mountList.add(mountCalculator.angleMountCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, "Vinkelbeslag 50 x 50 x 35 mm"));
+        if (shedLengthInCm > 0) {
+            //Vinkelbeslag til at montere regler i skuret til stolper. (regnes i stk)
+            mountList.add(mountCalculator.angleMountCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, "Vinkelbeslag 50 x 50 x 35 mm"));
 
-        //Stalddørsgreb til montering som håndtag på dør til skur. (regnes i stk)
-        mountList.add(mountCalculator.stableDoorHandleCalculator(connection, amountOfDoorsForShed, "Stalddørsgreb 50 x 75 mm"));
+            if (amountOfDoorsForShed > 0) {
+                //Stalddørsgreb til montering som håndtag på dør til skur. (regnes i stk)
+                mountList.add(mountCalculator.stableDoorHandleCalculator(connection, amountOfDoorsForShed, "Stalddørsgreb 50 x 75 mm"));
 
-        //T-Hængsler til montering af dør på skur. (regnes i stk)
-        mountList.add(mountCalculator.hingeForDoorCalculator(connection, amountOfDoorsForShed, "T-Hængsel 390 mm"));
+                //T-Hængsler til montering af dør på skur. (regnes i stk)
+                mountList.add(mountCalculator.hingeForDoorCalculator(connection, amountOfDoorsForShed, "T-Hængsel 390 mm"));
+            }
+        }
 
         return mountList;
     }
