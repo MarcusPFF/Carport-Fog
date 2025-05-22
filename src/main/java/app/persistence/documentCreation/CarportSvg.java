@@ -17,7 +17,7 @@ public class CarportSvg {
     private float rafterSpacing;
     private final float poleSize = 10f;
     private boolean hasShed = false;
-
+    private final float halfPoleSizeForCentering = poleSize / 2f;
 
     public CarportSvg(int width, int height) {
         this.width = width;
@@ -33,6 +33,7 @@ public class CarportSvg {
                 (width + extraMargin) + "px", (height + extraMargin) + "px");
 
         addOuterFrame(); //Viser hvor taget ligger
+
         addShedWithPoles();
         addPoles(); //Pæle der løfter carporten op
         addBeams(); //De to bjælker der ligger på langs i top og bund
@@ -64,89 +65,89 @@ public class CarportSvg {
 
     private void addShedWithPoles() {
         hasShed = true;
-        int shedHeight = 200;
+        int shedLength = 200;
         int shedWidth = 300;
         float xStart = 20f;
         float yStart = 30f;
-        float xEnd = xStart + shedHeight;
+        float xEnd = xStart + shedLength;
         float yEnd = yStart + shedWidth;
         String shedStyling = "stroke:#8B4513; fill:#deb887; stroke-width:2px; fill-opacity:0.6;";
         String poleStyling = "stroke:#000000; fill:#000000";
         //Tilføjer skuret
-        carportSvg.addRectangle(xStart, yStart, shedWidth, shedHeight, shedStyling);
+        carportSvg.addRectangle(xStart, yStart, shedWidth, shedLength, shedStyling);
 
         //Tilføjer pæle
-        carportSvg.addRectangle(xEnd - poleSize / 2, yStart - poleSize / 2, poleSize, poleSize, poleStyling); // Top-right
-        carportSvg.addRectangle(xStart - poleSize / 2, yEnd - poleSize / 2, poleSize, poleSize, poleStyling); // Bottom-left
-        carportSvg.addRectangle(xEnd - poleSize / 2, yEnd - poleSize / 2, poleSize, poleSize, poleStyling);   // Bottom-right
+        carportSvg.addRectangle(xEnd - halfPoleSizeForCentering, yStart - halfPoleSizeForCentering, poleSize, poleSize, poleStyling); // Top-right
+        carportSvg.addRectangle(xStart - halfPoleSizeForCentering, yEnd - halfPoleSizeForCentering, poleSize, poleSize, poleStyling); // Bottom-left
+        carportSvg.addRectangle(xEnd - halfPoleSizeForCentering, yEnd - halfPoleSizeForCentering, poleSize, poleSize, poleStyling);   // Bottom-right
     }
 
     private void addPoles() {
-        int polesX = poleCalculator.poleAmountXCalculator(height);
-        int polesY = poleCalculator.poleAmountYCalculator(width);
+        int poleCountAlongXAxis = poleCalculator.poleAmountXCalculator(height);
+        int poleCountAlongYAxis = poleCalculator.poleAmountYCalculator(width);
 
         float xStart = 20f; // Første pæl placeret 20 cm inde
         float xEnd = width - 110f; // Sidste pæl placeret 110cm fra enden
-        float xSpacing = (xEnd - xStart) / (polesX - 1); // Mellemrum når pladsen udenfor er trukket fra
+        float xSpacingBetweenPoles = (xEnd - xStart) / (poleCountAlongXAxis - 1); // Mellemrum når pladsen udenfor er trukket fra
 
         String poleStyling = "stroke:#000000; fill:#000000";
-        float yTop = 30f; // 30cm fra toppen
-        float yBottom = height - 30f; // 30cm fra bunden
+        float spacingFromTopBorderOfSvg = 30f; // 30cm fra toppen
+        float spacingFromBottomBorderOfSvg = height - 30f; // 30cm fra bunden
 
         // Koordinater til hjørnepæle til båndet
         float topLeftX = 0, topLeftY = 0;
         float topRightX = 0, topRightY = 0;
         float bottomLeftX = 0, bottomLeftY = 0;
         float bottomRightX = 0, bottomRightY = 0;
-        float midLeftX = 0, midLeftY = 0;
-        float midRightX = 0, midRightY = 0;
+        float topMidX = 0, topMidY = 0;
+        float bottomMidX = 0, bottomMidY = 0;
 
-        for (int i = 0; i < polesX; i++) {
-            float x = xStart + i * xSpacing;
+        for (int i = 0; i < poleCountAlongXAxis; i++) {
+            float xCoordinateForPolePlacements = xStart + i * xSpacingBetweenPoles;
 
-            if (polesY >= 1) {
-                carportSvg.addRectangle(x - poleSize / 2, yTop - poleSize / 2, poleSize, poleSize, poleStyling);
+            if (poleCountAlongYAxis >= 1) {
+                carportSvg.addRectangle(xCoordinateForPolePlacements - halfPoleSizeForCentering, spacingFromTopBorderOfSvg - halfPoleSizeForCentering, poleSize, poleSize, poleStyling);
 
                 // Gem koordinat til første og sidste pæl på øverste bjælke
                 if (i == 0) {
-                    topLeftX = x;
-                    topLeftY = yTop;
-                } else if (i == polesX - 1) {
-                    topRightX = x;
-                    topRightY = yTop;
+                    topLeftX = xCoordinateForPolePlacements;
+                    topLeftY = spacingFromTopBorderOfSvg;
+                } else if (i == poleCountAlongXAxis - 1) {
+                    topRightX = xCoordinateForPolePlacements;
+                    topRightY = spacingFromTopBorderOfSvg;
                 }
-                if (i == polesX / 2) {
-                    midLeftX = x;
-                    midLeftY = yTop;
+                if (i == poleCountAlongXAxis / 2) {
+                    topMidX = xCoordinateForPolePlacements;
+                    topMidY = spacingFromTopBorderOfSvg;
                 }
             }
 
-            if (polesY >= 2) {
-                carportSvg.addRectangle(x - poleSize / 2, yBottom - poleSize / 2, poleSize, poleSize, poleStyling);
+            if (poleCountAlongYAxis >= 2) {
+                carportSvg.addRectangle(xCoordinateForPolePlacements - halfPoleSizeForCentering, spacingFromBottomBorderOfSvg - halfPoleSizeForCentering, poleSize, poleSize, poleStyling);
 
                 // Gem koordinat til første og sidste pæl på nederste bjælke
                 if (i == 0) {
-                    bottomLeftX = x;
-                    bottomLeftY = yBottom;
-                } else if (i == polesX - 1) {
-                    bottomRightX = x;
-                    bottomRightY = yBottom;
+                    bottomLeftX = xCoordinateForPolePlacements;
+                    bottomLeftY = spacingFromBottomBorderOfSvg;
+                } else if (i == poleCountAlongXAxis - 1) {
+                    bottomRightX = xCoordinateForPolePlacements;
+                    bottomRightY = spacingFromBottomBorderOfSvg;
                 }
-                if (i == polesX / 2) {
-                    midRightX = x;
-                    midRightY = yBottom;
+                if (i == poleCountAlongXAxis / 2) {
+                    bottomMidX = xCoordinateForPolePlacements;
+                    bottomMidY = spacingFromBottomBorderOfSvg;
                 }
             }
         }
         // Båndet der skal ligge på kryds
-        if (polesY >= 2) {
+        if (poleCountAlongYAxis >= 2) {
             if (hasShed) {
                 addPlumbersTape(
-                        midLeftX, midLeftY, bottomRightX, bottomRightY,   // midt-top til højre bund
-                        midRightX, midRightY, topRightX, topRightY);        // midt-bund til højre top);
+                        topMidX, topMidY, bottomRightX, bottomRightY,       // midt-top til højre bund
+                        bottomMidX, bottomMidY, topRightX, topRightY);      // midt-bund til højre top);
             } else {
                 addPlumbersTape(
-                        topLeftX, topLeftY, bottomRightX, bottomRightY,   // Venstre top til højre bund
+                        topLeftX, topLeftY, bottomRightX, bottomRightY,     // Venstre top til højre bund
                         bottomLeftX, bottomLeftY, topRightX, topRightY);    // Venstre bund til højre top
             }
         }

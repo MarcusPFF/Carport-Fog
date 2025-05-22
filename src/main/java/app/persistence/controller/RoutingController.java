@@ -304,14 +304,14 @@ public class RoutingController {
         Locale.setDefault(new Locale("US"));
 
         int ekstraMargin = 60;
-        int carportWidth = 780;
-        int carportHeight = 600;
+        int carportLength = 780;
+        int carportWidth = 600;
 
-        int svgWidth = carportWidth + ekstraMargin;
-        int svgHeight = carportHeight + ekstraMargin;
+        int svgWidth = carportLength + ekstraMargin;
+        int svgHeight = carportWidth + ekstraMargin;
 
         // Selve tegningen laves her
-        CarportSvg svg = new CarportSvg(carportWidth, carportHeight);
+        CarportSvg svg = new CarportSvg(carportLength, carportWidth);
 
         // Brug præcis samme viewBox og størrelse til canvas
         Svg carportSvg = new Svg(0, 0, "0 0 " + svgWidth + " " + svgHeight, svgWidth + "px", svgHeight + "px");
