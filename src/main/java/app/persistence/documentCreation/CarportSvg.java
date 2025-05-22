@@ -1,7 +1,7 @@
 package app.persistence.documentCreation;
 
-import app.persistence.Calculator.PoleCalculator;
-import app.persistence.Calculator.RafterCalculator;
+import app.persistence.calculator.PoleCalculator;
+import app.persistence.calculator.RafterCalculator;
 
 
 public class CarportSvg {

@@ -1,6 +1,4 @@
-package app.persistence.Calculator;
-
-import java.util.ArrayList;
+package app.persistence.calculator;
 
 public class MaterialCalculator {
 

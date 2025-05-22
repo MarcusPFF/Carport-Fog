@@ -1,5 +1,4 @@
-package app.persistence.Calculator;
-import app.entities.forCalculator.WoodForCalculator;
+package app.persistence.calculator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

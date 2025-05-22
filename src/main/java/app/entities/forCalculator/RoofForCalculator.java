@@ -1,8 +1,7 @@
 package app.entities.forCalculator;
 
 import app.exceptions.DatabaseException;
-import app.persistence.Calculator.PoleCalculator;
-import app.persistence.Calculator.RoofCalculator;
+import app.persistence.calculator.RoofCalculator;
 import app.persistence.connection.ConnectionPool;
 
 import java.util.ArrayList;
