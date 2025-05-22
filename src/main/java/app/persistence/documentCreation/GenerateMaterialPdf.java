@@ -16,6 +16,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+//ADVARSEL:
+// Denne kode har været med meget hjælp af AI, da vi ønskede at sende et attachment PDF med på vores mail som var vores stykliste.
+// Dette tænke vi var en pænere løsning, end bare at sende styklisten i selve mailen.
+// Vi anvender et maven lib pdfbox
+
 public class GenerateMaterialPdf {
     private static OfferMapper offerMapper = new OfferMapper();
 
