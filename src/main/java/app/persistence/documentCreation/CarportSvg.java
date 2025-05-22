@@ -2,6 +2,7 @@ package app.persistence.documentCreation;
 
 import app.persistence.calculator.PoleCalculator;
 import app.persistence.calculator.RafterCalculator;
+import io.javalin.http.Context;
 
 
 public class CarportSvg {
@@ -18,14 +19,14 @@ public class CarportSvg {
     private boolean hasShed = false;
     private final float halfPoleSizeForCentering = poleSize / 2f;
 
-    public CarportSvg(int width, int height) {
+    public CarportSvg(Context ctx, int width, int height) {
         this.width = width;
         this.height = height;
 
         int numberOfRafters = rafterCalculator.rafterAmountForRoofCalculator(width);
         rafterSpacing = (float) width / (numberOfRafters - 1);
-        beamThickness = (int) Math.ceil(rafterCalculator.totalRafterWidthInMmCalculator(width)/10);
-        rafterThickness = (int) Math.ceil(rafterCalculator.totalRafterWidthInMmCalculator(height)/10);
+        beamThickness = (int) Math.ceil(rafterCalculator.totalRafterWidthInMmCalculator(width) / 10);
+        rafterThickness = (int) Math.ceil(rafterCalculator.totalRafterWidthInMmCalculator(height) / 10);
 
         int extraMargin = 60; //Dette sørger for at der er plads
         carportSvg = new Svg(0, 0, "0 0 " + (width + extraMargin) + " " + (height + extraMargin),
@@ -33,11 +34,17 @@ public class CarportSvg {
 
         addOuterFrame(); //Viser hvor taget ligger
 
-        addShedWithPoles();
+        //Tjekker om der skal være skur eller ej
+        this.hasShed = ctx.sessionAttribute("redskabsrumCheckbox");
+        if (hasShed) {
+            int shedLength = ctx.sessionAttribute("redskabsrumLength");
+            int shedWidth = ctx.sessionAttribute("redskabsrumWidth");
+            addShedWithPoles(shedLength, shedWidth);
+        }
         addPoles(); //Pæle der løfter carporten op
         addBeams(); //De to bjælker der ligger på langs i top og bund
         addRafters(); //Spær der ligger henover beams
-        addDimensions();
+        addDimensions(); //Sætter dimensioner og pile op
     }
 
     private void addOuterFrame() {
@@ -62,10 +69,7 @@ public class CarportSvg {
         carportSvg.addLine(x3, y3, x4, y4, dottedStyle);
     }
 
-    private void addShedWithPoles() {
-        hasShed = true;
-        int shedLength = 200;
-        int shedWidth = 300;
+    private void addShedWithPoles(int shedLength, int shedWidth) {
         float xStart = 20f;
         float yStart = 30f;
         float xEnd = xStart + shedLength;
@@ -82,8 +86,8 @@ public class CarportSvg {
     }
 
     private void addPoles() {
-        int poleCountAlongXAxis = poleCalculator.poleAmountXCalculator(height);
-        int poleCountAlongYAxis = poleCalculator.poleAmountYCalculator(width);
+        int poleCountAlongXAxis = poleCalculator.poleAmountXCalculator(width);
+        int poleCountAlongYAxis = poleCalculator.poleAmountYCalculator(height);
 
         float xStart = 20f; // Første pæl placeret 20 cm inde
         float xEnd = width - 110f; // Sidste pæl placeret 110cm fra enden
@@ -174,7 +178,6 @@ public class CarportSvg {
             carportSvg.addDimensionArrow(x1, yBellowRafter, x2, yBellowRafter, label, false);
         }
     }
-
 
     @Override
     public String toString() {

@@ -124,6 +124,22 @@ h1 {
     margin-top: 25px;
 }
 
+.update-svg-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #013d7a;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.update-svg-button:hover{
+    background-color: #013469;
+}
+
 .next-page-button {
     position: absolute;
     bottom: 20px;
