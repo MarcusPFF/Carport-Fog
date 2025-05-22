@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<title>Sælger admin side</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" th:href="@{/css/seller-admin-edit-prices-body-styling.css}"/>
+<link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
+<script th:src="@{/js/clearbutton.js}" defer></script>
+</head>
+<body>
+<header class="header">
+    <div class="header-top animate-in">
+        <div class="info-box">
+            <img th:src="@{/images/header/return-usp.svg}" alt="30 days return" class="info-icon"/>
+            <span>30 dages returret</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/store-usp.svg}" alt="click and collect icon" class="info-icon"/>
+            <span>Klik og hent inden for 3 timer*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/delivery.svg}" alt="delivery icon" class="info-icon"/>
+            <span>1-3 dages levering*</span>
+        </div>
+        <div class="info-box">
+            <img th:src="@{/images/header/trailer.svg}" alt="trailer icon" class="info-icon"/>
+            <span>Lån en trailer gratis</span>
+        </div>
+    </div>
+    <div class="main-nav">
+        <div class="section">
+            <div class="left-section">
+                <input type="checkbox" id="toggle-dropdown" hidden>
+                <a th:href="@{/}" class="desktop-logo">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </a>
+                <label for="toggle-dropdown" class="mobile-logo">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </label>
+                <div class="dropdown-wrapper">
+                    <nav class="nav-menu">
+                        <a th:href="@{#}">Bolig</a>
+                        <a th:href="@{#}">Materialer</a>
+                        <a th:href="@{#}">El</a>
+                        <a th:href="@{#}">Værktøj</a>
+                        <a th:href="@{/quickByg}">QuickByg Carport</a>
+                        <a th:href="@{/accept-offer}">Bekræft tilbud</a>
+                        <a th:href="@{/seller-contact}">Kontakt af sælger</a>
+                        <a th:href="@{/seller-admin-login}">Sælger side</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="search">
+                <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
+                <input type="text" placeholder="Søgning"/>
+            </div>
+
+            <div class="user-icons">
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/account-icon.svg}" alt="Fog Konto"/>
+                    <span>Fog Konto</span>
+                </a>
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/find-icon.svg}" alt="Find Fog"/>
+                    <span>Find Fog</span>
+                </a>
+                <a th:href="@{#}" class="icon-link">
+                    <img th:src="@{/images/header/cart-icon.png}" alt="Kurv"/>
+                    <span>Kurv</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="wrapper">
+        <div class="title-box">
+            <h1>Sælger Pris Ændrings Side</h1>
+        </div>
+        <form method="post" th:action="@{/button-UpdateWoodPrice}">
+            <div class="offer-searcher">
+                <div class="price-input">
+                    <!--Input felt som har en masse regler omkring hvad der må indtastes -->
+                    <input type="text" pattern="[0-9]+" inputmode="numeric" name="woodWidth" placeholder="træ bredde i mm"
+                           id="woodWidth" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <div class="price-input">
+                    <input type="text" pattern="[0-9]+" inputmode="numeric" name="woodHeight" placeholder="træ højte i mm"
+                           id="woodWeight" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <div class="price-input">
+                    <input type="text" pattern="^\d+(\.\d{1,2})?$" inputmode="decimal" name="woodPrice" placeholder="Skriv ny pris"
+                           id="woodPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <button type="submit" class="button-setWoodPrice">Opdater Træ Prisen</button>
+            </div>
+        </form>
+
+        <form method="post" th:action="@{/button-updateMountPrice}">
+            <div class="offer-searcher">
+                <div class="offer-input">
+                    <!--Input felt som har en masse regler omkring hvad der må indtastes -->
+                    <input type="text" name="mountName" placeholder="beslag navn" id="mountName"/>
+                </div>
+                <div class="price-input">
+                    <input type="text" pattern="^\d+(\.\d{1,2})?$" inputmode="decimal" name="mountPrice" placeholder="Skriv ny pris"
+                           id="mountPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <button type="submit" class="button-setMountPrice">Opdater Beslag Prisen</button>
+            </div>
+        </form>
+
+        <form method="post" th:action="@{/button-updateScrewPrice}">
+            <div class="offer-searcher">
+                <div class="offer-input">
+                    <!--Input felt som har en masse regler omkring hvad der må indtastes -->
+                    <input type="text" name="screwName" placeholder="skrue navn" id="screwName"/>
+                </div>
+                <div class="price-input">
+                    <input type="text" pattern="^\d+(\.\d{1,2})?$" inputmode="decimal" name="screwPrice" placeholder="Skriv ny pris"
+                           id="screwPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <button type="submit" class="button-setScrewPrice">Opdater Skrue Prisen</button>
+            </div>
+        </form>
+
+        <form method="post" th:action="@{/button-updateRoofPrice}">
+            <div class="offer-searcher">
+                <div class="offer-input">
+                    <!--Input felt som har en masse regler omkring hvad der må indtastes -->
+                    <input type="text" name="roofName" placeholder="tag navn" id="roofName"/>
+                </div>
+                <div class="price-input">
+                    <input type="text"  inputmode="numeric" name="roofLength" placeholder="Tag længde"
+                           id="roofLength"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <div class="price-input">
+                    <input type="text" pattern="^\d+(\.\d{1,2})?$" inputmode="decimal" name="roofPrice" placeholder="Skriv ny pris"
+                           id="roofPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                </div>
+                <button type="submit" class="button-setRoofPrice">Opdater Tag Plade Prisen</button>
+            </div>
+        </form>
+        <form method="get" th:action="@{/seller-admin-page}">
+            <div class="offer-searcher">
+                <button type="submit" class="button-goBack">Gå Tilbage</button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+</div>
+</body>
+</html>

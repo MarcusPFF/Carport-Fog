@@ -1,5 +1,4 @@
 package app.entities;
-import app.entities.CustomerInformation;
 import java.util.Date;
 
 
@@ -8,14 +7,14 @@ public class Offer {
     private float totalExpensePrice;
     private float totalRetailPrice;
     private int sellerId;
-    private CustomerInformation customerInformation;
+    private customerInformation customerInformation;
     private Date expirationDate;
     private int carportLength;
     private int carportWidth;
     private int shedLength;
     private int shedWidth;
 
-    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, CustomerInformation customerInformation, Date expirationDate, int carportLength, int carportWidth, int shedLength, int shedWidth) {
+    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, customerInformation customerInformation, Date expirationDate, int carportLength, int carportWidth, int shedLength, int shedWidth) {
         this.offerId = offerId;
         this.totalExpensePrice = totalExpensePrice;
         this.totalRetailPrice = totalRetailPrice;
@@ -60,11 +59,11 @@ public class Offer {
         this.sellerId = sellerId;
     }
 
-    public CustomerInformation getCustomerInformation() {
+    public customerInformation getCustomerInformation() {
         return customerInformation;
     }
 
-    public void setCustomerInformation(CustomerInformation customerInformation) {
+    public void setCustomerInformation(customerInformation customerInformation) {
         this.customerInformation = customerInformation;
     }
 

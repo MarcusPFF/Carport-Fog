@@ -1,13 +1,12 @@
 package app.persistence.mappers;
 
-import app.entities.CustomerInformation;
+import app.entities.customerInformation;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.*;
 
 import java.sql.*;
@@ -199,10 +198,10 @@ class OfferMapperTest {
     void getCustomerInformationFromOfferId() throws SQLException, DatabaseException {
         //Arrange
         int offerId = 1;
-        CustomerInformation expectedCustomer = new CustomerInformation("john.doe@example.com", "John", "Doe", "Main Street", 123, 1000, "Copenhagen",60606060);
+        customerInformation expectedCustomer = new customerInformation("john.doe@example.com", "John", "Doe", "Main Street", 123, 1000, "Copenhagen",60606060);
 
         //Act
-        CustomerInformation actualCustomer = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        customerInformation actualCustomer = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
 
         //Assert
         assertEquals(expectedCustomer.getCustomerMail(), actualCustomer.getCustomerMail());

@@ -1,6 +1,7 @@
 package app.persistence.controller;
 
-import app.entities.CustomerInformation;
+import app.entities.customerInformation;
+import app.entities.Material;
 import app.exceptions.DatabaseException;
 import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
@@ -10,12 +11,17 @@ import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
+import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import app.persistence.documentCreation.Svg;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -55,7 +61,17 @@ public class RoutingController {
         app.post("/seller-admin-login", ctx -> handleSellerAdminLogin(ctx));
 
         app.get("/seller-admin-page", ctx -> showSellerAdminPage(ctx));
-        app.post("/seller-admin-page", ctx -> handleSellerAdminPage(ctx));
+        app.post("/button-offerid", ctx -> handleSellerAdminPageOfferID(ctx));
+        app.post("/button-salesPrice", ctx -> handleSellerAdminPageSalesPrice(ctx));
+        app.post("/button-send-final-offer", ctx -> handleSellerAdminPageSendFinalOffer(ctx));
+        app.get("/button-editDimensions", ctx -> showSellerAdminPageEditDimensions(ctx));
+        app.get("/button-editPrices", ctx -> showSellerAdminEditPrices(ctx));
+
+        app.post("/button-updateWoodPrice", ctx -> handleSellerAdminUpdateWoodPrice(ctx));
+        app.post("/button-updateMountPrice", ctx -> handleSellerAdminUpdateMountPrice(ctx));
+        app.post("/button-updateScrewPrice", ctx -> handleSellerAdminUpdateScrewPrice(ctx));
+        app.post("/button-updateRoofPrice", ctx -> handleSellerAdminUpdateRoofPrice(ctx));
+
 
         app.get("/contact-information", ctx -> showContactInformationPage(ctx));
         app.post("/contact-information", ctx -> handleContactInformationPage(ctx));
@@ -83,7 +99,7 @@ public class RoutingController {
         ctx.render("/seller-admin-login.html");
     }
 
-    public static void handleSellerAdminLogin(Context ctx) {
+    public static void handleSellerAdminLogin(Context ctx) throws DatabaseException {
         String sellerCode = ctx.formParam("sellerCode");
         // Denne verySecretAdminCode er hardcoded med vilje så alle kan tilgå admin-page
         String verySecretAdminCode = String.valueOf(getSellerCode());
@@ -98,11 +114,110 @@ public class RoutingController {
         }
     }
 
-    public static void showSellerAdminPage(Context ctx) {
-        ctx.render("/seller-admin-page.html");
+    public static void showSellerAdminEditPrices(Context ctx) {
+        ctx.render("/seller-admin-edit-prices.html");
     }
 
-    public static void handleSellerAdminPage(Context ctx) {
+    public static void handleSellerAdminUpdateRoofPrice(Context ctx) throws DatabaseException {
+        String roofName = ctx.formParam("roofName");
+        float roofPrice = Float.parseFloat(ctx.formParam("roofPrice"));
+        int roofLength = Integer.parseInt(ctx.formParam("roofLength"));
+        priceAndMaterialMapper.updateRoofPrice(connectionPool, roofPrice, roofName, roofLength);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateMountPrice(Context ctx) throws DatabaseException {
+        String mountName = ctx.formParam("mountName");
+        float mountPrice = Float.parseFloat(ctx.formParam("mountPrice"));
+        priceAndMaterialMapper.updateMountPrice(connectionPool, mountPrice, mountName);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateScrewPrice(Context ctx) throws DatabaseException {
+        String screwName = ctx.formParam("screwName");
+        float screwPrice = Float.parseFloat(ctx.formParam("screwPrice"));
+        priceAndMaterialMapper.updateScrewsPrice(connectionPool, screwPrice, screwName);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateWoodPrice(Context ctx) throws DatabaseException {
+        int woodWidth = Integer.parseInt(ctx.formParam("woodWidth"));
+        int woodHeight = Integer.parseInt(ctx.formParam("woodHeight"));
+        float woodPrice = Float.parseFloat(ctx.formParam("mountPrice"));
+        priceAndMaterialMapper.updateDimensionMeterPrice(connectionPool, woodPrice, woodWidth, woodHeight);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void showSellerAdminPage(Context ctx) throws DatabaseException {
+        List<Material> materials = new ArrayList<>();
+        float salesPrice = 0;
+        float expensesPrice = 0;
+        offerMapper = new OfferMapper();
+        ArrayList<Material> wood = offerMapper.getWoodListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> mount = offerMapper.getMountListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> screw = offerMapper.getScrewListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> roof = offerMapper.getRoofListFromOfferId(connectionPool, getOfferId());
+        for (Material material : wood) {
+            materials.add(material);
+        }
+        for (Material material : mount) {
+            materials.add(material);
+        }
+        for (Material material : screw){
+            materials.add(material);
+        }
+        for (Material material : roof){
+            materials.add(material);
+        }
+        if (getOfferId() != 0){
+            salesPrice = offerMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
+            expensesPrice = offerMapper.getTotalExpensesPriceFromOfferId(connectionPool, getOfferId());
+        }
+        System.out.println(salesPrice);
+        System.out.println(expensesPrice);
+
+
+        ctx.render("/seller-admin-page.html", Map.of("materials", materials, "salesPrice", salesPrice, "expensesPrice", expensesPrice));
+    }
+
+    public static void handleSellerAdminPageOfferID(Context ctx) throws DatabaseException {
+        int offerId = Integer.parseInt(ctx.formParam("offerId"));
+        setOfferId(offerId);
+        showSellerAdminPage(ctx);
+    }
+
+    public static void handleSellerAdminPageSalesPrice(Context ctx) throws DatabaseException {
+        float salesPrice = Float.parseFloat(ctx.formParam("salesPrice"));
+        offerMapper.updateTotalSalesPrice(connectionPool, salesPrice, getOfferId());
+        showSellerAdminPage(ctx);
+    }
+
+    public static void showSellerAdminPageEditDimensions(Context ctx) throws DatabaseException {
+        float salesPrice = Float.parseFloat(ctx.formParam("salesPrice"));
+        offerMapper.updateTotalSalesPrice(connectionPool, salesPrice, getOfferId());
+        showSellerAdminPage(ctx);
+    }
+
+    public static void handleSellerAdminPageEditDimensions(Context ctx) throws DatabaseException {
+        float salesPrice = Float.parseFloat(ctx.formParam("salesPrice"));
+        offerMapper.updateTotalSalesPrice(connectionPool, salesPrice, getOfferId());
+        showSellerAdminPage(ctx);
+    }
+    public static void handleSellerAdminPageSendFinalOffer(Context ctx) throws DatabaseException, IOException {
+        int offerId = getOfferId();
+        setOfferId(0);
+        String acceptOfferTempLink = "acceptoffertemplink.com";
+        customerInformation customerInformation = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        String to = customerInformation.getCustomerMail();
+        String name = customerInformation.getFirstName();
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(new Email(to));
+        personalization.addDynamicTemplateData("name", name);
+        personalization.addDynamicTemplateData("offerId", offerId);
+        personalization.addDynamicTemplateData("acceptOfferLink", acceptOfferTempLink);
+        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
+        showSellerAdminPage(ctx);
     }
 
     public static void showFinalAcceptOfferPage(Context ctx) {
@@ -115,7 +230,7 @@ public class RoutingController {
     }
 
     public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
-        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
@@ -168,7 +283,7 @@ public class RoutingController {
     public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
         String acceptOfferTempLink = "acceptoffertemplink.com";
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
-        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
         mailSender.sendSellerMailContact(sellerMail, customerInformation);
         showIndexPage(ctx);
@@ -352,7 +467,6 @@ public class RoutingController {
         ctx.attribute("svg", svg.toString());
     }
 
-  
     public static int getCarportWidth(Context ctx) {
         return ctx.sessionAttribute("carportWidth");
     }

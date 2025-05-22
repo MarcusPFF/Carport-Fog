@@ -18,12 +18,13 @@ public class PriceAndMaterialMapper {
     private static Dimensions dimensions;
     private static Treatment treatment;
 
-    public static boolean updateRoofPrice(ConnectionPool connectionPool, float roofPrice, int roofId) throws DatabaseException {
-        String sql = "UPDATE roofs SET roof_price = ? WHERE roof_id = ?;";
+    public static boolean updateRoofPrice(ConnectionPool connectionPool, float roofPrice, String roofName, int roofLength) throws DatabaseException {
+        String sql = "UPDATE roofs SET roof_price = ? WHERE roof_type_name = ? AND roof_length_cm = ?;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setFloat(1, roofPrice);
-                ps.setInt(2, roofId);
+                ps.setString(2, roofName);
+                ps.setInt(3, roofLength);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
                     return true;
@@ -35,12 +36,12 @@ public class PriceAndMaterialMapper {
         }
     }
 
-    public static boolean updateScrewsPrice(ConnectionPool connectionPool, float screwsPrice, int screwsId) throws DatabaseException {
-        String sql = "UPDATE screws SET screw_price = ? WHERE screw_id = ?;";
+    public static boolean updateScrewsPrice(ConnectionPool connectionPool, float screwsPrice, String screwName) throws DatabaseException {
+        String sql = "UPDATE screws SET screw_price = ? WHERE screw_type_name = ?;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setFloat(1, screwsPrice);
-                ps.setInt(2, screwsId);
+                ps.setString(2, screwName);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
                     return true;
@@ -52,12 +53,12 @@ public class PriceAndMaterialMapper {
         }
     }
 
-    public static boolean updateMountPrice(ConnectionPool connectionPool, float mountPrice, int mountId) throws DatabaseException {
-        String sql = "UPDATE mounts SET mount_price = ? WHERE mount_id = ?;";
+    public static boolean updateMountPrice(ConnectionPool connectionPool, float mountPrice, String mountName) throws DatabaseException {
+        String sql = "UPDATE mounts SET mount_price = ? WHERE mount_type_name = ?;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setFloat(1, mountPrice);
-                ps.setInt(2, mountId);
+                ps.setString(2, mountName);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
                     return true;

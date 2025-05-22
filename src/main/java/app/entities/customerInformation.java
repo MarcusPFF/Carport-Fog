@@ -1,6 +1,6 @@
 package app.entities;
 
-public class CustomerInformation {
+public class customerInformation {
     private String customerMail;
     private String firstName;
     private String lastName;
@@ -10,7 +10,7 @@ public class CustomerInformation {
     private String city;
     private int phoneNumber;
 
-    public CustomerInformation(String customerMail, String firstName, String lastName, String streetName, int houseNumber, int zipCode, String city, int phoneNumber) {
+    public customerInformation(String customerMail, String firstName, String lastName, String streetName, int houseNumber, int zipCode, String city, int phoneNumber) {
         this.customerMail = customerMail;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,13 +1,13 @@
 package app.persistence.mappers;
 
-import app.entities.CustomerInformation;
+import app.entities.customerInformation;
+import app.entities.Material;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.exceptions.DatabaseException;
-import app.persistence.connection.ConnectionPool;
 
 
 import java.sql.*;
@@ -17,6 +17,109 @@ import java.util.ArrayList;
 public class OfferMapper {
 
 //getter mapper metoder
+
+    public static ArrayList<Material> getWoodListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT wood_list.wood_amount, wood_type.wood_type_name, wood_dimensions.wood_width, wood_dimensions.wood_height, wood_dimensions.wood_length FROM wood_list JOIN wood_type ON wood_list.wood_type_id = wood_type.wood_type_id JOIN wood_dimensions ON wood_list.wood_dimension_id = wood_dimensions.wood_dimension_id WHERE wood_list.offer_id = ?;";
+        ArrayList<Material> woodList = new ArrayList<>();
+        String name;
+        int amount;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("wood_type_name") + " " + rs.getInt("wood_width") + "mm X " + rs.getInt("wood_height") + "mm X " + rs.getInt("wood_length") + "cm";
+                    amount = rs.getInt("wood_amount");
+                    woodList.add(new Material(name, amount));
+                }
+                return woodList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
+        }
+    }
+
+    public static  ArrayList<Material> getRoofListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT roof_list.roof_amount, roofs.roof_type_name FROM roof_list JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE roof_list.offer_id = ?;";
+        ArrayList<Material> roofList = new ArrayList<>();
+        String name;
+        int amount;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("roof_type_name");
+                    amount = rs.getInt("roof_amount");
+                    roofList.add(new Material(name, amount));
+                }
+                return roofList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Roof List: ");
+        }
+    }
+
+    public static ArrayList<Material> getMountListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT mounts_list.mount_amount, mounts.mount_type_name FROM mounts_list JOIN mounts ON mounts_list.mount_id = mounts.mount_id WHERE mounts_list.offer_id = ?;";
+        ArrayList<Material> mountList = new ArrayList<>();
+        String name;
+        int amount;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("mount_type_name");
+                    amount = rs.getInt("mount_amount");
+                    mountList.add(new Material(name, amount));
+                }
+                return mountList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Mount List: ");
+        }
+    }
+
+    public static ArrayList<Material> getScrewListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT screws_list.screws_amount, screws.screw_type_name FROM screws_list JOIN screws ON screws_list.screw_id = screws.screw_id WHERE screws_list.offer_id = ?;";
+        ArrayList<Material> screwList = new ArrayList<>();
+        String name;
+        int amount;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("screw_type_name");
+                    amount = rs.getInt("screws_amount");
+                    screwList.add(new Material(name, amount));
+                }
+                return screwList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Screws List: ");
+        }
+    }
+
     public int getTreatmentIdFromTreatmentName(ConnectionPool connectionPool, String treatmentName) throws DatabaseException {
         String sql = "SELECT wood_treatment_id FROM wood_treatment WHERE wood_treatment_type_name = ?;";
 
@@ -248,7 +351,7 @@ public class OfferMapper {
         }
     }
 
-    public static CustomerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static customerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "SELECT customer_mail, customer_firstname, customer_lastname, street_name, house_number, customer.zip_code, city_name, phone_number FROM cities JOIN customer ON cities.zip_code = customer.zip_code JOIN offers ON customer.customer_id = offers.customer_id WHERE offer_id = ?;";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -265,7 +368,7 @@ public class OfferMapper {
                     int zipCode = rs.getInt("zip_code");
                     String cityName = rs.getString("city_name");
                     int phoneNumber = rs.getInt("phone_number");
-                    return new CustomerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
+                    return new customerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
                 }
             }
             throw new DatabaseException(null, "Customer Information not found for Offer Id: " + offerId);

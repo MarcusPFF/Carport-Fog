@@ -1,7 +1,6 @@
 package app.persistence.util;
 
-import app.entities.CustomerInformation;
-import app.exceptions.DatabaseException;
+import app.entities.customerInformation;
 import app.persistence.controller.RoutingController;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -11,7 +10,6 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
-import javax.management.relation.RoleUnresolved;
 import java.io.IOException;
 
 public class MailSender {
@@ -54,7 +52,7 @@ public class MailSender {
         }
     }
 
-    public void sendSecondMail(CustomerInformation customerInformation, String acceptOfferTempLink) throws IOException {
+    public void sendSecondMail(customerInformation customerInformation, String acceptOfferTempLink) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
 
@@ -95,7 +93,7 @@ public class MailSender {
         }
     }
 
-    public void sendSellerMailContact(String to, CustomerInformation customerInformation) throws IOException {
+    public void sendSellerMailContact(String to, customerInformation customerInformation) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
         Mail mail = new Mail();
@@ -145,7 +143,7 @@ public class MailSender {
         }
     }
 
-    public void sendSellerMailAccept(String to, CustomerInformation customerInformation) throws IOException {
+    public void sendSellerMailAccept(String to, customerInformation customerInformation) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
         Mail mail = new Mail();
