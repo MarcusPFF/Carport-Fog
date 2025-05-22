@@ -285,7 +285,6 @@ public class RoutingController {
         loadAllAttributes(ctx);
         Locale.setDefault(new Locale("US"));
 
-        int ekstraMargin = 60;
         int carportLength = getCarportLength(ctx);
         int carportWidth = getCarportWidth(ctx);
 
