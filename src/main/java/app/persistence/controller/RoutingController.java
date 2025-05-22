@@ -215,6 +215,7 @@ public class RoutingController {
 
     private static void showQuickBygPage(Context ctx) {
         carportAttributes(ctx);
+        showSvgDrawingPage(ctx);
         ctx.render("/quick-byg.html");
     }
 
@@ -317,7 +318,6 @@ public class RoutingController {
         Svg carportSvg = new Svg(0, 0, "0 0 " + svgWidth + " " + svgHeight, svgWidth + "px", svgHeight + "px");
 
         ctx.attribute("svg", svg.toString());
-        ctx.render("svg-drawing");
     }
 
 }

@@ -123,17 +123,21 @@
                 <select name="carportTrapezroof" required>
                     <option value="">Vælg Tagplader</option>
                     <option value="Plastmo Ecolite blåtonet"
-                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite blåtonet'}">Plastmo Ecolite blåtonet</option>
+                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite blåtonet'}">Plastmo Ecolite blåtonet
+                    </option>
                     <option value="Plastmo Ecolite klarttonet"
-                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite klarttonet'}">Plastmo Ecolite klarttonet</option>
+                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite klarttonet'}">Plastmo Ecolite
+                        klarttonet
+                    </option>
                     <option value="Plastmo Ecolite sorttonet"
-                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite sorttonet'}">Plastmo Ecolite sorttonet</option>
+                            th:selected="${carportTrapezRoof == 'Plastmo Ecolite sorttonet'}">Plastmo Ecolite sorttonet
+                    </option>
                 </select>
 
                 <label>
                     <input type="checkbox" id="redskabsrumCheckbox" name="redskabsrumCheckbox"
                            th:checked="${redskabsrumCheckbox}">
-                           Tilknyttet redskabsrum?
+                    Tilknyttet redskabsrum?
                 </label>
 
                 <div id="redskabsrumOptions" class="shed-Options">
@@ -164,16 +168,23 @@
                         <select id="redskabsrumDoors" name="redskabsrumDoors">
                             <option value="">Vælg Antal af døre</option>
                             <option value="0"
-                                    th:selected="${redskabsrumDoors == '0'}">0 Døre</option>
+                                    th:selected="${redskabsrumDoors == '0'}">0 Døre
+                            </option>
                             <option value="1"
-                                    th:selected="${redskabsrumDoors == '1'}">1 Dør</option>
+                                    th:selected="${redskabsrumDoors == '1'}">1 Dør
+                            </option>
                             <option value="2"
-                                    th:selected="${redskabsrumDoors == '2'}">2 Døre</option>
+                                    th:selected="${redskabsrumDoors == '2'}">2 Døre
+                            </option>
                             <option value="3"
-                                    th:selected="${redskabsrumDoors == '3'}">3 Døre</option>
+                                    th:selected="${redskabsrumDoors == '3'}">3 Døre
+                            </option>
                         </select>
                     </div>
-
+                </div>
+                kjohokjh
+                <div th:if="${svg != null}" class="carport-svg-topview">
+                    <div th:utext="${svg}"></div>
                 </div>
                 <button class="next-page-button" name="nextPageButton">
                     Næste →
