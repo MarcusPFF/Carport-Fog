@@ -30,31 +30,33 @@
             <span>Lån en trailer gratis</span>
         </div>
     </div>
-
     <div class="main-nav">
         <div class="section">
             <div class="left-section">
                 <input type="checkbox" id="toggle-dropdown" hidden>
-                <label for="toggle-dropdown" class="left-section-logo" style="cursor: pointer;">
+                <a th:href="@{/}" class="desktop-logo">
+                    <div class="logo">
+                        <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
+                    </div>
+                </a>
+                <label for="toggle-dropdown" class="mobile-logo">
                     <div class="logo">
                         <img th:src="@{/images/header/fog.png}" alt="!foglogo"/>
                     </div>
                 </label>
                 <div class="dropdown-wrapper">
                     <nav class="nav-menu">
-                        <a th:href="@{#}">Bolig & design</a>
-                        <a th:href="@{#}">Byggematerialer</a>
-                        <a th:href="@{#}">EL & belysning</a>
-                        <a th:href="@{#}">Have & fritid</a>
+                        <a th:href="@{#}">Bolig</a>
+                        <a th:href="@{#}">Materialer</a>
+                        <a th:href="@{#}">El</a>
                         <a th:href="@{#}">Værktøj</a>
-                        <a th:href="@{#}">Mærker</a>
-                        <a th:href="@{#}">Carport</a>
-                        <a th:href="@{#}">Fog Pro</a>
+                        <a th:href="@{/quickByg}">QuickByg Carport</a>
+                        <a th:href="@{/accept-offer}">Bekræft tilbud</a>
+                        <a th:href="@{/seller-contact}">Kontakt af sælger</a>
+                        <a th:href="@{/seller-admin-login}">Sælger side</a>
                     </nav>
                 </div>
             </div>
-
-
             <div class="search">
                 <img th:src="@{/images/header/search-icon.svg}" alt="search" class="search-icon"/>
                 <input type="text" placeholder="Søgning"/>
@@ -77,8 +79,6 @@
         </div>
     </div>
 </header>
-
-
 <div class="main">
     <div class="side-menu">
         <ul>
@@ -102,18 +102,78 @@
         <div class="information-fields">
             <form action="/contact-information" method="post">
                 <div class="form-grid">
-                    <input type="text" name="firstname" placeholder="Fornavn" th:value="${firstname}" required>
-                    <input type="text" name="lastname" placeholder="Efternavn" th:value="${lastname}" required>
-                    <input type="text" name="address" placeholder="Adresse" th:value="${address}" required>
-                    <input type="text" name="zipcode" placeholder="Postnummer" th:value="${zipcode}" required>
-                    <input type="text" name="city" placeholder="By" th:value="${city}" required>
-                    <input type="tel" name="phone" placeholder="Telefonnummer" pattern="\d{8}" th:value="${phone}" required title="Telefonnummer skal være præcis 8 cifre">
-
-                    <input type="email" name="email" class="email-input" placeholder="Email" th:value="${email}" required>
+                    <input
+                            type="text"
+                            name="firstname"
+                            placeholder="Fornavn"
+                            th:value="${firstname}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="lastname"
+                            placeholder="Efternavn"
+                            th:value="${lastname}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="streetname"
+                            placeholder="Adresse"
+                            th:value="${address}"
+                            required
+                    />
+                    <input
+                            type="text"
+                            name="zipcode"
+                            placeholder="Postnummer"
+                            pattern="[0-9]+"
+                            inputmode="numeric"
+                            minlength="4"
+                            maxlength="4"
+                            th:value="${zipcode}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal og 4 cifre')"
+                            oninput="this.setCustomValidity('')"
+                    />
+                    <input
+                            type="text"
+                            name="housenumber"
+                            placeholder="Husnummer"
+                            pattern="[0-9]+"
+                            inputmode="numeric"
+                            maxlength="4"
+                            th:value="${housenumber}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                            oninput="this.setCustomValidity('')"
+                    />
+                    <input
+                            type="tel"
+                            name="phonenumber"
+                            placeholder="Telefonnummer"
+                            pattern="\d{8}"
+                            inputmode="numeric"
+                            th:value="${phonenumber}"
+                            required
+                            oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                            oninput="this.setCustomValidity('')"
+                            title="Telefonnummer skal være præcis 8 cifre"
+                    />
+                    <input
+                            type="email"
+                            name="email"
+                            class="email-input"
+                            placeholder="Email"
+                            th:value="${email}"
+                            required
+                    />
                 </div>
 
                 <label class="checkbox-label">
-                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox" th:checked="${samtykke} ? true : false" required title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
+                    <input type="checkbox" id="samtykkeCheckbox" name="samtykkeCheckbox"
+                           th:checked="${samtykke} ? true : false" required
+                           title="Det er vigtigt, at vi kan kontakte dig med et tilbud, for at du kan fortsætte.">
                     Kontakt Samtykke
                     <p class="checkbox-description">
                         !Fog må benytte de afgivne oplysninger til at kontakte mig i forbindelse med tilbud på QuickByg

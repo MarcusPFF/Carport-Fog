@@ -86,14 +86,16 @@ public class PriceAndMaterialMapper {
         }
     }
 
-    public static boolean updateDimensionMeterPrice(ConnectionPool connectionPool, float newPrice, int dimensionId) throws DatabaseException {
-        String sql = "UPDATE wood_dimensions SET wood_dimension_meter_price = ? WHERE wood_dimension_id = ?;";
+    public static boolean updateDimensionMeterPrice(ConnectionPool connectionPool, float newPrice, int woodWidthInMm, int woodHeightInMm) throws DatabaseException {
+        String sql = "UPDATE wood_dimensions SET wood_dimension_meter_price = ? WHERE wood_width = ? AND wood_height = ?;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setFloat(1, newPrice);
-                ps.setInt(2, dimensionId);
+                ps.setInt(2, woodWidthInMm);
+                ps.setInt(3, woodHeightInMm);
+
                 int rowsAffected = ps.executeUpdate();
-                if (rowsAffected == 1) {
+                if (rowsAffected >= 1) {
                     return true;
                 }
                 return false;
@@ -217,6 +219,27 @@ public class PriceAndMaterialMapper {
 
         return woodTypePrice + dimensionPrice + treatmentPrice;
     }
+
+    public static int getMarkupPercentageFromExpensePrice(ConnectionPool connectionPool, float expensePrice) throws DatabaseException {
+        String sql = "SELECT expenses_price, percentage FROM markup ORDER BY expenses_price DESC;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+
+                    if (rs.getInt("expenses_price") < expensePrice) {
+                        return rs.getInt("percentage");
+                    }
+                }
+                throw new DatabaseException(null, "Markup id not found for price: " + expensePrice);
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Error getting wood treatment meter price from database");
+        }
+
+    }
+
+
+
 }
 
 

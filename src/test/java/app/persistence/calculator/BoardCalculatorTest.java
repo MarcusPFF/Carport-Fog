@@ -1,4 +1,4 @@
-package app.persistence.Calculator;
+package app.persistence.calculator;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ class BoardCalculatorTest {
     public static void init() {
         calculator = new BoardCalculator();
     }
+
 
     @Test
     void shedBoardAmountCalculator() {
@@ -34,21 +35,24 @@ class BoardCalculatorTest {
         int expected = 2;
 
         // Act:
-        int result = calculator.fasciaBoardAmountCalculator();
+        int result = calculator.fasciaAndBargeBoardAmountCalculator();
 
         // Assert:
         assertEquals(expected, result, "Der bør være 2 Brædder.");
     }
 
     @Test
-    void bargeBoardAmountCalculator() {
+    void totalFasciaAndBargeBoardAndDripCapLengthCalculator() {
         // Arrange:
-        int expected = 2;
+        int carportLengthInCm = 500;
+        int carportWidthInCm = 500;
+        int expected = 5000;
 
         // Act:
-        int result = calculator.fasciaBoardAmountCalculator();
+        int result = calculator.totalFasciaAndBargeBoardAndDripCapLengthCalculator(carportLengthInCm, carportWidthInCm);
 
         // Assert:
-        assertEquals(expected, result, "Der bør være 2 Brædder.");
+        assertEquals(expected, result, "Der bør være 50 meter stern og vandbræt.");
     }
+
 }

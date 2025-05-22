@@ -1,5 +1,8 @@
 package app.persistence.controller;
 
+import app.entities.CustomerInformation;
+import app.exceptions.DatabaseException;
+import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.CarportSvg;
 import app.persistence.documentCreation.Svg;
@@ -20,6 +23,17 @@ public class RoutingController {
     private static OrderMapper orderMapper = new OrderMapper();
     private static PriceAndMaterialMapper priceAndMaterialMapper = new PriceAndMaterialMapper();
     private static MailSender mailSender = new MailSender();
+    private static MaterialCalculator materialCalculator = new MaterialCalculator();
+    private static int offerId;
+
+    public static int getOfferId() {
+        return offerId;
+    }
+
+    public static void setOfferId(int offerId) {
+        RoutingController.offerId = offerId;
+    }
+
 
     public static void routes(Javalin app) {
         //skabelon
@@ -92,6 +106,7 @@ public class RoutingController {
     }
 
     public static void showFinalAcceptOfferPage(Context ctx) {
+        ctx.sessionAttribute("offerId");
         Boolean denied = ctx.sessionAttribute("offerDenied");
         Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
         ctx.attribute("actionDenied", denied != null && denied);
@@ -99,13 +114,16 @@ public class RoutingController {
         ctx.render("/final-accept-offer.html");
     }
 
-    public static void handleFinalAcceptOfferPage(Context ctx) {
+    public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
             ctx.sessionAttribute("offerDenied", false);
             try {
-                mailSender.sendSecondMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+                mailSender.sendSellerMailAccept(sellerMail, customerInformation);
+                app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -113,8 +131,8 @@ public class RoutingController {
         } else if ("deny".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", false);
             ctx.sessionAttribute("offerDenied", true);
+            app.persistence.mappers.OfferMapper.deleteOfferAndEveryThinkLinkedToItByOfferId(connectionPool, getOfferId());
             ctx.sessionAttribute("offerId", null);
-            //Handlingskode her
 
         }
         ctx.redirect("/final-accept-offer");
@@ -124,61 +142,53 @@ public class RoutingController {
         ctx.render("/accept-offer.html");
     }
 
-    public static void handleAcceptOfferPage(Context ctx) {
-        String offerIdStr = ctx.sessionAttribute("offerId");
-
+    public static void handleAcceptOfferPage(Context ctx) throws DatabaseException {
         try {
-            int offerId = Integer.parseInt(offerIdStr);
-            String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
-
-            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
-            String email = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, offerId);
-            ctx.sessionAttribute("email", email);
-
+            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
             if (salesPriceFromOfferId > 0.1) {
                 ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
-                mailSender.sendSellerMail(sellerMail, getCustomerFirstName(ctx), getCustomerEmail(ctx), getCustomerTelephoneNumber(ctx), offerIdStr);
                 showFinalAcceptOfferPage(ctx);
             } else {
                 ctx.status(400);
-                ctx.attribute("errorMessage", "Tilbud " + offerId + " findes ikke.");
+                ctx.attribute("errorMessage", "Tilbud " + getOfferId() + " findes ikke.");
+                ctx.sessionAttribute("offerId", getOfferId());
                 ctx.render("accept-offer.html");
             }
         } catch (NumberFormatException e) {
             ctx.status(400);
             ctx.attribute("errorMessage", "Tilbudsnummeret er ugyldigt.");
             ctx.render("accept-offer.html");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
     public static void showSellerContactPage(Context ctx) {
-        String offerId = ctx.sessionAttribute("offerId");
         ctx.render("/seller-contact.html");
     }
 
-    public static void handleSellerContactPage(Context ctx) {
-        String offerId = ctx.formParam("offerId");
-        ctx.sessionAttribute("offerId", offerId);
+    public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
+        String acceptOfferTempLink = "acceptoffertemplink.com";
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
+        mailSender.sendSellerMailContact(sellerMail, customerInformation);
         showIndexPage(ctx);
     }
 
     private static void handleQuickBygPage(Context ctx) {
         String widthStr = ctx.formParam("carportWidth");
         String lengthStr = ctx.formParam("carportLength");
-        String roofStr = ctx.formParam("carportTrapezroof");
+        String roofStr = ctx.formParam("carportTrapezRoof");
         String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
-        String shedLenStr = ctx.formParam("redskabsrumLength");
-        String shedWidStr = ctx.formParam("redskabsrumWidth");
+        String shedLengthStr = ctx.formParam("redskabsrumLength");
+        String shedWidthStr = ctx.formParam("redskabsrumWidth");
         String shedDoorsStr = ctx.formParam("redskabsrumDoors");
 
         int carportWidth = 0;
         int carportLength = 0;
         String carportTrapezRoof = "";
         boolean hasShed = false;
-        int shedLen = 0;
-        int shedWid = 0;
+        int shedLength = 0;
+        int shedWidth = 0;
         int shedDoors = 0;
 
         if (widthStr != null && !widthStr.isEmpty()) {
@@ -192,11 +202,11 @@ public class RoutingController {
         }
         if (shedCheckbox != null) {
             hasShed = true;
-            if (shedLenStr != null && !shedLenStr.isEmpty()) {
-                shedLen = Integer.parseInt(shedLenStr);
+            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
+                shedLength = Integer.parseInt(shedLengthStr);
             }
-            if (shedWidStr != null && !shedWidStr.isEmpty()) {
-                shedWid = Integer.parseInt(shedWidStr);
+            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
+                shedWidth = Integer.parseInt(shedWidthStr);
             }
             if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
                 shedDoors = Integer.parseInt(shedDoorsStr);
@@ -206,8 +216,8 @@ public class RoutingController {
         ctx.sessionAttribute("carportLength", carportLength);
         ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
         ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
-        ctx.sessionAttribute("redskabsrumLength", shedLen);
-        ctx.sessionAttribute("redskabsrumWidth", shedWid);
+        ctx.sessionAttribute("redskabsrumLength", shedLength);
+        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
         ctx.sessionAttribute("redskabsrumDoors", shedDoors);
 
         ctx.render("/quick-byg-contact-information.html");
@@ -222,20 +232,20 @@ public class RoutingController {
     public static void handleContactInformationPage(Context ctx) {
         String firstname = ctx.formParam("firstname");
         String lastname = ctx.formParam("lastname");
-        String address = ctx.formParam("address");
+        String streetname = ctx.formParam("streetname");
         int zipcode = Integer.parseInt(ctx.formParam("zipcode"));
-        String city = ctx.formParam("city");
-        String phone = ctx.formParam("phone");
+        int housenumber = Integer.parseInt(ctx.formParam("housenumber"));
+        int phonenumber = Integer.parseInt(ctx.formParam("phonenumber"));
         String email = ctx.formParam("email");
         boolean samtykke = ctx.formParam("samtykkeCheckbox") != null;
 
         ctx.sessionAttribute("samtykke", samtykke);
         ctx.sessionAttribute("firstname", firstname);
         ctx.sessionAttribute("lastname", lastname);
-        ctx.sessionAttribute("address", address);
+        ctx.sessionAttribute("streetname", streetname);
         ctx.sessionAttribute("zipcode", zipcode);
-        ctx.sessionAttribute("city", city);
-        ctx.sessionAttribute("phone", phone);
+        ctx.sessionAttribute("housenumber", housenumber);
+        ctx.sessionAttribute("phonenumber", phonenumber);
         ctx.sessionAttribute("email", email);
 
         ctx.redirect("/confirmation");
@@ -244,9 +254,9 @@ public class RoutingController {
     public static void showContactInformationPage(Context ctx) {
         ctx.attribute("firstname", ctx.sessionAttribute("firstname"));
         ctx.attribute("lastname", ctx.sessionAttribute("lastname"));
-        ctx.attribute("address", ctx.sessionAttribute("address"));
+        ctx.attribute("streetname", ctx.sessionAttribute("streetname"));
         ctx.attribute("zipcode", ctx.sessionAttribute("zipcode"));
-        ctx.attribute("city", ctx.sessionAttribute("city"));
+        ctx.attribute("housenumber", ctx.sessionAttribute("housenumber"));
         ctx.attribute("phone", ctx.sessionAttribute("phone"));
         ctx.attribute("email", ctx.sessionAttribute("email"));
         ctx.attribute("samtykke", ctx.sessionAttribute("samtykke"));
@@ -265,10 +275,16 @@ public class RoutingController {
     public static void handleMailSentPage(Context ctx) {
     }
 
-    public static void showMailSentPage(Context ctx) {
+    public static void showMailSentPage(Context ctx) throws DatabaseException {
+        int offerId = materialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);
+        ;
+        setOfferId(offerId);
         ctx.render("/quick-byg-mail-sent.html");
+        String searchForOfferLink = "becontactedbyaseller.com";
+
+        float salesPrice = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
         try {
-            mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerEmail(ctx));
+            mailSender.sendFirstMail(getCustomerEmail(ctx), getCustomerFirstName(ctx), salesPrice, offerId, searchForOfferLink);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -288,12 +304,28 @@ public class RoutingController {
         return ctx.sessionAttribute("firstname");
     }
 
+    public static String getCustomerLastName(Context ctx) {
+        return ctx.sessionAttribute("lastname");
+    }
+
+    public static String getCustomerStreetName(Context ctx) {
+        return ctx.sessionAttribute("streetname");
+    }
+
+    public static int getCustomerHouseNumber(Context ctx) {
+        return ctx.sessionAttribute("housenumber");
+    }
+
+    public static int getCustomerZipCode(Context ctx) {
+        return ctx.sessionAttribute("zipcode");
+    }
+
     public static String getCustomerEmail(Context ctx) {
         return ctx.sessionAttribute("email");
     }
 
-    public static String getCustomerTelephoneNumber(Context ctx) {
-        return ctx.sessionAttribute("telephone");
+    public static int getCustomerPhoneNumber(Context ctx) {
+        return ctx.sessionAttribute("phonenumber");
     }
 
     public static int getSellerCode() {
@@ -320,4 +352,41 @@ public class RoutingController {
         ctx.attribute("svg", svg.toString());
     }
 
+  
+    public static int getCarportWidth(Context ctx) {
+        return ctx.sessionAttribute("carportWidth");
+    }
+
+    public static int getCarportLength(Context ctx) {
+        return ctx.sessionAttribute("carportLength");
+    }
+
+    public static String getCarportTrapezRoof(Context ctx) {
+        return ctx.sessionAttribute("carportTrapezRoof");
+    }
+
+    public static Boolean getShedCheckbox(Context ctx) {
+        return ctx.sessionAttribute("redskabsrumCheckbox");
+    }
+
+    public static int getShedLength(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumLength");
+        }
+        return 0;
+    }
+
+    public static int getShedWidth(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumWidth");
+        }
+        return 0;
+    }
+
+    public static int getShedDoors(Context ctx, boolean hasShed) {
+        if (hasShed) {
+            return ctx.sessionAttribute("redskabsrumDoors");
+        }
+        return 0;
+    }
 }
