@@ -14,7 +14,6 @@ body {
 
 }
 
-
 .header-top {
     display: flex;
     justify-content: center;
@@ -22,6 +21,7 @@ body {
     background-color: #f9f9f9;
     padding: 8px 16px;
     border-bottom: 1px solid #e1e1e1;
+    margin-top: -20px;
 }
 
 .header-top .info-box {
@@ -84,7 +84,6 @@ body {
     color: #013D7A;
 }
 
-
 .search {
     display: flex;
     align-items: center;
@@ -134,8 +133,20 @@ body {
     color: #013D7A;
 }
 
+.mobile-logo {
+    display: none;
+    cursor: pointer;
+}
 
 @media (max-width: 1475px) {
+
+    .desktop-logo {
+        display: none;
+    }
+
+    .mobile-logo {
+        display: block;
+    }
 
     .left-section {
         flex-direction: column;
@@ -159,7 +170,7 @@ body {
     }
 
     /* Vis dropdown når checkbox er checked */
-    #toggle-dropdown:checked + label + .dropdown-wrapper {
+    #toggle-dropdown:checked ~ .dropdown-wrapper {
         position: fixed;
         margin-top: 80px;
         background-color: #013d7a;
