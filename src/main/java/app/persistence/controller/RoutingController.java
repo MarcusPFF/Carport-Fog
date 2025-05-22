@@ -284,7 +284,6 @@ public class RoutingController {
     public static void showSvgDrawingPage(Context ctx) {
         loadAllAttributes(ctx);
         Locale.setDefault(new Locale("US"));
-
         int carportLength = getCarportLength(ctx);
         int carportWidth = getCarportWidth(ctx);
 
