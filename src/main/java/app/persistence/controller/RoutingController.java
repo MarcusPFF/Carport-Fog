@@ -5,15 +5,12 @@ import app.exceptions.DatabaseException;
 import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.CarportSvg;
-import app.persistence.documentCreation.Svg;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import app.persistence.documentCreation.Svg;
-
 import java.io.IOException;
 import java.util.Locale;
 
@@ -33,7 +30,6 @@ public class RoutingController {
     public static void setOfferId(int offerId) {
         RoutingController.offerId = offerId;
     }
-
 
     public static void routes(Javalin app) {
         //skabelon
@@ -65,7 +61,7 @@ public class RoutingController {
 
         app.get("/mail-sent", ctx -> showMailSentPage(ctx));
 
-        app.get("/svg-drawing", ctx -> showSvgDrawingPage(ctx));
+        app.post("/show-svg", ctx -> showSvgDrawingPage(ctx));
     }
 
     private static void handleIndexPage(Context ctx) {
@@ -175,57 +171,12 @@ public class RoutingController {
     }
 
     private static void handleQuickBygPage(Context ctx) {
-        String widthStr = ctx.formParam("carportWidth");
-        String lengthStr = ctx.formParam("carportLength");
-        String roofStr = ctx.formParam("carportTrapezRoof");
-        String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
-        String shedLengthStr = ctx.formParam("redskabsrumLength");
-        String shedWidthStr = ctx.formParam("redskabsrumWidth");
-        String shedDoorsStr = ctx.formParam("redskabsrumDoors");
-
-        int carportWidth = 0;
-        int carportLength = 0;
-        String carportTrapezRoof = "";
-        boolean hasShed = false;
-        int shedLength = 0;
-        int shedWidth = 0;
-        int shedDoors = 0;
-
-        if (widthStr != null && !widthStr.isEmpty()) {
-            carportWidth = Integer.parseInt(widthStr);
-        }
-        if (lengthStr != null && !lengthStr.isEmpty()) {
-            carportLength = Integer.parseInt(lengthStr);
-        }
-        if (roofStr != null) {
-            carportTrapezRoof = roofStr;
-        }
-        if (shedCheckbox != null) {
-            hasShed = true;
-            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
-                shedLength = Integer.parseInt(shedLengthStr);
-            }
-            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
-                shedWidth = Integer.parseInt(shedWidthStr);
-            }
-            if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
-                shedDoors = Integer.parseInt(shedDoorsStr);
-            }
-        }
-        ctx.sessionAttribute("carportWidth", carportWidth);
-        ctx.sessionAttribute("carportLength", carportLength);
-        ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
-        ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
-        ctx.sessionAttribute("redskabsrumLength", shedLength);
-        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
-        ctx.sessionAttribute("redskabsrumDoors", shedDoors);
-
+        loadAllAttributes(ctx);
         ctx.render("/quick-byg-contact-information.html");
     }
 
     private static void showQuickBygPage(Context ctx) {
         carportAttributes(ctx);
-        showSvgDrawingPage(ctx);
         ctx.render("/quick-byg.html");
     }
 
@@ -270,9 +221,6 @@ public class RoutingController {
     public static void showConfirmationPage(Context ctx) {
         carportAttributes(ctx);
         ctx.render("/quick-byg-confirmation.html");
-    }
-
-    public static void handleMailSentPage(Context ctx) {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
@@ -334,25 +282,19 @@ public class RoutingController {
     }
 
     public static void showSvgDrawingPage(Context ctx) {
+        loadAllAttributes(ctx);
         Locale.setDefault(new Locale("US"));
-
-        int ekstraMargin = 60;
-        int carportLength = 780;
-        int carportWidth = 600;
-
-        int svgWidth = carportLength + ekstraMargin;
-        int svgHeight = carportWidth + ekstraMargin;
+        int carportLength = getCarportLength(ctx);
+        int carportWidth = getCarportWidth(ctx);
 
         // Selve tegningen laves her
-        CarportSvg svg = new CarportSvg(carportLength, carportWidth);
-
-        // Brug præcis samme viewBox og størrelse til canvas
-        Svg carportSvg = new Svg(0, 0, "0 0 " + svgWidth + " " + svgHeight, svgWidth + "px", svgHeight + "px");
+        CarportSvg svg = new CarportSvg(ctx, carportLength, carportWidth);
 
         ctx.attribute("svg", svg.toString());
+
+        ctx.render("quick-byg-svg-drawing.html");
     }
 
-  
     public static int getCarportWidth(Context ctx) {
         return ctx.sessionAttribute("carportWidth");
     }
@@ -388,5 +330,52 @@ public class RoutingController {
             return ctx.sessionAttribute("redskabsrumDoors");
         }
         return 0;
+    }
+
+    public static void loadAllAttributes(Context ctx) {
+        String widthStr = ctx.formParam("carportWidth");
+        String lengthStr = ctx.formParam("carportLength");
+        String roofStr = ctx.formParam("carportTrapezRoof");
+        String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
+        String shedLengthStr = ctx.formParam("redskabsrumLength");
+        String shedWidthStr = ctx.formParam("redskabsrumWidth");
+        String shedDoorsStr = ctx.formParam("redskabsrumDoors");
+
+        int carportWidth = 0;
+        int carportLength = 0;
+        String carportTrapezRoof = "";
+        boolean hasShed = false;
+        int shedLength = 0;
+        int shedWidth = 0;
+        int shedDoors = 0;
+
+        if (widthStr != null && !widthStr.isEmpty()) {
+            carportWidth = Integer.parseInt(widthStr);
+        }
+        if (lengthStr != null && !lengthStr.isEmpty()) {
+            carportLength = Integer.parseInt(lengthStr);
+        }
+        if (roofStr != null) {
+            carportTrapezRoof = roofStr;
+        }
+        if (shedCheckbox != null) {
+            hasShed = true;
+            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
+                shedLength = Integer.parseInt(shedLengthStr);
+            }
+            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
+                shedWidth = Integer.parseInt(shedWidthStr);
+            }
+            if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
+                shedDoors = Integer.parseInt(shedDoorsStr);
+            }
+        }
+        ctx.sessionAttribute("carportWidth", carportWidth);
+        ctx.sessionAttribute("carportLength", carportLength);
+        ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
+        ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
+        ctx.sessionAttribute("redskabsrumLength", shedLength);
+        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
+        ctx.sessionAttribute("redskabsrumDoors", shedDoors);
     }
 }

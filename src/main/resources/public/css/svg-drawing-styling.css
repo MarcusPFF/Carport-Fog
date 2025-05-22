@@ -1,0 +1,26 @@
+h1 {
+    font-size: 2rem;
+    margin-top: 25px;
+}
+
+.back-from-svg-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #013d7a;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back-from-svg-button:hover{
+    background-color: #013469;
+}
+
+/* SVG */
+.carport-svg-topview
+{
+    max-width: 800px;
+}

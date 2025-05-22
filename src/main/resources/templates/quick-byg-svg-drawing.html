@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<title>Frontpage</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/svg-drawing-styling.css" th:href="@{/css/svg-drawing-styling.css}" rel="stylesheet"/>
+<script th:src="@{/js/go-back-action-listener.js}"></script>
+</head>
+
+<body>
+<h1>Carport Top-view</h1>
+
+<p>Velkommen til carport viewer</p>
+<p>Her ser du tegningen af din carport ud fra givne mål:</p>
+
+<div th:if="${svg != null}" class="carport-svg-topview">
+    <div th:utext="${svg}"></div>
+</div>
+
+<button type="button" class="back-from-svg-button" onclick="goToQuickByg()">
+    ← Tilbage
+</button>
+
+</body>
+</html>
