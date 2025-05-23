@@ -1,0 +1,156 @@
+@startuml
+
+!pragma layout smetana
+
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b><color:red>PK: </color> x</b>
+!define foreign_key(x) <color:blue>FK: </color> x
+
+Table(cities, "cities") {
+    primary_key(zip_code) INT
+    city_name VARCHAR(255)
+}
+
+Table(customer, "customer") {
+    primary_key(customer_id) BIGSERIAL
+    customer_mail VARCHAR(255)
+    customer_firstname VARCHAR(255)
+    customer_lastname VARCHAR(255)
+    street_name VARCHAR(255)
+    house_number INT
+    foreign_key(zip_code) INT
+    phone_number INT
+}
+
+Table(sellers, "sellers") {
+    primary_key(seller_id) BIGSERIAL
+    seller_mail VARCHAR(255)
+    seller_firstname VARCHAR(255)
+    seller_lastname VARCHAR(255)
+}
+
+Table(status, "status") {
+    primary_key(status_id) BIGINT
+    status_description VARCHAR(255)
+    message_for_mail VARCHAR(255)
+}
+
+Table(markup, "markup") {
+    primary_key(expenses_price) BIGINT
+    percentage BIGINT
+}
+
+Table(mounts, "mounts") {
+    primary_key(mount_id) BIGSERIAL
+    mount_price DECIMAL(10,2)
+    mount_type_name VARCHAR(255)
+}
+
+Table(roofs, "roofs") {
+    primary_key(roof_id) BIGSERIAL
+    roof_length_cm INT
+    roof_width_cm INT
+    roof_price DECIMAL(10,2)
+    roof_type_name VARCHAR(255)
+}
+
+Table(screws, "screws") {
+    primary_key(screw_id) BIGSERIAL
+    amount_pr_container INT
+    screw_price DECIMAL(10,2)
+    screw_type_name VARCHAR(255)
+}
+
+Table(wood_type, "wood_type") {
+    primary_key(wood_type_id) BIGSERIAL
+    wood_type_name VARCHAR(255)
+    wood_type_meter_price DECIMAL(10,2)
+}
+
+Table(wood_treatment, "wood_treatment") {
+    primary_key(wood_treatment_id) BIGSERIAL
+    wood_treatment_type_name VARCHAR(255)
+    wood_treatment_meter_price DECIMAL(10,2)
+}
+
+Table(wood_dimensions, "wood_dimensions") {
+    primary_key(wood_dimension_id) BIGSERIAL
+    wood_length INT
+    wood_height INT
+    wood_width INT
+    wood_dimension_meter_price DECIMAL(10,2)
+}
+
+Table(offers, "offers") {
+    primary_key(offer_id) BIGSERIAL
+    total_expense_price DECIMAL(10,2)
+    total_sales_price DECIMAL(10,2)
+    foreign_key(seller_id) INT
+    foreign_key(customer_id) INT
+    expiration_date DATE
+    carport_length INT
+    carport_width INT
+    shed_length INT
+    shed_width INT
+}
+
+Table(orders, "orders") {
+    primary_key(order_id) BIGSERIAL
+    foreign_key(offer_id) INT
+    foreign_key(status_id) INT
+    purchase_date DATE
+    tracking_number UUID
+}
+
+Table(mounts_list, "mounts_list") {
+    foreign_key(offer_id) INT
+    foreign_key(mount_id) INT
+    mount_amount INT
+    mount_description VARCHAR(255)
+}
+
+Table(roof_list, "roof_list") {
+    foreign_key(offer_id) INT
+    foreign_key(roof_id) INT
+    roof_amount INT
+    roof_description VARCHAR(255)
+}
+
+Table(screws_list, "screws_list") {
+    foreign_key(offer_id) INT
+    foreign_key(screw_id) INT
+    screws_amount INT
+    screw_description VARCHAR(255)
+}
+
+Table(wood_list, "wood_list") {
+    foreign_key(offer_id) INT
+    foreign_key(wood_type_id) INT
+    foreign_key(wood_treatment_id) INT
+    foreign_key(wood_dimension_id) INT
+    wood_amount INT
+    wood_description VARCHAR(255)
+}
+
+' Relationships
+customer }o--|| cities
+offers }o--|| customer
+offers }o--|| sellers
+orders }o--|| offers
+orders }o--|| status
+
+mounts_list }o--|| offers
+mounts_list }o--|| mounts
+
+roof_list }o--|| offers
+roof_list }o--|| roofs
+
+screws_list }o--|| offers
+screws_list }o--|| screws
+
+wood_list }o--|| offers
+wood_list }o--|| wood_type
+wood_list }o--|| wood_treatment
+wood_list }o--|| wood_dimensions
+
+@enduml
