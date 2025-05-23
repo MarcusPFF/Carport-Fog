@@ -55,7 +55,7 @@ public class MailSender {
         }
     }
 
-    public void sendSecondMail(customerInformation customerInformation, String acceptOfferTempLink, float salesPrice) throws IOException {
+    public void sendSecondMail(CustomerInformation customerInformation, String acceptOfferTempLink, float salesPrice) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
 
@@ -97,7 +97,7 @@ public class MailSender {
         }
     }
 
-    public void sendSellerMailContact(String to, customerInformation customerInformation) throws IOException {
+    public void sendSellerMailContact(String to, CustomerInformation customerInformation) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
         Mail mail = new Mail();
@@ -147,7 +147,7 @@ public class MailSender {
         }
     }
 
-    public void sendSellerMailAccept(String to, customerInformation customerInformation) throws IOException {
+    public void sendSellerMailAccept(String to, CustomerInformation customerInformation) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
         Mail mail = new Mail();
