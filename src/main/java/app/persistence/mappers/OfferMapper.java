@@ -103,6 +103,48 @@ public class OfferMapper {
         }
     }
 
+    public static int getWoodWidthFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
+        String sql = "SELECT wood_width FROM wood_dimensions WHERE wood_dimension_id = ?;";
+        int woodLengthInCm;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, woodDimensionId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    woodLengthInCm = rs.getInt("wood_width");
+                    return woodLengthInCm;
+                }
+            }
+            throw new DatabaseException(null, "Wood Length not found for Wood Dimension Id: " + woodDimensionId);
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood Length: ");
+        }
+    }
+
+    public static int getWoodHeightFromWoodDimensionId(ConnectionPool connectionPool, int woodDimensionId) throws DatabaseException {
+        String sql = "SELECT wood_height FROM wood_dimensions WHERE wood_dimension_id = ?;";
+        int woodLengthInCm;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, woodDimensionId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    woodLengthInCm = rs.getInt("wood_height");
+                    return woodLengthInCm;
+                }
+            }
+            throw new DatabaseException(null, "Wood Length not found for Wood Dimension Id: " + woodDimensionId);
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood Length: ");
+        }
+    }
+
     public static int getRoofIdFromRoofLength(ConnectionPool connectionPool, int roofLengthInCm) throws DatabaseException {
         String sql = "SELECT roof_id FROM roofs WHERE roof_length_cm = ?;";
         int roofId;
@@ -220,7 +262,7 @@ public class OfferMapper {
                     return sellerMail;
                 }
             }
-            throw new DatabaseException(null, "Seller Mail not found for Offer Id: " + offerId);
+            return null;
 
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching Seller Mail: ");
@@ -268,7 +310,7 @@ public class OfferMapper {
                     return new CustomerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
                 }
             }
-            throw new DatabaseException(null, "Customer Information not found for Offer Id: " + offerId);
+            return null;
 
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching Customer Information: ");
@@ -289,7 +331,7 @@ public class OfferMapper {
                     return totalSalesPrice;
                 }
             }
-            throw new DatabaseException(null, "Total Sales Price not found for Offer Id: " + offerId);
+            return 0;
 
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Database error while fetching Total Sales Price: ");

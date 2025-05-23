@@ -15,18 +15,17 @@ public class OrderMapper {
 
     // This method is called when an offer is created
     // Status_id is always 1 when created
-    public static boolean createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
-        String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,CURRENT_DATE);";
+    public static int createNewOrder(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "INSERT INTO orders (offer_id, status_id, purchase_date) VALUES (?,1,CURRENT_DATE) RETURNING order_id;";
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, offerId);
-                int rowsAffected = statement.executeUpdate();
-                if (rowsAffected == 0) {
-                    System.out.println("No rows affected");
-                    return false;
+                ResultSet rs = statement.executeQuery();
+                if (rs.next()) {
+                    int orderId = rs.getInt("order_id");
+                    return orderId;
                 } else {
-                    System.out.println("Rows affected: " + rowsAffected);
-                    return true;
+                    return 0;
                 }
             }
         } catch (SQLException ex) {

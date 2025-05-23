@@ -51,6 +51,11 @@
 .button-accept:hover {
     background-color: #012b59;
 }
+
+.error {
+    color: red;
+}
+
 .offer-input {
     position: relative;
     display: flex;
