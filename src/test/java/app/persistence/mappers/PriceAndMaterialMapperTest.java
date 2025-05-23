@@ -16,8 +16,10 @@ class PriceAndMaterialMapperTest {
     private static ConnectionPool connectionPool;
     private static PriceAndMaterialMapper priceAndMaterialMapper;
 
+
     @BeforeAll
     static void beforeAll() throws SQLException {
+
         String USER = "postgres";
         String PASSWORD = System.getenv("kudsk_db_password");
         String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=test";
@@ -29,14 +31,17 @@ class PriceAndMaterialMapperTest {
         try (Connection conn = connectionPool.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
                 createTestSchemaWithData(conn);
+
             }
         }
+
     }
 
     @AfterAll
     static void afterAll() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
             conn.createStatement().execute("ROLLBACK;");
+
         }
     }
 
@@ -58,6 +63,7 @@ class PriceAndMaterialMapperTest {
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }
+
         }
     }
 
@@ -77,6 +83,7 @@ class PriceAndMaterialMapperTest {
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }
+
         }
     }
 

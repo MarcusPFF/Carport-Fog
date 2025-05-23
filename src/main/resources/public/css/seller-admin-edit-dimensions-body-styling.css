@@ -442,6 +442,7 @@ h1 {
     margin-top: 40px;
 }
 
+
 @media (max-width: 650px) {
     .wrapper {
         height: auto !important;
