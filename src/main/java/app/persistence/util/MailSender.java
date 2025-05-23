@@ -1,6 +1,5 @@
 package app.persistence.util;
 
-import app.entities.customerInformation;
 import app.entities.CustomerInformation;
 import app.persistence.controller.RoutingController;
 import com.sendgrid.Method;
