@@ -349,10 +349,7 @@ public class RoutingController {
         showIndexPage(ctx);
         String acceptOfferTempLink = "acceptoffertemplink.com";
         int offerId = Integer.parseInt(ctx.formParam("offerId"));
-        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
-        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
         if (sellerMail != null) {
-            mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
             mailSender.sendSellerMailContact(sellerMail, customerInformation);
             showIndexPage(ctx);
         } else {
