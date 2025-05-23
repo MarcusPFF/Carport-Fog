@@ -44,15 +44,17 @@ class PriceAndMaterialMapperTest {
     @Test
     void updateRoofPrice() throws SQLException, DatabaseException {
         // Arrange:
-        int roofId = 1;
+        String roofName = "Plastmo Ecolite blåtonet";
+        int roofLength = 300;
         float updatedPrice = 50;
 
         // Act
-        boolean updated = PriceAndMaterialMapper.updateRoofPrice(connectionPool, updatedPrice, roofId);
+        boolean updated = PriceAndMaterialMapper.updateRoofPrice(connectionPool, updatedPrice, roofName, roofLength);
 
         // Assert
-        try (Connection conn = connectionPool.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT roof_price FROM roofs WHERE roof_id = ?")) {
-            ps.setInt(1, roofId);
+        try (Connection conn = connectionPool.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT roof_price FROM roofs WHERE roof_type_name = ? AND roof_length = ?")) {
+            ps.setString(1, roofName);
+            ps.setInt(2, roofLength);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }
