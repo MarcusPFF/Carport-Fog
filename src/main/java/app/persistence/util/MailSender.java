@@ -55,7 +55,7 @@ public class MailSender {
         }
     }
 
-    public void sendSecondMail(CustomerInformation customerInformation, String acceptOfferTempLink) throws IOException {
+    public void sendSecondMail(CustomerInformation customerInformation, String acceptOfferTempLink, float salesPrice) throws IOException {
         Email from = new Email("no-reply@marcuspff.com");
         from.setName("!Johannes Fog - Team");
 
@@ -72,6 +72,7 @@ public class MailSender {
         personalization.addTo(new Email(to));
         personalization.addDynamicTemplateData("name", name);
         personalization.addDynamicTemplateData("offerId", offerId);
+        personalization.addDynamicTemplateData("salesPrice", salesPrice);
         personalization.addDynamicTemplateData("acceptOfferLink", acceptOfferTempLink);
 
         mail.addPersonalization(personalization);

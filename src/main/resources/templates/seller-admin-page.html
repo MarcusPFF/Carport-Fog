@@ -80,6 +80,57 @@
     <div class="wrapper">
         <div class="title-box">
             <h1>Sælger admin side</h1>
+        </div>
+        <form method="post" th:action="@{/button-offerid}">
+            <div class="offer-searcher">
+                <div class="offer-input">
+                    <input type="text" pattern="[0-9]+" inputmode="numeric" name="offerId" th:placeholder="${session.offerId == 0 ? 'Indtast ID' : session.offerId}"
+                           id="offerId" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                           oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                    <button type="button" class="clear-btn" aria-label="Clear">&#215;</button>
+                </div>
+                <button type="submit" class="button-getOfferId">Hent Tilbuds Detaljer</button>
+            </div>
+        </form>
+        <div class="middle-form">
+            <div class="middle-form-2">
+                <div class="material-list">
+                    <div class="material-row" th:each="material : ${session.materials}">
+                        <div class="material-name" th:text="${material.materialName}"></div>
+                        <div class="material-amount" th:text="${material.materialAmount}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="rigth-form">
+                <form method="post" th:action="@{/button-salesPrice}">
+                    <div class="price-searcher">
+                        <div class="expenses-price" type="text" th:text="${session.expensesPrice}">
+                        </div>
+                        <div class="price-input">
+                            <input type="text" pattern="^\d+(\.\d{1,2})?$" inputmode="decimal" name="salesPrice" th:placeholder="${session.salesPrice}"
+                                   id="salesPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
+                                   oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
+                        </div>
+                        <button type="submit" class="button-updateSalesPrice" th:disabled="${session.offerId == null or session.offerId <= 0}">Updater Salgs Pris</button>
+                    </div>
+                </form>
+                <form method="get" th:action="@{/button-editDimensions}">
+                    <div class="price-searcher">
+                        <button type="submit" class="button-editDimensions" th:disabled="${session.offerId == null or session.offerId <= 0}">Rediger Dimensioner</button>
+                    </div>
+                </form>
+                <form method="get" th:action="@{/button-editPrices}">
+                    <div class="price-searcher">
+                        <button type="submit" class="button-editPrices">Rediger Priser</button>
+                    </div>
+                </form>
+                <form method="post" th:action="@{/button-send-final-offer}">
+                    <div class="price-searcher">
+                        <button type="submit" class="button-sendOffer" th:disabled="${session.offerId == null or session.offerId <= 0}">Send endelige Tilbud</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 </div>

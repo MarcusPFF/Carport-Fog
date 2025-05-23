@@ -16,8 +16,10 @@ class PriceAndMaterialMapperTest {
     private static ConnectionPool connectionPool;
     private static PriceAndMaterialMapper priceAndMaterialMapper;
 
+
     @BeforeAll
     static void beforeAll() throws SQLException {
+
         String USER = "postgres";
         String PASSWORD = System.getenv("kudsk_db_password");
         String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=test";
@@ -29,14 +31,17 @@ class PriceAndMaterialMapperTest {
         try (Connection conn = connectionPool.getConnection()) {
             try (Statement stmt = conn.createStatement()) {
                 createTestSchemaWithData(conn);
+
             }
         }
+
     }
 
     @AfterAll
     static void afterAll() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
             conn.createStatement().execute("ROLLBACK;");
+
         }
     }
 
@@ -44,53 +49,57 @@ class PriceAndMaterialMapperTest {
     @Test
     void updateRoofPrice() throws SQLException, DatabaseException {
         // Arrange:
-        int roofId = 1;
+        String roofName = "Plastmo Ecolite blåtonet";
+        int roofLength = 300;
         float updatedPrice = 50;
 
         // Act
-        boolean updated = PriceAndMaterialMapper.updateRoofPrice(connectionPool, updatedPrice, roofId);
+        boolean updated = PriceAndMaterialMapper.updateRoofPrice(connectionPool, updatedPrice, roofName, roofLength);
 
         // Assert
-        try (Connection conn = connectionPool.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT roof_price FROM roofs WHERE roof_id = ?")) {
-            ps.setInt(1, roofId);
+        try (Connection conn = connectionPool.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT roof_price FROM roofs WHERE roof_type_name = ? AND roof_length_cm = ?")) {
+            ps.setString(1, roofName);
+            ps.setInt(2, roofLength);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }
+
         }
     }
 
     @Test
     void updateScrewsPrice() throws SQLException, DatabaseException {
         // Arrange
-        int screwsId = 1;
+        String screwName = "Plastmo bundskruer 200 stk.";
         float updatedPrice = 15;
 
         // Act
-        boolean updated = PriceAndMaterialMapper.updateScrewsPrice(connectionPool, updatedPrice, screwsId);
+        boolean updated = PriceAndMaterialMapper.updateScrewsPrice(connectionPool, updatedPrice, screwName);
 
         // Assert
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT screw_price FROM screws WHERE screw_id = ?")) {
-            ps.setInt(1, screwsId);
+             PreparedStatement ps = conn.prepareStatement("SELECT screw_price FROM screws WHERE screw_type_name = ?")) {
+            ps.setString(1, screwName);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }
+
         }
     }
 
     @Test
     void updateMountPrice() throws SQLException, DatabaseException {
         // Arrange
-        int mountId = 1;
+        String mountName = "Universalbeslag 190 mm højre";
         float updatedPrice = 1000;
 
         // Act
-        boolean updated = PriceAndMaterialMapper.updateMountPrice(connectionPool, updatedPrice, mountId);
+        boolean updated = PriceAndMaterialMapper.updateMountPrice(connectionPool, updatedPrice, mountName);
 
         // Assert
         try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT mount_price FROM mounts WHERE mount_id = ?")) {
-            ps.setInt(1, mountId);
+             PreparedStatement ps = conn.prepareStatement("SELECT mount_price FROM mounts WHERE mount_Type_name = ?")) {
+            ps.setString(1, mountName);
             try (ResultSet rs = ps.executeQuery()) {
                 assertTrue(updated);
             }

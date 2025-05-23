@@ -1,22 +1,181 @@
 package app.persistence.mappers;
 
+import app.entities.Offer;
 import app.entities.CustomerInformation;
+import app.entities.Material;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.exceptions.DatabaseException;
-import app.persistence.connection.ConnectionPool;
 
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class OfferMapper {
 
 //getter mapper metoder
+
+    public static boolean updateOfferDimensions(ConnectionPool connectionPool, int offerId, int carportLength, int carportWidth, int shedLength, int shedWidth) throws DatabaseException {
+        String sql = "UPDATE offers SET carport_length = ?, carport_width = ?, shed_length = ?, shed_width = ?, expiration_date = CURRENT_DATE + INTERVAL '7 days' WHERE offer_id = ?;";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+                ps.setInt(1, carportLength);
+                ps.setInt(2, carportWidth);
+                ps.setInt(3, shedLength);
+                ps.setInt(4, shedWidth);
+                ps.setInt(5, offerId);
+
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected == 1) {
+                    return true;
+                }
+                return false;
+
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Error updating carport dimensions for Offer Id: " + offerId + " in database");
+        }
+    }
+
+    public static Offer getOfferFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT * FROM offers WHERE offers.offer_id = ?;";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    float totalExpensePrice = rs.getFloat("total_expense_price");
+                    float totalSalesPrice = rs.getFloat("total_sales_price");
+                    int sellerId = rs.getInt("seller_id");
+                    Date expirationDate = rs.getDate("expiration_date");
+                    int carportLength = rs.getInt("carport_length");
+                    int carportWidth = rs.getInt("carport_width");
+                    int shedLength = rs.getInt("shed_length");
+                    int shedWidth = rs.getInt("shed_width");
+                    int customerId = rs.getInt("customer_id");
+                    return new Offer(offerId, totalExpensePrice, totalSalesPrice, sellerId, customerId, expirationDate, carportLength, carportWidth, shedLength, shedWidth);
+                }
+                app.persistence.controller.RoutingController.setOfferId(0);
+                return new Offer(0, 0, 0, 0,0, Date.valueOf(LocalDate.now()), 0, 0, 0, 0);
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching offer: ");
+        }
+    }
+
+    public static ArrayList<Material> getWoodListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT wood_list.wood_amount, wood_type.wood_type_name, wood_dimensions.wood_width, wood_dimensions.wood_height, wood_dimensions.wood_length FROM wood_list JOIN wood_type ON wood_list.wood_type_id = wood_type.wood_type_id JOIN wood_dimensions ON wood_list.wood_dimension_id = wood_dimensions.wood_dimension_id WHERE wood_list.offer_id = ?;";
+        ArrayList<Material> woodList = new ArrayList<>();
+        String name;
+        int amount;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("wood_type_name") + " " + rs.getInt("wood_width") + "mm X " + rs.getInt("wood_height") + "mm X " + rs.getInt("wood_length") + "cm";
+                    amount = rs.getInt("wood_amount");
+                    woodList.add(new Material(name, amount));
+                }
+                return woodList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Wood List: ");
+        }
+    }
+
+    public static  ArrayList<Material> getRoofListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT roof_list.roof_amount, roofs.roof_type_name FROM roof_list JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE roof_list.offer_id = ?;";
+        ArrayList<Material> roofList = new ArrayList<>();
+        String name;
+        int amount;
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("roof_type_name");
+                    amount = rs.getInt("roof_amount");
+                    roofList.add(new Material(name, amount));
+                }
+                return roofList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Roof List: ");
+        }
+    }
+
+    public static ArrayList<Material> getMountListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT mounts_list.mount_amount, mounts.mount_type_name FROM mounts_list JOIN mounts ON mounts_list.mount_id = mounts.mount_id WHERE mounts_list.offer_id = ?;";
+        ArrayList<Material> mountList = new ArrayList<>();
+        String name;
+        int amount;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("mount_type_name");
+                    amount = rs.getInt("mount_amount");
+                    mountList.add(new Material(name, amount));
+                }
+                return mountList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Mount List: ");
+        }
+    }
+
+    public static ArrayList<Material> getScrewListFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql = "SELECT screws_list.screws_amount, screws.screw_type_name FROM screws_list JOIN screws ON screws_list.screw_id = screws.screw_id WHERE screws_list.offer_id = ?;";
+        ArrayList<Material> screwList = new ArrayList<>();
+        String name;
+        int amount;
+
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, offerId);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    name = rs.getString("screw_type_name");
+                    amount = rs.getInt("screws_amount");
+                    screwList.add(new Material(name, amount));
+                }
+                return screwList;
+            }
+
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Database error while fetching Screws List: ");
+        }
+    }
+
     public int getTreatmentIdFromTreatmentName(ConnectionPool connectionPool, String treatmentName) throws DatabaseException {
         String sql = "SELECT wood_treatment_id FROM wood_treatment WHERE wood_treatment_type_name = ?;";
 
@@ -719,6 +878,43 @@ public class OfferMapper {
                 }
                 return true;
 
+            }
+        } catch (SQLException ex) {
+            throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");
+        }
+
+    }
+
+    public static boolean deleteMaterialListsByOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+        String sql1 = "DELETE FROM wood_list WHERE offer_id = ?;";
+        String sql2 = "DELETE FROM screws_list WHERE offer_id = ?;";
+        String sql3 = "DELETE FROM roof_list WHERE offer_id = ?;";
+        String sql4 = "DELETE FROM mounts_list WHERE offer_id = ?;";
+
+        try (Connection connection = connectionPool.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = connection.prepareStatement(sql1); PreparedStatement ps2 = connection.prepareStatement(sql2); PreparedStatement ps3 = connection.prepareStatement(sql3); PreparedStatement ps4 = connection.prepareStatement(sql4);) {
+
+                ps1.setInt(1, offerId);
+                ps2.setInt(1, offerId);
+                ps3.setInt(1, offerId);
+                ps4.setInt(1, offerId);
+
+                ps1.executeUpdate();
+                ps2.executeUpdate();
+                ps3.executeUpdate();
+                ps4.executeUpdate();
+
+                connection.commit();
+                return true;
+            }
+            catch (SQLException ex) {
+                connection.rollback();
+                return false;
+            }
+            finally {
+                connection.setAutoCommit(true);
             }
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error deleting Wood List for Offer Id: " + offerId + " in database");

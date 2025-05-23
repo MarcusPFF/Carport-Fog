@@ -1,5 +1,8 @@
 package app.persistence.controller;
 
+import app.entities.Offer;
+import app.entities.CustomerInformation;
+import app.entities.Material;
 import app.entities.CustomerInformation;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -17,6 +20,14 @@ import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,6 +41,7 @@ public class RoutingController {
     private static MailSender mailSender = new MailSender();
     private static MaterialCalculator materialCalculator = new MaterialCalculator();
     private static int offerId;
+    private static Offer offer;
     private static int orderId;
 
     public static int getOfferId() {
@@ -68,7 +80,18 @@ public class RoutingController {
         app.post("/seller-admin-login", ctx -> handleSellerAdminLogin(ctx));
 
         app.get("/seller-admin-page", ctx -> showSellerAdminPage(ctx));
-        app.post("/seller-admin-page", ctx -> handleSellerAdminPage(ctx));
+        app.post("/button-offerid", ctx -> handleSellerAdminPageOfferID(ctx));
+        app.post("/button-salesPrice", ctx -> handleSellerAdminPageSalesPrice(ctx));
+        app.post("/button-send-final-offer", ctx -> handleSellerAdminPageSendFinalOffer(ctx));
+        app.get("/button-editDimensions", ctx -> showSellerAdminPageEditDimensions(ctx));
+        app.post("/button-editDimensions", ctx -> handleSellerAdminPageEditDimensions(ctx));
+        app.get("/button-editPrices", ctx -> showSellerAdminEditPrices(ctx));
+
+        app.post("/button-updateWoodPrice", ctx -> handleSellerAdminUpdateWoodPrice(ctx));
+        app.post("/button-updateMountPrice", ctx -> handleSellerAdminUpdateMountPrice(ctx));
+        app.post("/button-updateScrewPrice", ctx -> handleSellerAdminUpdateScrewPrice(ctx));
+        app.post("/button-updateRoofPrice", ctx -> handleSellerAdminUpdateRoofPrice(ctx));
+
 
         app.get("/contact-information", ctx -> showContactInformationPage(ctx));
         app.post("/contact-information", ctx -> handleContactInformationPage(ctx));
@@ -96,7 +119,7 @@ public class RoutingController {
         ctx.render("/seller-admin-login.html");
     }
 
-    public static void handleSellerAdminLogin(Context ctx) {
+    public static void handleSellerAdminLogin(Context ctx) throws DatabaseException {
         String sellerCode = ctx.formParam("sellerCode");
         // Denne verySecretAdminCode er hardcoded med vilje så alle kan tilgå admin-page
         String verySecretAdminCode = String.valueOf(getSellerCode());
@@ -111,11 +134,126 @@ public class RoutingController {
         }
     }
 
-    public static void showSellerAdminPage(Context ctx) {
+    public static void showSellerAdminEditPrices(Context ctx) {
+        ctx.render("/seller-admin-edit-prices.html");
+    }
+
+    public static void handleSellerAdminUpdateRoofPrice(Context ctx) throws DatabaseException {
+        String roofName = ctx.formParam("roofName");
+        float roofPrice = Float.parseFloat(ctx.formParam("roofPrice"));
+        int roofLength = Integer.parseInt(ctx.formParam("roofLength"));
+        priceAndMaterialMapper.updateRoofPrice(connectionPool, roofPrice, roofName, roofLength);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateMountPrice(Context ctx) throws DatabaseException {
+        String mountName = ctx.formParam("mountName");
+        float mountPrice = Float.parseFloat(ctx.formParam("mountPrice"));
+        priceAndMaterialMapper.updateMountPrice(connectionPool, mountPrice, mountName);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateScrewPrice(Context ctx) throws DatabaseException {
+        String screwName = ctx.formParam("screwName");
+        float screwPrice = Float.parseFloat(ctx.formParam("screwPrice"));
+        priceAndMaterialMapper.updateScrewsPrice(connectionPool, screwPrice, screwName);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void handleSellerAdminUpdateWoodPrice(Context ctx) throws DatabaseException {
+        int woodWidth = Integer.parseInt(ctx.formParam("woodWidth"));
+        int woodHeight = Integer.parseInt(ctx.formParam("woodHeight"));
+        float woodPrice = Float.parseFloat(ctx.formParam("mountPrice"));
+        priceAndMaterialMapper.updateDimensionMeterPrice(connectionPool, woodPrice, woodWidth, woodHeight);
+        showSellerAdminEditPrices(ctx);
+    }
+
+    public static void showSellerAdminPage(Context ctx) throws DatabaseException {
+        List<Material> materials = new ArrayList<>();
+        //float salesPrice = 0;
+        //float expensesPrice = 0;
+        offer = new Offer(getOfferId(), 0, 0, 0,0, Date.valueOf(LocalDate.now()), 0, 0, 0, 0);
+        offerMapper = new OfferMapper();
+        ArrayList<Material> wood = offerMapper.getWoodListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> mount = offerMapper.getMountListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> screw = offerMapper.getScrewListFromOfferId(connectionPool, getOfferId());
+        ArrayList<Material> roof = offerMapper.getRoofListFromOfferId(connectionPool, getOfferId());
+        for (Material material : wood) {
+            materials.add(material);
+        }
+        for (Material material : mount) {
+            materials.add(material);
+        }
+        for (Material material : screw){
+            materials.add(material);
+        }
+        for (Material material : roof){
+            materials.add(material);
+        }
+        if (getOfferId() != 0){
+            offer = offerMapper.getOfferFromOfferId(connectionPool, getOfferId());
+        }
+        ctx.sessionAttribute("materials", materials);
+        ctx.sessionAttribute("offerId", getOfferId());
+        ctx.sessionAttribute("salesPrice", offer.getTotalRetailPrice());
+        ctx.sessionAttribute("expensesPrice", offer.getTotalExpensePrice());
+        ctx.sessionAttribute("carportLength", offer.getCarportLength());
+        ctx.sessionAttribute("carportWidth", offer.getCarportWidth());
+        ctx.sessionAttribute("shedLength", offer.getShedLength());
+        ctx.sessionAttribute("shedWidth", offer.getShedWidth());
+
         ctx.render("/seller-admin-page.html");
     }
 
-    public static void handleSellerAdminPage(Context ctx) {
+    public static void handleSellerAdminPageOfferID(Context ctx) throws DatabaseException {
+        int offerId = Integer.parseInt(ctx.formParam("offerId"));
+        setOfferId(offerId);
+        showSellerAdminPage(ctx);
+    }
+
+    public static void handleSellerAdminPageSalesPrice(Context ctx) throws DatabaseException {
+        float salesPrice = Float.parseFloat(ctx.formParam("salesPrice"));
+        offerMapper.updateTotalSalesPrice(connectionPool, salesPrice, getOfferId());
+        showSellerAdminPage(ctx);
+    }
+
+    public static void showSellerAdminPageEditDimensions(Context ctx) throws DatabaseException {
+        ctx.render("/seller-admin-edit-dimensions.html");
+    }
+
+    public static void handleSellerAdminPageEditDimensions(Context ctx) throws DatabaseException {
+        int shedDoors = Integer.parseInt(ctx.formParam("shedDoors"));
+        int carportHeight = Integer.parseInt(ctx.formParam("carportHeight"));
+        int shedBoardWidth = Integer.parseInt(ctx.formParam("shedBoardWidth"));
+        String roofName = ctx.formParam("roofName");
+        int carportLength = Integer.parseInt(ctx.formParam("carportLength"));
+        int carportWidth = Integer.parseInt(ctx.formParam("carportWidth"));
+        int shedLength = Integer.parseInt(ctx.formParam("shedLength"));
+        int shedWidth = Integer.parseInt(ctx.formParam("shedWidth"));
+
+        System.out.println(shedDoors);
+        System.out.println(shedBoardWidth);
+        System.out.println(shedLength);
+        System.out.println(shedWidth);
+        System.out.println(roofName);
+        System.out.println(carportLength);
+        System.out.println(carportWidth);
+
+        boolean fuldført = false;
+        fuldført = materialCalculator.offerEditCalculator(connectionPool, getOfferId(), carportLength,carportWidth, carportHeight, shedLength, shedWidth, shedDoors, 120, roofName, shedBoardWidth, 10);
+        if (fuldført){
+            System.out.println("virker");
+        }
+        showSellerAdminPage(ctx);
+    }
+    public static void handleSellerAdminPageSendFinalOffer(Context ctx) throws DatabaseException, IOException {
+        int offerId = getOfferId();
+        float salesPrice = offer.getTotalRetailPrice();
+        String acceptOfferTempLink = "acceptoffertemplink.com";
+        CustomerInformation customerInformation = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink, salesPrice);
+        setOfferId(0);
+        showSellerAdminPage(ctx);
     }
 
     public static void showFinalAcceptOfferPage(Context ctx) throws DatabaseException {
@@ -205,12 +343,13 @@ public class RoutingController {
     }
 
     public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        mailSender.sendSellerMailContact(sellerMail, customerInformation);
+        showIndexPage(ctx);
         String acceptOfferTempLink = "acceptoffertemplink.com";
         int offerId = Integer.parseInt(ctx.formParam("offerId"));
-        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
-        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
         if (sellerMail != null) {
-            mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
             mailSender.sendSellerMailContact(sellerMail, customerInformation);
             showIndexPage(ctx);
         } else {
@@ -219,7 +358,6 @@ public class RoutingController {
             ctx.sessionAttribute("offerId", offerId);
             ctx.render("seller-contact.html");
         }
-
     }
 
     private static void handleQuickBygPage(Context ctx) {

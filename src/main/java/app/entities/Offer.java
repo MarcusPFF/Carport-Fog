@@ -1,5 +1,4 @@
 package app.entities;
-import app.entities.CustomerInformation;
 import java.util.Date;
 
 
@@ -8,19 +7,19 @@ public class Offer {
     private float totalExpensePrice;
     private float totalRetailPrice;
     private int sellerId;
-    private CustomerInformation customerInformation;
+    private int customerId;
     private Date expirationDate;
     private int carportLength;
     private int carportWidth;
     private int shedLength;
     private int shedWidth;
 
-    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, CustomerInformation customerInformation, Date expirationDate, int carportLength, int carportWidth, int shedLength, int shedWidth) {
+    public Offer(int offerId, float totalExpensePrice, float totalRetailPrice, int sellerId, int customerId, Date expirationDate, int carportLength, int carportWidth, int shedLength, int shedWidth) {
         this.offerId = offerId;
         this.totalExpensePrice = totalExpensePrice;
         this.totalRetailPrice = totalRetailPrice;
         this.sellerId = sellerId;
-        this.customerInformation = customerInformation;
+        this.customerId = customerId;
         this.expirationDate = expirationDate;
         this.carportLength = carportLength;
         this.carportWidth = carportWidth;
@@ -60,12 +59,12 @@ public class Offer {
         this.sellerId = sellerId;
     }
 
-    public CustomerInformation getCustomerInformation() {
-        return customerInformation;
+    public int getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomerInformation(CustomerInformation customerInformation) {
-        this.customerInformation = customerInformation;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     public Date getExpirationDate() {
@@ -115,7 +114,7 @@ public class Offer {
                 ", totalExpensePrice=" + totalExpensePrice +
                 ", totalRetailPrice=" + totalRetailPrice +
                 ", sellerId=" + sellerId +
-                ", customerInformation=" + customerInformation +
+                ", customerId=" + customerId +
                 ", expirationDate=" + expirationDate +
                 ", carportLength=" + carportLength +
                 ", carportWidth=" + carportWidth +

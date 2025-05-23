@@ -1,5 +1,5 @@
 * {
-    font-family: Helvetica, serif;
+    font-family: Helvetica;
 }
 
 .main {
@@ -10,16 +10,6 @@
     flex-direction: column;
 }
 
-.wrapper {
-    display: flex;
-    flex-direction: column;
-    margin-top: 150px;
-    height: 100%;
-    max-width: 962px;
-    width: 800px;
-    border: 10px solid #DDDDDD;
-    background-color: #ffffff;
-}
 
 .button-getOfferId {
     align-items: center;
@@ -53,11 +43,18 @@
 }
 
 .offer-searcher {
+    margin-top: 40px;
     margin-left: 20px;
-    width: 450px;
+    width: 770px;
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
+}
+
+.offer-searcher label {
+    margin-left: 130px;
+    margin-top: 20px;
+    width: 200px;
 }
 
 .offer-input input {
@@ -96,7 +93,7 @@
 
 .price-searcher {
     margin-left: 20px;
-    width: 240px;
+    max-width: 240px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -117,6 +114,7 @@
 }
 
 .price-input input {
+    max-width: 117px;
     flex: 1;
     align-content: center;
     align-items: center;
@@ -131,9 +129,11 @@
     position: relative;
     display: flex;
     align-items: center;
-    width: 240px;
+    max-width: 240px;
+
     height: 50px;
     padding: 0 12px;
+    margin-top: 20px;
     border: 1px solid black;
     border-radius: 8px;
     background-color: #fff;
@@ -196,76 +196,232 @@
     background-color: #6c9fd1;
 }
 
-.button-updateSalesPrice {
+.button-setRoofPrice {
     align-items: center;
     justify-content: center;
     width: 240px;
     padding: 15px;
     border: 1px solid black;
     border-radius: 12px;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #013D7A;
+    color: white;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
+}
+
+.button-setRoofPrice:hover {
+    background-color: #012b59;
+}
+
+.button-setScrewPrice {
+    align-items: center;
+    justify-content: center;
+    width: 240px;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 12px;
+    margin-top: 20px;
+    margin-left: 75px;
     height: 50px;
     background-color: #013D7A;
     color: white;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-.button-updateSalesPrice:hover {
+.button-setScrewPrice:hover {
     background-color: #012b59;
 }
 
-.button-editDimensions {
+.button-setMountPrice {
     align-items: center;
     justify-content: center;
     width: 240px;
     padding: 15px;
     border: 1px solid black;
     border-radius: 12px;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 75px;
     height: 50px;
     background-color: #013D7A;
     color: white;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-.button-editDimensions:hover {
+.button-setMountPrice:hover {
     background-color: #012b59;
 }
 
-.button-editPrices {
+.button-updateDimensions {
     align-items: center;
     justify-content: center;
-    width: 240px;
+    width: 340px;
     padding: 15px;
     border: 1px solid black;
     border-radius: 12px;
-    margin-top: 10px;
+    margin-top: 50px;
     height: 50px;
     background-color: #013D7A;
     color: white;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-.button-editPrices:hover {
+.button-updateDimensions:hover {
     background-color: #012b59;
 }
 
-.button-sendOffer {
+.button-goBack {
+    margin-left: 450px;
     align-items: center;
     justify-content: center;
-    width: 240px;
+    width: 340px;
     padding: 15px;
     border: 1px solid black;
     border-radius: 12px;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     height: 50px;
-    background-color: #27b119;
+    background-color: #013D7A;
     color: white;
     box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-.button-sendOffer:hover {
-    background-color: #118008;
+.button-goBack:hover {
+    background-color: #012b59;
 }
+
+
+.side-menu {
+    position: fixed;
+    top: 150px;
+    left: 45%;
+    transform: translateX(-270px);
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-menu ul li {
+    margin-bottom: 15px;
+}
+
+.side-menu ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.side-menu, .wrapper {
+    min-height: calc(100vh - 150px);
+}
+
+.wrapper {
+    z-index: 10;
+    margin-top: 150px;
+    max-width: 962px;
+    width: 800px;
+    border: 2px solid #DDDDDD;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px;
+    margin-left: 100px;
+    position: relative;
+}
+
+.progress-bar {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+    gap: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
+.title-box {
+    width: 556px;
+    height: 85px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    align-items: start;
+    margin: 0 auto;
+    padding: 20px 10px;
+}
+
+.carport-dropdown-menus, .carport-dropdown-menus form {
+    display: flex;
+    min-height: 500px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.carport-dropdown-menus select {
+    text-align: center;
+    margin: 7px;
+    width: 250px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.carport-dropdown-menus p {
+    margin-bottom: 0px;
+}
+.shed-Options {
+    display: none;
+    margin-top: 10px;
+}
+
+.shed-select-group {
+    margin-bottom: 10px;
+}
+
+.shed-select-group label {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-top: 25px;
+}
+
+.next-page-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 30px;
+    background-color: #013d7a;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.next-page-button:hover {
+    background-color: #013469;
+}
+
 
 .error {
     color: red;
@@ -285,6 +441,7 @@ h1 {
     font-size: 2.5rem;
     margin-top: 40px;
 }
+
 
 @media (max-width: 650px) {
     .wrapper {

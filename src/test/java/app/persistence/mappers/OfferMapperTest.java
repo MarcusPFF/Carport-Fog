@@ -7,7 +7,6 @@ import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.*;
 
 import java.sql.*;
