@@ -1,16 +1,20 @@
 package app.persistence.util;
 
 import app.entities.customerInformation;
+import app.entities.CustomerInformation;
 import app.persistence.controller.RoutingController;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Attachments;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 
 import java.io.IOException;
+import java.util.Base64;
+import java.util.UUID;
 
 public class MailSender {
     private static RoutingController routingController = new RoutingController();
@@ -154,7 +158,7 @@ public class MailSender {
         String customerEmail = customerInformation.getCustomerMail();
         String firstName = customerInformation.getFirstName();
         int sellerCode = app.persistence.controller.RoutingController.getSellerCode();
-        int offerId = routingController.getOfferId();
+        int orderId = routingController.getOrderId();
 
         Personalization personalization = new Personalization();
         personalization.addTo(new Email(to));
@@ -162,7 +166,7 @@ public class MailSender {
         personalization.addDynamicTemplateData("customerEmail", customerEmail);
         personalization.addDynamicTemplateData("firstName", firstName);
         personalization.addDynamicTemplateData("sellerCode", sellerCode);
-        personalization.addDynamicTemplateData("offerId", offerId);
+        personalization.addDynamicTemplateData("orderId", orderId);
 
 
         mail.addCategory("carportapp");
@@ -180,6 +184,56 @@ public class MailSender {
         } catch (IOException ex) {
             System.out.println("Error sending mail 3");
             throw ex;
+        }
+    }
+
+    public void sendLastAcceptMailAndMaterialList(String to, int orderId, CustomerInformation customerInformation, byte[] pdfBytes, UUID trackingNumber) throws IOException {
+        Email from = new Email("no-reply@marcuspff.com");
+        from.setName("!Johannes Fog - Team");
+        Mail mail = new Mail();
+        mail.setFrom(from);
+        String API_KEY = System.getenv("SENDGRID_API_KEY");
+
+        String firstName = customerInformation.getFirstName();
+        String trackingNumberString = trackingNumber.toString();
+
+        Personalization personalization = new Personalization();
+        personalization.addTo(new Email(to));
+        mail.addPersonalization(personalization);
+        personalization.addDynamicTemplateData("firstName", firstName);
+        personalization.addDynamicTemplateData("orderId", orderId);
+        personalization.addDynamicTemplateData("trackingNumber", trackingNumberString);
+
+        mail.addCategory("carportapp");
+
+        Attachments attachments = new Attachments();
+        attachments.setContent(Base64.getEncoder().encodeToString(pdfBytes));
+        attachments.setType("application/pdf");
+        attachments.setFilename("materialeliste.pdf");
+        attachments.setDisposition("attachment");
+        mail.addAttachments(attachments);
+
+        SendGrid sg = new SendGrid(API_KEY);
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            mail.templateId = "d-082b519b4de144c6aa41463133ea8939";
+            request.setBody(mail.build());
+
+            Response response = sg.api(request);
+
+            System.out.println("Status: " + response.getStatusCode());
+            System.out.println("Body: " + response.getBody());
+            System.out.println("Headers: " + response.getHeaders());
+
+            if (response.getStatusCode() != 202) {
+                throw new IOException("Email sending failed: "
+                        + response.getStatusCode() + " - " + response.getBody());
+            }
+        } catch (IOException ex) {
+            System.out.println("Error sending final acceptance mail");
+            throw new IOException("Kunne ikke sende acceptmail: " + ex.getMessage(), ex);
         }
     }
 }

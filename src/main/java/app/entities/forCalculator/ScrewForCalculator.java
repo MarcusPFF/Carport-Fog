@@ -39,8 +39,10 @@ public class ScrewForCalculator {
         //Skruer til beslag for spærs montering på rem. (regnes i antal bokse)
         screwList.add(screwCalculator.screwForRafterMountsCalculator(connection, carportLengthInCm, carportWidthInCm, "4,0 x 50 mm. beslagskruer 250 stk.", shedLengthInCm, shedWidthInCm));
 
-        //Skruer til at montere beklædnings brædderne på skur. (regnes i antal bokse)
-        screwList.add(screwCalculator.screwsForShedBoardsCalculator(connection, shedLengthInCm, shedWidthInCm, "4,5 x 50 mm. Skruer 300 stk.", boardForShedWidthInMm, spareShedBoardAmount));
+        if (shedLengthInCm > 0) {
+            //Skruer til at montere beklædnings brædderne på skur. (regnes i antal bokse)
+            screwList.add(screwCalculator.screwsForShedBoardsCalculator(connection, shedLengthInCm, shedWidthInCm, "4,5 x 50 mm. Skruer 300 stk.", boardForShedWidthInMm, spareShedBoardAmount));
+        }
 
         //Bolte til at montere remmene på stolper. (regnes i stk)
         screwList.add(screwCalculator.boltsForRafterBeamCalculator(connection, carportLengthInCm, carportWidthInCm, "Bræddebolt 10 x 120 mm."));

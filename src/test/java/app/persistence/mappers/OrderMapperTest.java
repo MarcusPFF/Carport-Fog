@@ -50,11 +50,14 @@ class OrderMapperTest {
     void createNewOrder() throws SQLException, DatabaseException {
         // Arrange:
         int offerId = 1;
+        int expected = 4;
+
 
         // Act
-        orderMapper.createNewOrder(connectionPool, offerId);
+        int actual = orderMapper.createNewOrder(connectionPool, offerId);
 
         // Assert
+        assertEquals(expected, actual);
         try (Connection conn = connectionPool.getConnection(); PreparedStatement ps = conn.prepareStatement("SELECT order_id, offer_id, tracking_number, status_id, purchase_date FROM test.orders WHERE offer_id = ?")) {
             ps.setInt(1, offerId);
             try (ResultSet rs = ps.executeQuery()) {

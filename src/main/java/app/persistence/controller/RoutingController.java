@@ -3,10 +3,16 @@ package app.persistence.controller;
 import app.entities.Offer;
 import app.entities.customerInformation;
 import app.entities.Material;
+import app.entities.CustomerInformation;
+import app.entities.forCalculator.MountForCalculator;
+import app.entities.forCalculator.RoofForCalculator;
+import app.entities.forCalculator.ScrewForCalculator;
+import app.entities.forCalculator.WoodForCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.calculator.MaterialCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.persistence.documentCreation.CarportSvg;
+import app.persistence.documentCreation.GenerateMaterialPdf;
 import app.persistence.documentCreation.Svg;
 import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
@@ -25,6 +31,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.UUID;
 
 public class RoutingController {
     private static ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -35,6 +45,7 @@ public class RoutingController {
     private static MaterialCalculator materialCalculator = new MaterialCalculator();
     private static int offerId;
     private static Offer offer;
+    private static int orderId;
 
     public static int getOfferId() {
         return offerId;
@@ -44,6 +55,13 @@ public class RoutingController {
         RoutingController.offerId = offerId;
     }
 
+    public static int getOrderId() {
+        return orderId;
+    }
+
+    public static void setOrderId(int orderId) {
+        RoutingController.orderId = orderId;
+    }
 
     public static void routes(Javalin app) {
         //skabelon
@@ -86,7 +104,7 @@ public class RoutingController {
 
         app.get("/mail-sent", ctx -> showMailSentPage(ctx));
 
-        app.get("/svg-drawing", ctx -> showSvgDrawingPage(ctx));
+        app.post("/show-svg", ctx -> showSvgDrawingPage(ctx));
     }
 
     private static void handleIndexPage(Context ctx) {
@@ -241,8 +259,10 @@ public class RoutingController {
         showSellerAdminPage(ctx);
     }
 
-    public static void showFinalAcceptOfferPage(Context ctx) {
+    public static void showFinalAcceptOfferPage(Context ctx) throws DatabaseException {
         ctx.sessionAttribute("offerId");
+        String customerMail = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, getOfferId());
+        ctx.sessionAttribute("email", customerMail);
         Boolean denied = ctx.sessionAttribute("offerDenied");
         Boolean confirmed = ctx.sessionAttribute("offerConfirmed");
         ctx.attribute("actionDenied", denied != null && denied);
@@ -253,13 +273,25 @@ public class RoutingController {
     public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
         customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
+        String customerEmail = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, getOfferId());
         String action = ctx.formParam("action");
         if ("confirm".equals(action)) {
             ctx.sessionAttribute("offerConfirmed", true);
             ctx.sessionAttribute("offerDenied", false);
             try {
+                setOrderId(app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId()));
+                UUID trackingNumber = app.persistence.mappers.OrderMapper.getTrackingNumberFromOrderId(connectionPool, getOrderId());
+                ArrayList<MountForCalculator> mounts = OrderMapper.getMountListFromOrderId(connectionPool, getOrderId());
+                ArrayList<RoofForCalculator> roofs = OrderMapper.getRoofListFromOrderId(connectionPool, getOrderId());
+                ArrayList<ScrewForCalculator> screws = OrderMapper.getScrewListFromOrderId(connectionPool, getOrderId());
+                ArrayList<WoodForCalculator> woods = OrderMapper.getWoodListFromOrderId(connectionPool, getOrderId());
+
+                GenerateMaterialPdf pdfGenerator = new GenerateMaterialPdf();
+                byte[] pdfBytes = pdfGenerator.generateMaterialPdf(mounts, roofs, screws, woods);
+
                 mailSender.sendSellerMailAccept(sellerMail, customerInformation);
-                app.persistence.mappers.OrderMapper.createNewOrder(connectionPool, getOfferId());
+                mailSender.sendLastAcceptMailAndMaterialList(customerEmail, getOrderId(), customerInformation, pdfBytes, trackingNumber);
+                showAcceptedMailPage(ctx);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -268,25 +300,37 @@ public class RoutingController {
             ctx.sessionAttribute("offerConfirmed", false);
             ctx.sessionAttribute("offerDenied", true);
             app.persistence.mappers.OfferMapper.deleteOfferAndEveryThinkLinkedToItByOfferId(connectionPool, getOfferId());
-            ctx.sessionAttribute("offerId", null);
+            showDeniedMailPage(ctx);
 
         }
         ctx.redirect("/final-accept-offer");
     }
 
+    public static void showAcceptedMailPage(Context ctx) {
+        ctx.render("/accepted-page.html");
+        ctx.req().getSession().invalidate();
+    }
+
+    public static void showDeniedMailPage(Context ctx) {
+        ctx.render("/denied-page.html");
+        ctx.req().getSession().invalidate();
+    }
     public static void showAcceptOfferPage(Context ctx) {
         ctx.render("/accept-offer.html");
     }
 
     public static void handleAcceptOfferPage(Context ctx) throws DatabaseException {
         try {
-            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
+            int offerId = Integer.parseInt(ctx.formParam("offerId"));
+            ctx.sessionAttribute("offerId", offerId);
+            setOfferId(offerId);
+            float salesPriceFromOfferId = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, offerId);
             if (salesPriceFromOfferId > 0.1) {
                 ctx.sessionAttribute("salesPriceFromOfferId", salesPriceFromOfferId);
                 showFinalAcceptOfferPage(ctx);
             } else {
                 ctx.status(400);
-                ctx.attribute("errorMessage", "Tilbud " + getOfferId() + " findes ikke.");
+                ctx.attribute("errorMessage", "Tilbuds nr " + getOfferId() + " findes ikke.");
                 ctx.sessionAttribute("offerId", getOfferId());
                 ctx.render("accept-offer.html");
             }
@@ -306,60 +350,29 @@ public class RoutingController {
         customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         mailSender.sendSellerMailContact(sellerMail, customerInformation);
         showIndexPage(ctx);
+        String acceptOfferTempLink = "acceptoffertemplink.com";
+        int offerId = Integer.parseInt(ctx.formParam("offerId"));
+        String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        if (sellerMail != null) {
+            mailSender.sendSecondMail(customerInformation, acceptOfferTempLink);
+            mailSender.sendSellerMailContact(sellerMail, customerInformation);
+            showIndexPage(ctx);
+        } else {
+            ctx.status(400);
+            ctx.attribute("errorMessage", "Tilbuds nr " + offerId + " findes ikke.");
+            ctx.sessionAttribute("offerId", offerId);
+            ctx.render("seller-contact.html");
+        }
     }
 
     private static void handleQuickBygPage(Context ctx) {
-        String widthStr = ctx.formParam("carportWidth");
-        String lengthStr = ctx.formParam("carportLength");
-        String roofStr = ctx.formParam("carportTrapezRoof");
-        String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
-        String shedLengthStr = ctx.formParam("redskabsrumLength");
-        String shedWidthStr = ctx.formParam("redskabsrumWidth");
-        String shedDoorsStr = ctx.formParam("redskabsrumDoors");
-
-        int carportWidth = 0;
-        int carportLength = 0;
-        String carportTrapezRoof = "";
-        boolean hasShed = false;
-        int shedLength = 0;
-        int shedWidth = 0;
-        int shedDoors = 0;
-
-        if (widthStr != null && !widthStr.isEmpty()) {
-            carportWidth = Integer.parseInt(widthStr);
-        }
-        if (lengthStr != null && !lengthStr.isEmpty()) {
-            carportLength = Integer.parseInt(lengthStr);
-        }
-        if (roofStr != null) {
-            carportTrapezRoof = roofStr;
-        }
-        if (shedCheckbox != null) {
-            hasShed = true;
-            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
-                shedLength = Integer.parseInt(shedLengthStr);
-            }
-            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
-                shedWidth = Integer.parseInt(shedWidthStr);
-            }
-            if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
-                shedDoors = Integer.parseInt(shedDoorsStr);
-            }
-        }
-        ctx.sessionAttribute("carportWidth", carportWidth);
-        ctx.sessionAttribute("carportLength", carportLength);
-        ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
-        ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
-        ctx.sessionAttribute("redskabsrumLength", shedLength);
-        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
-        ctx.sessionAttribute("redskabsrumDoors", shedDoors);
-
+        loadAllAttributes(ctx);
         ctx.render("/quick-byg-contact-information.html");
     }
 
     private static void showQuickBygPage(Context ctx) {
         carportAttributes(ctx);
-        showSvgDrawingPage(ctx);
         ctx.render("/quick-byg.html");
     }
 
@@ -404,9 +417,6 @@ public class RoutingController {
     public static void showConfirmationPage(Context ctx) {
         carportAttributes(ctx);
         ctx.render("/quick-byg-confirmation.html");
-    }
-
-    public static void handleMailSentPage(Context ctx) {
     }
 
     public static void showMailSentPage(Context ctx) throws DatabaseException {
@@ -468,22 +478,17 @@ public class RoutingController {
     }
 
     public static void showSvgDrawingPage(Context ctx) {
+        loadAllAttributes(ctx);
         Locale.setDefault(new Locale("US"));
-
-        int ekstraMargin = 60;
-        int carportLength = 780;
-        int carportWidth = 600;
-
-        int svgWidth = carportLength + ekstraMargin;
-        int svgHeight = carportWidth + ekstraMargin;
+        int carportLength = getCarportLength(ctx);
+        int carportWidth = getCarportWidth(ctx);
 
         // Selve tegningen laves her
-        CarportSvg svg = new CarportSvg(carportLength, carportWidth);
-
-        // Brug præcis samme viewBox og størrelse til canvas
-        Svg carportSvg = new Svg(0, 0, "0 0 " + svgWidth + " " + svgHeight, svgWidth + "px", svgHeight + "px");
+        CarportSvg svg = new CarportSvg(ctx, carportLength, carportWidth);
 
         ctx.attribute("svg", svg.toString());
+
+        ctx.render("quick-byg-svg-drawing.html");
     }
 
     public static int getCarportWidth(Context ctx) {
@@ -521,5 +526,56 @@ public class RoutingController {
             return ctx.sessionAttribute("redskabsrumDoors");
         }
         return 0;
+    }
+
+    public static ConnectionPool getConnectionPool() {
+        return connectionPool;
+       }
+  
+    public static void loadAllAttributes(Context ctx) {
+        String widthStr = ctx.formParam("carportWidth");
+        String lengthStr = ctx.formParam("carportLength");
+        String roofStr = ctx.formParam("carportTrapezRoof");
+        String shedCheckbox = ctx.formParam("redskabsrumCheckbox");
+        String shedLengthStr = ctx.formParam("redskabsrumLength");
+        String shedWidthStr = ctx.formParam("redskabsrumWidth");
+        String shedDoorsStr = ctx.formParam("redskabsrumDoors");
+
+        int carportWidth = 0;
+        int carportLength = 0;
+        String carportTrapezRoof = "";
+        boolean hasShed = false;
+        int shedLength = 0;
+        int shedWidth = 0;
+        int shedDoors = 0;
+
+        if (widthStr != null && !widthStr.isEmpty()) {
+            carportWidth = Integer.parseInt(widthStr);
+        }
+        if (lengthStr != null && !lengthStr.isEmpty()) {
+            carportLength = Integer.parseInt(lengthStr);
+        }
+        if (roofStr != null) {
+            carportTrapezRoof = roofStr;
+        }
+        if (shedCheckbox != null) {
+            hasShed = true;
+            if (shedLengthStr != null && !shedLengthStr.isEmpty()) {
+                shedLength = Integer.parseInt(shedLengthStr);
+            }
+            if (shedWidthStr != null && !shedWidthStr.isEmpty()) {
+                shedWidth = Integer.parseInt(shedWidthStr);
+            }
+            if (shedDoorsStr != null && !shedDoorsStr.isEmpty()) {
+                shedDoors = Integer.parseInt(shedDoorsStr);
+            }
+        }
+        ctx.sessionAttribute("carportWidth", carportWidth);
+        ctx.sessionAttribute("carportLength", carportLength);
+        ctx.sessionAttribute("carportTrapezRoof", carportTrapezRoof);
+        ctx.sessionAttribute("redskabsrumCheckbox", hasShed);
+        ctx.sessionAttribute("redskabsrumLength", shedLength);
+        ctx.sessionAttribute("redskabsrumWidth", shedWidth);
+        ctx.sessionAttribute("redskabsrumDoors", shedDoors);
     }
 }

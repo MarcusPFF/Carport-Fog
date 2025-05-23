@@ -19,8 +19,6 @@ public class Svg {
 
     private static final String SVG_LINE_TEMPLATE = "<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"%s\" />";
 
-    private static final String SVG_ARROW_TEMPLATE = "<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"stroke:black; stroke-width:1; %s\" />";
-
     private static final String SVG_TEXT_TEMPLATE = "<text x=\"%d\" y=\"%d\" transform=\"rotate(%d, %d, %d)\" style=\"text-anchor: middle; font-size: 14px\">%s</text>";
 
     private static final String SVG_DIM_LINE_TEMPLATE = "<line x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" style=\"stroke: #000000; stroke-width: 1px; marker-start: url(#beginArrow); marker-end: url(#endArrow);\" />";
@@ -41,16 +39,6 @@ public class Svg {
 
     public void addLine(float x1, float y1, float x2, float y2, String style) {
         svg.append(String.format(SVG_LINE_TEMPLATE, x1, y1, x2, y2, style));
-    }
-
-    public void addArrow(int x1, int y1, int x2, int y2, boolean bothSides) {
-        String markerStyle;
-        if (bothSides) {
-            markerStyle = "marker-start:url(#beginArrow); marker-end:url(#endArrow)";
-        } else {
-            markerStyle = "marker-end:url(#endArrow)";
-        }
-        svg.append(String.format(SVG_ARROW_TEMPLATE, x1, y1, x2, y2, markerStyle));
     }
 
     public void addText(int x, int y, int rotation, String text) {
@@ -79,11 +67,6 @@ public class Svg {
         } else {
             addText(textX, textY - 10, 0, label);
         }
-    }
-
-
-    public void addSvg(Svg innerSvg) {
-        svg.append(innerSvg.toString());
     }
 
     @Override

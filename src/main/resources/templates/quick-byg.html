@@ -6,7 +6,6 @@
 <link rel="stylesheet" th:href="@{/css/quick-byg-body-styling.css}"/>
 <link rel="stylesheet" th:href="@{/css/header-styling.css}"/>
 <script th:src="@{/js/check-box-action-listener.js}"></script>
-</head>
 
 <body>
 <header class="header">
@@ -77,6 +76,7 @@
         </div>
     </div>
 </header>
+
 <div class="main">
     <div class="side-menu">
         <ul>
@@ -98,7 +98,7 @@
         </div>
 
         <div class="carport-dropdown-menus">
-            <form method="post" th:action="@{/quickByg}">
+            <form method="post">
                 <p>Carport bredde</p>
                 <select name="carportWidth" required>
                     <option value="">Vælg Bredde</option>
@@ -117,7 +117,6 @@
                                 th:text="${length + 'cm'}"
                                 th:selected="${length== carportLength}">
                         </option>
-
                     </th:block>
                 </select>
 
@@ -147,7 +146,7 @@
                         <label for="redskabsrumLength">Redskabsrum Længde:</label>
                         <select id="redskabsrumLength" name="redskabsrumLength">
                             <option value="">Vælg længde</option>
-                            <th:block th:each="length : ${#numbers.sequence(210, 720, 30)}">
+                            <th:block th:each="length : ${#numbers.sequence(150, 360, 30)}">
                                 <option th:value="${length}" th:text="${length + ' cm'}"
                                         th:selected="${length == redskabsrumLength}"></option>
                             </th:block>
@@ -158,7 +157,7 @@
                         <label for="redskabsrumWidth">Redskabsrum Bredde:</label>
                         <select id="redskabsrumWidth" name="redskabsrumWidth">
                             <option value="">Vælg bredde</option>
-                            <th:block th:each="width : ${#numbers.sequence(150, 360, 30)}">
+                            <th:block th:each="width : ${#numbers.sequence(210, 540, 30)}">
                                 <option th:value="${width}" th:text="${width + ' cm'}"
                                         th:selected="${width == redskabsrumWidth}"></option>
                             </th:block>
@@ -169,25 +168,21 @@
                         <label for="redskabsrumDoors">Redskabsrum Døre:</label>
                         <select id="redskabsrumDoors" name="redskabsrumDoors">
                             <option value="">Vælg Antal af døre</option>
-                            <option value="0"
-                                    th:selected="${redskabsrumDoors == '0'}">0 Døre
-                            </option>
-                            <option value="1"
-                                    th:selected="${redskabsrumDoors == '1'}">1 Dør
-                            </option>
-                            <option value="2"
-                                    th:selected="${redskabsrumDoors == '2'}">2 Døre
-                            </option>
-                            <option value="3"
-                                    th:selected="${redskabsrumDoors == '3'}">3 Døre
-                            </option>
+                            <option value="0" th:selected="${redskabsrumDoors == 0}">0 Døre</option>
+                            <option value="1" th:selected="${redskabsrumDoors == 1}">1 Dør</option>
+                            <option value="2" th:selected="${redskabsrumDoors == 2}">2 Døre</option>
+                            <option value="3" th:selected="${redskabsrumDoors == 3}">3 Døre</option>
                         </select>
                     </div>
                 </div>
+                <button type="submit" class="update-svg-button" th:formaction="@{/show-svg}">
+                    Opdater plantegning
+                </button>
                 <div th:if="${svg != null}" class="carport-svg-topview">
                     <div th:utext="${svg}"></div>
                 </div>
-                <button class="next-page-button" name="nextPageButton">
+
+                <button type="submit" class="next-page-button" name="nextPageButton" th:formaction="@{/quickByg}">
                     Næste →
                 </button>
             </form>

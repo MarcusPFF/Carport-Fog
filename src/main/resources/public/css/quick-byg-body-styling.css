@@ -6,7 +6,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    margin-top: 0;
+    margin-top: 20px;
     gap: 0;
     padding-left: 200px;
 }
@@ -122,6 +122,22 @@ html, body {
 h1 {
     font-size: 2rem;
     margin-top: 25px;
+}
+
+.update-svg-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #013d7a;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.update-svg-button:hover{
+    background-color: #013469;
 }
 
 .next-page-button {
