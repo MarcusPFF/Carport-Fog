@@ -177,8 +177,6 @@ public class RoutingController {
         }
         if (getOfferId() != 0){
             offer = offerMapper.getOfferFromOfferId(connectionPool, getOfferId());
-            //salesPrice = offerMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
-            //expensesPrice = offerMapper.getTotalExpensesPriceFromOfferId(connectionPool, getOfferId());
         }
         ctx.sessionAttribute("materials", materials);
         ctx.sessionAttribute("offerId", getOfferId());
