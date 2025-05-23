@@ -1,6 +1,6 @@
 package app.persistence.mappers;
 
-import app.entities.customerInformation;
+import app.entities.CustomerInformation;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
@@ -198,10 +198,10 @@ class OfferMapperTest {
     void getCustomerInformationFromOfferId() throws SQLException, DatabaseException {
         //Arrange
         int offerId = 1;
-        customerInformation expectedCustomer = new customerInformation("john.doe@example.com", "John", "Doe", "Main Street", 123, 1000, "Copenhagen",60606060);
+        CustomerInformation expectedCustomer = new CustomerInformation("john.doe@example.com", "John", "Doe", "Main Street", 123, 1000, "Copenhagen",60606060);
 
         //Act
-        customerInformation actualCustomer = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        CustomerInformation actualCustomer = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
 
         //Assert
         assertEquals(expectedCustomer.getCustomerMail(), actualCustomer.getCustomerMail());

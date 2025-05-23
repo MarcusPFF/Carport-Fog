@@ -1,7 +1,7 @@
 package app.persistence.mappers;
 
 import app.entities.Offer;
-import app.entities.customerInformation;
+import app.entities.CustomerInformation;
 import app.entities.Material;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
@@ -9,7 +9,6 @@ import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
 import app.persistence.connection.ConnectionPool;
 import app.exceptions.DatabaseException;
-import app.persistence.controller.RoutingController;
 
 
 import java.sql.*;
@@ -450,7 +449,7 @@ public class OfferMapper {
         }
     }
 
-    public static customerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
+    public static CustomerInformation getCustomerInformationFromOfferId(ConnectionPool connectionPool, int offerId) throws DatabaseException {
         String sql = "SELECT customer_mail, customer_firstname, customer_lastname, street_name, house_number, customer.zip_code, city_name, phone_number FROM cities JOIN customer ON cities.zip_code = customer.zip_code JOIN offers ON customer.customer_id = offers.customer_id WHERE offer_id = ?;";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -467,7 +466,7 @@ public class OfferMapper {
                     int zipCode = rs.getInt("zip_code");
                     String cityName = rs.getString("city_name");
                     int phoneNumber = rs.getInt("phone_number");
-                    return new customerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
+                    return new CustomerInformation(customerMail, firstName, lastName, streetName, houseNumber, zipCode, cityName, phoneNumber);
                 }
             }
             return null;

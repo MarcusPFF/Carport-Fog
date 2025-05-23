@@ -1,7 +1,7 @@
 package app.persistence.controller;
 
 import app.entities.Offer;
-import app.entities.customerInformation;
+import app.entities.CustomerInformation;
 import app.entities.Material;
 import app.entities.CustomerInformation;
 import app.entities.forCalculator.MountForCalculator;
@@ -18,8 +18,6 @@ import app.persistence.mappers.OfferMapper;
 import app.persistence.mappers.OrderMapper;
 import app.persistence.mappers.PriceAndMaterialMapper;
 import app.persistence.util.MailSender;
-import com.sendgrid.helpers.mail.objects.Email;
-import com.sendgrid.helpers.mail.objects.Personalization;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -29,7 +27,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -253,7 +250,7 @@ public class RoutingController {
         int offerId = getOfferId();
         float salesPrice = offer.getTotalRetailPrice();
         String acceptOfferTempLink = "acceptoffertemplink.com";
-        customerInformation customerInformation = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
+        CustomerInformation customerInformation = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
         mailSender.sendSecondMail(customerInformation, acceptOfferTempLink, salesPrice);
         setOfferId(0);
         showSellerAdminPage(ctx);
@@ -271,7 +268,7 @@ public class RoutingController {
     }
 
     public static void handleFinalAcceptOfferPage(Context ctx) throws DatabaseException {
-        customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
         String customerEmail = app.persistence.mappers.OfferMapper.getCustomerMailFromOfferId(connectionPool, getOfferId());
         String action = ctx.formParam("action");
@@ -347,7 +344,7 @@ public class RoutingController {
 
     public static void handleSellerContactPage(Context ctx) throws DatabaseException, IOException {
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, getOfferId());
-        customerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
+        CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, getOfferId());
         mailSender.sendSellerMailContact(sellerMail, customerInformation);
         showIndexPage(ctx);
         String acceptOfferTempLink = "acceptoffertemplink.com";
