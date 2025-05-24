@@ -289,6 +289,7 @@ public class RoutingController {
                 mailSender.sendSellerMailAccept(sellerMail, customerInformation);
                 mailSender.sendLastAcceptMailAndMaterialList(customerEmail, getOrderId(), customerInformation, pdfBytes, trackingNumber);
                 showAcceptedMailPage(ctx);
+                return;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -298,18 +299,18 @@ public class RoutingController {
             ctx.sessionAttribute("offerDenied", true);
             app.persistence.mappers.OfferMapper.deleteOfferAndEveryThinkLinkedToItByOfferId(connectionPool, getOfferId());
             showDeniedMailPage(ctx);
-
+            return;
         }
         ctx.redirect("/final-accept-offer");
     }
 
     public static void showAcceptedMailPage(Context ctx) {
-        ctx.render("/accepted-page.html");
+        ctx.render("/accepted-mail-page.html");
         ctx.req().getSession().invalidate();
     }
 
     public static void showDeniedMailPage(Context ctx) {
-        ctx.render("/denied-page.html");
+        ctx.render("/denied-mail-page.html");
         ctx.req().getSession().invalidate();
     }
     public static void showAcceptOfferPage(Context ctx) {
