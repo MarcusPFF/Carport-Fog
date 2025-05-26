@@ -521,7 +521,7 @@ public class OfferMapper {
 //create mapper metoder
     public static int createNewCustomerIfAlreadyExistGetCustomerIdFromMail(ConnectionPool connectionPool, String customerMail, String customerFirstName, String customerLastName, String customerStreetName, int customerHouseNumber, int customerZipCode, int phoneNumber) throws DatabaseException {
         int customerId;
-        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number) VALUES ( ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO NOTHING RETURNING customer_id;";
+        String sql = "INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number) VALUES ( ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) String sql = \"INSERT INTO customer (customer_mail, customer_firstname, customer_lastname, street_name, house_number, zip_code, phone_number) VALUES ( ?, ?, ?, ?, ?, ?, ?) ON CONFLICT (customer_mail) DO UPDATE SET customer_firstname = EXCLUDED.customer_firstname, customer_lastname = EXCLUDED.customer_lastname, street_name = EXCLUDED.street_name, house_number = EXCLUDED.house_number,\\n zip_code = EXCLUDED.zip_code, phone_number = EXCLUDED.phone_number RETURNING customer_id;\";\n;";
 
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
