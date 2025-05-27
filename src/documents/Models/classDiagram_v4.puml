@@ -1,0 +1,467 @@
+@startuml
+
+!pragma layout smetana
+
+package app.config {
+  class SessionConfig {
+    +static SessionHandler sessionConfig()
+  }
+  class ThymeleafConfig {
+    +static TemplateEngine templateEngine()
+  }
+}
+
+package app.entities {
+  class CustomerInformation {
+    -String customerMail
+    -String firstName
+    -String lastName
+    -String streetName
+    -int houseNumber
+    -int zipCode
+    -String city
+    -int phoneNumber
+    +CustomerInformation(String,String,String,String,int,int,String,int)
+    +getCustomerMail()/setCustomerMail()
+    +getFirstName()/setFirstName()
+    +getLastName()/setLastName()
+    +getStreetName()/setStreetName()
+    +getHouseNumber()/setHouseNumber()
+    +getZipCode()/setZipCode()
+    +getCity()/setCity()
+    +getPhoneNumber()/setPhoneNumber()
+    +toString()
+  }
+  class Material {
+    -String materialName
+    -int materialAmount
+    +Material(String,int)
+    +getMaterialName()/setMaterialName()
+    +getMaterialAmount()/setMaterialAmount()
+  }
+  class Offer {
+    -int offerId
+    -float totalExpensePrice
+    -float totalRetailPrice
+    -int sellerId
+    -int customerId
+    -Date expirationDate
+    -int carportLength
+    -int carportWidth
+    -int shedLength
+    -int shedWidth
+    +Offer(...)
+    +get/set for all fields
+    +toString()
+  }
+  class Order {
+    -int orderId
+    -int offerId
+    -UUID trackingNumber
+    -Date purchaseDate
+    -String status
+    +Order(...)
+    +get/set for all fields
+    +toString()
+  }
+  class Status {
+    -int statusId
+    -String statusDescription
+    -String messageForMail
+    +Status(int,String,String)
+    +getStatusId()/setStatusId()
+    +getStatusDescription()/setStatusDescription()
+    +getMessageForMail()/setMessageForMail()
+    +toString()
+  }
+  class DatabaseException <<Exception>> {
+    +DatabaseException(Throwable,String)
+  }
+}
+
+package app.entities.forCalculator {
+  class MountForCalculator {
+    -String name
+    -int amount
+    -int mountId
+    -String description
+    -MountCalculator mountCalculator
+    +MountForCalculator(String,int,int,String)
+    +MountForCalculator()
+    +mountListCalculator(ConnectionPool,int,int,int,int,int)
+    +getName()/getAmount()/getMountId()/getDescription()
+    +static getMountList()
+  }
+  class RoofForCalculator {
+    -String name
+    -int amount
+    -int roofId
+    -String description
+    -RoofCalculator roofCalculator
+    +RoofForCalculator(String,int,int,String)
+    +RoofForCalculator()
+    +roofListCalculator(ConnectionPool,int,int,int,String)
+    +getName()/getAmount()/getRoofId()/getDescription()
+    +static getRoofList()
+  }
+  class ScrewForCalculator {
+    -String name
+    -int amount
+    -int screwId
+    -String description
+    -ScrewCalculator screwCalculator
+    +ScrewForCalculator(String,int,int,String)
+    +ScrewForCalculator()
+    +screwListCalculator(ConnectionPool,int,int,int,int,int,int)
+    +getName()/getAmount()/getScrewId()/getDescription()
+    +static getScrewList()
+  }
+  class WoodForCalculator {
+    -String name
+    -int amount
+    -int woodDimensionId
+    -int woodTreatmentId
+    -int woodTypeId
+    -String description
+    -PoleCalculator poleCalculator
+    -RafterCalculator rafterCalculator
+    -NoggingCalculator noggingCalculator
+    -BoardCalculator boardCalculator
+    +WoodForCalculator(...)
+    +WoodForCalculator()
+    +woodListCalculator(ConnectionPool,int,int,int,int,int,int)
+    +getName()/getAmount()/getWoodDimensionId()/getWoodTreatmentId()/getWoodTypeId()/getDescription()
+    +static getWoodList()
+  }
+}
+
+package app.persistence.calculator {
+  class BoardCalculator {
+    +shedBoardCalculator(...)
+    +fasciaBoardFrontAndBackCalculator(...)
+    +fasciaBoardSidesCalculator(...)
+    +bargeBoardFrontCalculator(...)
+    +bargeBoardSidesCalculator(...)
+    +dripCapForBoardFrontCalculator(...)
+    +dripCapForBoardSidesCalculator(...)
+    +shedBoardAmountCalculator(...)
+    +fasciaAndBargeBoardAmountCalculator()
+    +fasciaAndBargeBoardFrontAmountCalculator()
+    +totalFasciaAndBargeBoardAndDripCapLengthCalculator(...)
+  }
+  class MaterialCalculator {
+    +offerCalculator(...)
+    +offerEditCalculator(...)
+  }
+  class MountCalculator {
+    +leftRafterMountCalculator(...)
+    +rightRafterMountCalculator(...)
+    +squareBracketsForRafterMountCalculator(...)
+    +angleMountCalculator(...)
+    +stableDoorHandleCalculator(...)
+    +hingeForDoorCalculator(...)
+    +leftRafterMountsAmountCalculator(...)
+    +rightRafterMountsAmountCalculator(...)
+    +squareBracketsForRafterMountsAmountCalculator(...)
+    +angleMountAmountCalculator(...)
+    +stableDoorHandleAmountCalculator(...)
+    +hingeForDoorAmountCalculator(...)
+  }
+  class NoggingCalculator {
+    +noggingForShedFrontAndBackCalculator(...)
+    +noggingForShedSidesCalculator(...)
+    +noggingForZOnTheDoorCalculator(...)
+    +noggingForShedFrontAndBackAmountCalculator(...)
+    +noggingForShedSidesAmountCalculator(...)
+    +noggingForZOnTheDoorAmountCalculator(...)
+  }
+  class PoleCalculator {
+    +poleCalculator(...)
+    +poleAmountXCalculator(int)
+    +poleAmountYCalculator(int)
+    +shedPoleAmountCalculator(...)
+  }
+  class PriceCalculator {
+    +calculateTotalOfferSalesPrice(...)
+    +calculateTotalOfferExpensePrice(...)
+    +calculateTotalWoodListPrice(...)
+    +calculateTotalRoofListPrice(...)
+    +calculateTotalMountListPrice(...)
+    +calculateTotalScrewListPrice(...)
+    +calculateWoodPrice(...)
+    +calculatePriceForEveryCategoryExceptWood(...)
+    +getMarkupPercentageFromCurrentSalesPrice(...)
+  }
+  class RafterCalculator {
+    +rafterForRoofCalculator(...)
+    +rafterBeamCalculator(...)
+    +rafterAmountForRoofCalculator(int)
+    +totalRafterHeightInMmCalculator(int)
+    +totalRafterWidthInMmCalculator(int)
+    +rafterBeamAmountCalculator(int)
+  }
+  class RoofCalculator {
+    +roofCalculator(...)
+    +roofAmountInWidthCalculator(int,int)
+    +roofLengthCalculator(int)
+  }
+  class ScrewCalculator {
+    +screwForRoofCalculator(...)
+    +screwForFasciaAndBargeBoardCalculator(...)
+    +screwForRafterMountsCalculator(...)
+    +screwsForShedBoardsCalculator(...)
+    +boltsForRafterBeamCalculator(...)
+    +plumbersTapeCalculator(...)
+    +screwsForRoofPackAmountCalculator(...)
+    +screwsForFasciaAndBargeBoardPackAmountCalculator(...)
+    +screwsForMountsPackAmountCalculator(...)
+    +screwsForShedBoardsPackAmountCalculator(...)
+    +boltsForRafterBeamAmountCalculator(...)
+    +plumbersTapeAmountCalculator(...)
+  }
+}
+
+package app.persistence.connection {
+  class ConnectionPool {
+    -static volatile ConnectionPool instance
+    -static HikariDataSource ds
+    -static Logger LOGGER
+    +static getInstance(user,password,url,db)
+    +static getInstance()
+    +getConnection()
+    +close()
+    -static createHikariConnectionPool(...)
+  }
+}
+
+package app.persistence.documentCreation {
+  class CarportSvg {
+    -int width, height
+    -Svg carportSvg
+    -RafterCalculator rafterCalculator
+    -PoleCalculator poleCalculator
+    -int rafterThickness, beamThickness
+    -float rafterSpacing, poleSize
+    -boolean hasShed
+    +CarportSvg(Context,int,int)
+    -addOuterFrame()/addBeams()/addRafters()/addPoles()/addShedWithPoles()/addPlumbersTape()/addDimensions()
+    +toString()
+  }
+  class Svg {
+    -StringBuilder svg
+    +Svg(float,float,String,String,String)
+    +addRectangle(...)
+    +addLine(...)
+    +addText(...)
+    +addDimensionArrow(...)
+    +toString()
+  }
+  class GenerateMaterialPdf {
+    -OfferMapper offerMapper
+    +generateMaterialPdf(...)
+    -writeSection(...)
+    -formatItem(Object)
+  }
+}
+
+package app.persistence.mappers {
+  class OrderMapper {
+    +createNewOrder(...)
+    +getOrderDetailsFromOrderId(...)
+    +getTrackingNumberFromOrderId(...)
+    +getStatusFromTrackingNumber(...)
+    +getWoodListFromOrderId(...)
+    +getRoofListFromOrderId(...)
+    +getMountListFromOrderId(...)
+    +getScrewListFromOrderId(...)
+  }
+  class OfferMapper {
+    +updateOfferDimensions(...)
+    +getOfferFromOfferId(...)
+    +getWoodListFromOfferId(...)
+    +getRoofListFromOfferId(...)
+    +getMountListFromOfferId(...)
+    +getScrewListFromOfferId(...)
+    +getTreatmentIdFromTreatmentName(...)
+    +getWoodTypeIdFromWoodTypeName(...)
+    +getWoodDimensionIdFromLengthWidthHeight(...)
+    +getWoodLengthFromWoodDimensionId(...)
+    +getWoodWidthFromWoodDimensionId(...)
+    +getWoodHeightFromWoodDimensionId(...)
+    +getRoofIdFromRoofLength(...)
+    +getMountIdFromMountName(...)
+    +getScrewIdFromScrewName(...)
+    +getAmountPrContainerFromScrewName(...)
+    +getRandomSellerId(...)
+    +getSellerMailFromOfferId(...)
+    +getCustomerMailFromOfferId(...)
+    +getCustomerInformationFromOfferId(...)
+    +getSalesPriceFromOfferId(...)
+    +getTotalExpensesPriceFromOfferId(...)
+    +createNewCustomerIfAlreadyExistGetCustomerIdFromMail(...)
+    +createOffer(...)
+    +createMountsList(...)
+    +createRoofList(...)
+    +createScrewsList(...)
+    +createWoodList(...)
+    +updateTotalExpensesPrice(...)
+    +updateTotalSalesPrice(...)
+    +updateExpirationDate(...)
+    +deleteOfferAndEveryThinkLinkedToItByOfferId(...)
+    +deleteMountListByOfferId(...)
+    +deleteRoofListByOfferId(...)
+    +deleteScrewListByOfferId(...)
+    +deleteWoodListByOfferId(...)
+    +deleteMaterialListsByOfferId(...)
+  }
+  class PriceAndMaterialMapper {
+    +updateRoofPrice(...)
+    +updateScrewsPrice(...)
+    +updateMountPrice(...)
+    +updateWoodTypeMeterPrice(...)
+    +updateDimensionMeterPrice(...)
+    +updateTreatmentMeterPrice(...)
+    +getRoofPrice(...)
+    +getScrewsPrice(...)
+    +getMountPrice(...)
+    +getWoodTypeMeterPrice(...)
+    +getDimensionMeterPrice(...)
+    +getTreatmentMeterPrice(...)
+    +getTotalWoodPrice(...)
+    +getMarkupPercentageFromExpensePrice(...)
+  }
+}
+
+package app.persistence.mappers.testSetupForMappers {
+  class CreateTestSchemaDatabase {
+    +createTestSchemaWithData(Connection)
+    +insertDataInTestDatabase(Connection)
+  }
+}
+
+package app.persistence.util {
+  class MailSender {
+    -RoutingController routingController
+    +sendFirstMail(...)
+    +sendSecondMail(...)
+    +sendSellerMailContact(...)
+    +sendSellerMailAccept(...)
+    +sendLastAcceptMailAndMaterialList(...)
+  }
+}
+
+package app.persistence.controller {
+  class RoutingController {
+    +getOfferId()/setOfferId(int)
+    +getOrderId()/setOrderId(int)
+    +getShowIndexPage(Context)
+    +showSellerAdminLogin(Context)
+    +handleSellerAdminLogin(Context)
+    +showSellerAdminEditPrices(Context)
+    +handleSellerAdminUpdateRoofPrice(Context)
+    +handleSellerAdminUpdateMountPrice(Context)
+    +handleSellerAdminUpdateScrewPrice(Context)
+    +handleSellerAdminUpdateWoodPrice(Context)
+    +showSellerAdminPage(Context)
+    +handleSellerAdminPageOfferID(Context)
+    +handleSellerAdminPageSalesPrice(Context)
+    +showSellerAdminPageEditDimensions(Context)
+    +handleSellerAdminPageEditDimensions(Context)
+    +handleSellerAdminPageSendFinalOffer(Context)
+    +showFinalAcceptOfferPage(Context)
+    +handleFinalAcceptOfferPage(Context)
+    +showAcceptedMailPage(Context)
+    +showDeniedMailPage(Context)
+    +showAcceptOfferPage(Context)
+    +handleAcceptOfferPage(Context)
+    +showSellerContactPage(Context)
+    +handleSellerContactPage(Context)
+    +handleQuickBygPage(Context)
+    +showQuickBygPage(Context)
+    +handleContactInformationPage(Context)
+    +showContactInformationPage(Context)
+    +handleConfirmationPage(Context)
+    +showConfirmationPage(Context)
+    +showMailSentPage(Context)
+    +carportAttributes(Context)
+    +getCustomerFirstName(Context)
+    +getCustomerLastName(Context)
+    +getCustomerStreetName(Context)
+    +getCustomerHouseNumber(Context)
+    +getCustomerZipCode(Context)
+    +getCustomerEmail(Context)
+    +getCustomerPhoneNumber(Context)
+    +getSellerCode()
+    +showSvgDrawingPage(Context)
+    +getCarportWidth(Context)
+    +getCarportLength(Context)
+    +getCarportTrapezRoof(Context)
+    +getShedCheckbox(Context)
+    +getShedLength(Context,boolean)
+    +getShedWidth(Context,boolean)
+    +getShedDoors(Context,boolean)
+    +getConnectionPool()
+    +loadAllAttributes(Context)
+  }
+}
+
+class Main {
+  -Logger LOGGER
+  -String USER,PASSWORD,URL,DB
+  -ConnectionPool connectionPool
+  +main(String[])
+}
+
+BoardCalculator --> OfferMapper
+MountCalculator --> OfferMapper
+NoggingCalculator --> OfferMapper
+PoleCalculator --> OfferMapper
+PriceCalculator --> PriceAndMaterialMapper
+RafterCalculator --> OfferMapper
+RoofCalculator --> OfferMapper
+ScrewCalculator --> OfferMapper
+RoutingController --> GenerateMaterialPdf
+RoutingController --> CarportSvg
+RoutingController --> OfferMapper
+RoutingController --> OrderMapper
+RoutingController --> PriceAndMaterialMapper
+RoutingController --> MaterialCalculator
+RoutingController --> MailSender
+GenerateMaterialPdf --> ConnectionPool
+Svg --> CarportSvg
+CarportSvg --> Svg
+CarportSvg --> RafterCalculator
+CarportSvg --> PoleCalculator
+MaterialCalculator --> WoodForCalculator
+MaterialCalculator --> RoofForCalculator
+MaterialCalculator --> MountForCalculator
+MaterialCalculator --> ScrewForCalculator
+MaterialCalculator --> PriceCalculator
+ScrewForCalculator --> ScrewCalculator
+MountForCalculator --> MountCalculator
+RoofForCalculator --> RoofCalculator
+WoodForCalculator --> RafterCalculator
+WoodForCalculator --> BoardCalculator
+WoodForCalculator --> NoggingCalculator
+WoodForCalculator --> PoleCalculator
+Main --> ConnectionPool
+Main --> RoutingController
+Main --> ThymeleafConfig
+Main --> SessionConfig
+
+OfferMapper --> MaterialCalculator
+OfferMapper --> CustomerInformation
+OfferMapper --> Offer
+OfferMapper --> Order
+OfferMapper --> Status
+OfferMapper --> Material
+OfferMapper --> ConnectionPool
+OrderMapper --> ConnectionPool
+PriceAndMaterialMapper --> ConnectionPool
+
+MailSender --> ConnectionPool
+OfferMapper --> CreateTestSchemaDatabase
+OrderMapper --> CreateTestSchemaDatabase
+PriceAndMaterialMapper --> CreateTestSchemaDatabase
+
+@enduml

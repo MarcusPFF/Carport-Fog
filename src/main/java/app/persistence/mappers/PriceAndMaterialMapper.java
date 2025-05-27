@@ -10,13 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PriceAndMaterialMapper {
-    private static Wood wood;
-    private static Roof roof;
-    private static Screws screws;
-    private static Mount mount;
-    private static WoodType woodType;
-    private static Dimensions dimensions;
-    private static Treatment treatment;
 
     public static boolean updateRoofPrice(ConnectionPool connectionPool, float roofPrice, String roofName, int roofLength) throws DatabaseException {
         String sql = "UPDATE roofs SET roof_price = ? WHERE roof_type_name = ? AND roof_length_cm = ?;";
