@@ -5,9 +5,9 @@ import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
-import app.persistence.mappers.OfferMapper;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
+import app.persistence.mappers.OfferMapper;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class MaterialCalculator {
         offerId = offerMapper.createOffer(connection, totalOfferExpensePrice, totalOfferSalesPrice, sellerId, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, customerId);
 
         mountList = mountForCalculator.mountListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, amountOfDoorsForTheShed);
-        roofList = roofForCalculator.roofListCalculator(connection,carportLengthInCm, carportWidthInCm, roofSheetWidthInCm, roofName);
+        roofList = roofForCalculator.roofListCalculator(connection, carportLengthInCm, carportWidthInCm, roofSheetWidthInCm, roofName);
         screwList = screwForCalculator.screwListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, shedBoardWidthInMm, amountOfSpareBoardsForShed);
         woodList = woodForCalculator.woodListCalculator(connection, carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, carportHeightInCm, amountOfDoorsForTheShed);
 

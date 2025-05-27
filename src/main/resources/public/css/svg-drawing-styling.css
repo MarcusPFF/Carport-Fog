@@ -15,12 +15,11 @@ h1 {
     cursor: pointer;
 }
 
-.back-from-svg-button:hover{
+.back-from-svg-button:hover {
     background-color: #013469;
 }
 
 /* SVG */
-.carport-svg-topview
-{
+.carport-svg-topview {
     max-width: 800px;
 }

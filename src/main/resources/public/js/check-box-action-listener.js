@@ -17,6 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (checkbox && options) {
         checkbox.addEventListener("change", updateShedOptionsDisplay);
-        updateShedOptionsDisplay(); // 🔥 Initial visning baseret på om boksen var tjekket
+        updateShedOptionsDisplay(); // Initial visning baseret på om boksen var tjekket
     }
 });

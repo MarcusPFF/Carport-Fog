@@ -1,12 +1,14 @@
 package app.persistence.mappers;
 
+import app.entities.Order;
+import app.entities.Status;
 import app.entities.forCalculator.MountForCalculator;
 import app.entities.forCalculator.RoofForCalculator;
 import app.entities.forCalculator.ScrewForCalculator;
 import app.entities.forCalculator.WoodForCalculator;
-import app.persistence.connection.ConnectionPool;
-import app.entities.*;
 import app.exceptions.DatabaseException;
+import app.persistence.connection.ConnectionPool;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,12 +38,8 @@ public class OrderMapper {
 
     //Orderfetcher
     public static Order getOrderDetailsFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
-        String sql = "SELECT orders.order_id, orders.offer_id, orders.tracking_number, orders.purchase_date, status.status_description "
-                + "FROM orders "
-                + "JOIN status ON orders.status_id = status.status_id "
-                + "WHERE orders.order_id = ?;";
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        String sql = "SELECT orders.order_id, orders.offer_id, orders.tracking_number, orders.purchase_date, status.status_description " + "FROM orders " + "JOIN status ON orders.status_id = status.status_id " + "WHERE orders.order_id = ?;";
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
             try (ResultSet rs = statement.executeQuery()) {
@@ -65,8 +63,7 @@ public class OrderMapper {
     public static UUID getTrackingNumberFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
         String sql = "SELECT tracking_number FROM orders WHERE order_id = ?;";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setObject(1, orderId);
 
@@ -84,17 +81,13 @@ public class OrderMapper {
     }
 
 
-
     //This method is used, when a customer has bought their product and needs to see the status.
     public static Status getStatusFromTrackingNumber(ConnectionPool connectionPool, UUID trackingNumber) throws DatabaseException {
-        String sql = "SELECT status.status_id, status.status_description, status.message_for_mail FROM orders orders " +
-                    "JOIN status status ON orders.status_id = orders.status_id " +
-                    "WHERE orders.tracking_number = ?";
+        String sql = "SELECT status.status_id, status.status_description, status.message_for_mail FROM orders orders " + "JOIN status status ON orders.status_id = orders.status_id " + "WHERE orders.tracking_number = ?";
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
-                statement.setObject(1, trackingNumber);
+            statement.setObject(1, trackingNumber);
 
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
@@ -122,8 +115,7 @@ public class OrderMapper {
         String description;
 
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
 
@@ -145,7 +137,7 @@ public class OrderMapper {
         }
     }
 
-    public static  ArrayList<RoofForCalculator> getRoofListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
+    public static ArrayList<RoofForCalculator> getRoofListFromOrderId(ConnectionPool connectionPool, int orderId) throws DatabaseException {
         String sql = "SELECT roof_list.offer_id, roof_list.roof_id, roof_list.roof_amount, roof_list.roof_description, roofs.roof_type_name FROM orders JOIN offers ON orders.offer_id = offers.offer_id JOIN roof_list ON offers.offer_id = roof_list.offer_id JOIN roofs ON roof_list.roof_id = roofs.roof_id WHERE order_id = ?;";
         ArrayList<RoofForCalculator> roofList = new ArrayList<>();
         String name;
@@ -154,8 +146,7 @@ public class OrderMapper {
         String description;
 
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
 
@@ -184,8 +175,7 @@ public class OrderMapper {
         String description;
 
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
 
@@ -214,8 +204,7 @@ public class OrderMapper {
         String description;
 
 
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = connectionPool.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, orderId);
 

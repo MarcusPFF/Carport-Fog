@@ -227,8 +227,7 @@ public class MailSender {
             System.out.println("Headers: " + response.getHeaders());
 
             if (response.getStatusCode() != 202) {
-                throw new IOException("Email sending failed: "
-                        + response.getStatusCode() + " - " + response.getBody());
+                throw new IOException("Email sending failed: " + response.getStatusCode() + " - " + response.getBody());
             }
         } catch (IOException ex) {
             System.out.println("Error sending final acceptance mail");

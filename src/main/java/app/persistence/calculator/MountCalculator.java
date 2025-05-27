@@ -20,7 +20,6 @@ public class MountCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-
     public MountCalculator() {
         offerMapper = new OfferMapper();
         rafterCalculator = new RafterCalculator();
@@ -115,28 +114,28 @@ public class MountCalculator {
 
     public int leftRafterMountsAmountCalculator(int rafterAmount, int rafterBeamAmount) {
         int leftRafterMountAmount;
-        leftRafterMountAmount =  rafterAmount * (rafterBeamAmount - 1);
+        leftRafterMountAmount = rafterAmount * (rafterBeamAmount - 1);
 
         return leftRafterMountAmount;
     }
 
     public int rightRafterMountsAmountCalculator(int rafterAmount) {
         int rightRafterMountAmount;
-        rightRafterMountAmount =  rafterAmount;
+        rightRafterMountAmount = rafterAmount;
 
         return rightRafterMountAmount;
     }
 
     public int squareBracketsForRafterMountsAmountCalculator(int poleAmount) {
         int squareBracketsAmount;
-        squareBracketsAmount =  poleAmount * 2;
+        squareBracketsAmount = poleAmount * 2;
 
         return squareBracketsAmount;
     }
 
-    public int angleMountAmountCalculator( int noggingAmount) {
+    public int angleMountAmountCalculator(int noggingAmount) {
         int angleMountAmount;
-        angleMountAmount =  noggingAmount * 2;
+        angleMountAmount = noggingAmount * 2;
 
         return angleMountAmount;
     }

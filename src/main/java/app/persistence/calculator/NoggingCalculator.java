@@ -18,7 +18,6 @@ public class NoggingCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-
     public NoggingCalculator() {
         offerMapper = new OfferMapper();
         poleCalculator = new PoleCalculator();
@@ -48,8 +47,7 @@ public class NoggingCalculator {
         poleAmountForWidth = poleCalculator.poleAmountYCalculator(carportWidthInCm);
         if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
             noggingAmount = 4;
-        }
-        else {
+        } else {
             noggingAmount = 5;
         }
         woodDimensionId = offerMapper.getWoodDimensionIdFromLengthWidthHeight(connection, shedLengthInCm, noggingWidthInMm, noggingHeightInMm);
@@ -81,8 +79,7 @@ public class NoggingCalculator {
 
             if (shedWidthInCm == carportWidthInCm) {
                 return 24;
-            }
-            else if (shedWidthInCm > carportWidthWithoutRoofOverhang / poleAmountWidthForDividing) {
+            } else if (shedWidthInCm > carportWidthWithoutRoofOverhang / poleAmountWidthForDividing) {
                 return 18;
             }
         }
@@ -100,8 +97,7 @@ public class NoggingCalculator {
 
             if (shedWidthInCm == (carportWidthInCm - 60) / (poleAmountForWidth - 1)) {
                 return 8;
-            }
-            else {
+            } else {
                 return 10;
             }
         }

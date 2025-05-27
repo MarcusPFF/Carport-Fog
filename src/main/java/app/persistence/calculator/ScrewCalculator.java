@@ -22,7 +22,6 @@ public class ScrewCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-
     public ScrewCalculator() {
         offerMapper = new OfferMapper();
         boardCalculator = new BoardCalculator();
@@ -126,21 +125,21 @@ public class ScrewCalculator {
         return new ScrewForCalculator(screwName, amount, screwId, "Til vindkryds på spær.");
     }
 
-    public int screwsForRoofPackAmountCalculator(int carportLengthInCm, int carportWidthInCm, float amountPrContainer){
-       int amountOfScrews = (int) Math.ceil(((carportWidthInCm / 100.0f) * (carportLengthInCm / 100.0f)) * 12) ;
-       int amountOfPacks = (int) Math.ceil (amountOfScrews/amountPrContainer);
+    public int screwsForRoofPackAmountCalculator(int carportLengthInCm, int carportWidthInCm, float amountPrContainer) {
+        int amountOfScrews = (int) Math.ceil(((carportWidthInCm / 100.0f) * (carportLengthInCm / 100.0f)) * 12);
+        int amountOfPacks = (int) Math.ceil(amountOfScrews / amountPrContainer);
 
-       return amountOfPacks;
+        return amountOfPacks;
     }
 
     public int screwsForFasciaAndBargeBoardPackAmountCalculator(int carportLengthInCm, int carportWidthInCm, float amountPrContainer) {
         int amountOfScrews = 0;
         int amountOfPacks;
 
-        amountOfScrews += 6 * ((1 + (int) Math.floor((carportLengthInCm / 60.0 )) * 3)); //Skruer til sidderne
-        amountOfScrews += 4 * ((1 + (int) Math.floor((carportWidthInCm / 60.0 )) * 3));  //Skruer til foran og bagved
+        amountOfScrews += 6 * ((1 + (int) Math.floor((carportLengthInCm / 60.0)) * 3)); //Skruer til sidderne
+        amountOfScrews += 4 * ((1 + (int) Math.floor((carportWidthInCm / 60.0)) * 3));  //Skruer til foran og bagved
 
-        amountOfPacks = (int) Math.ceil (amountOfScrews/amountPrContainer);
+        amountOfPacks = (int) Math.ceil(amountOfScrews / amountPrContainer);
 
         return amountOfPacks;
     }
@@ -149,27 +148,27 @@ public class ScrewCalculator {
         int amountOfScrews;
         int amountOfPacks;
 
-        amountOfScrews =  (rafterMountsAmount * 9) + 8;
+        amountOfScrews = (rafterMountsAmount * 9) + 8;
         amountOfScrews += ((noggingAmount * 2) * 4);
-        amountOfPacks = (int) Math.ceil (amountOfScrews/amountPrContainer);
+        amountOfPacks = (int) Math.ceil(amountOfScrews / amountPrContainer);
 
         return amountOfPacks;
     }
 
     public int screwsForShedBoardsPackAmountCalculator(int boardAmount, float amountPrContainer) {
-        int amountOfScrews =  boardAmount * 9;
-        int amountOfPacks = (int) Math.ceil (amountOfScrews/amountPrContainer);
+        int amountOfScrews = boardAmount * 9;
+        int amountOfPacks = (int) Math.ceil(amountOfScrews / amountPrContainer);
 
         return amountOfPacks;
     }
 
     public int boltsForRafterBeamAmountCalculator(int rafterBeamAmount, int poleAmount) {
-        int amountOfBolts =  (rafterBeamAmount * poleAmount) * 3;
+        int amountOfBolts = (rafterBeamAmount * poleAmount) * 3;
 
         return amountOfBolts;
     }
 
-    public int plumbersTapeAmountCalculator( int shedLengthInCm, int carportLengthInCm, int carportWidthInCm, int metersPrRollInCm) {
+    public int plumbersTapeAmountCalculator(int shedLengthInCm, int carportLengthInCm, int carportWidthInCm, int metersPrRollInCm) {
         int a;
         int b;
         float c;
@@ -180,7 +179,7 @@ public class ScrewCalculator {
         c = (a * a) + (b * b);
         c = (float) Math.sqrt(c);
 
-        amountOfRolls = (int) Math.ceil (c / metersPrRollInCm);
+        amountOfRolls = (int) Math.ceil(c / metersPrRollInCm);
         return amountOfRolls;
     }
 }

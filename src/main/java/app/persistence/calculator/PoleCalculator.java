@@ -17,7 +17,6 @@ public class PoleCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-
     public PoleCalculator() {
         offerMapper = new OfferMapper();
     }
@@ -36,7 +35,7 @@ public class PoleCalculator {
         lengthAmount = poleAmountXCalculator(carportLengthInCm);
         widthAmount = poleAmountYCalculator(carportWidthInCm);
         shedAmount = shedPoleAmountCalculator(carportLengthInCm, carportWidthInCm, shedLengthInCm, shedWidthInCm, lengthAmount, widthAmount);
-        if (shedLengthInCm == 0){
+        if (shedLengthInCm == 0) {
             shedAmount = 0;
         }
 
@@ -106,13 +105,9 @@ public class PoleCalculator {
 
         if (shedLengthInCM == betweenPolesLengthInCm && shedWidthInCM == betweenPolesWidthInCm) {
             shedPolesXAmount = 0;
-        }
-
-        else if (shedWidthInCM != betweenPolesWidthInCm && shedLengthInCM != betweenPolesLengthInCm) {
+        } else if (shedWidthInCM != betweenPolesWidthInCm && shedLengthInCM != betweenPolesLengthInCm) {
             shedPolesXAmount = shedPolesXAmount + shedPolesYAmount;
-        }
-
-        else if (shedLengthInCM != betweenPolesLengthInCm) {
+        } else if (shedLengthInCM != betweenPolesLengthInCm) {
             shedPolesXAmount = shedPolesYAmount + 1;
         }
 
