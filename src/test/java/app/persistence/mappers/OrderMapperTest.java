@@ -13,6 +13,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.insertDataInTestDatabase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderMapperTest {
@@ -27,6 +28,10 @@ class OrderMapperTest {
         String DB = "Fog_Carport";
 
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+        try (Connection conn = connectionPool.getConnection()) {
+            createTestSchemaWithData(conn);
+        }
     }
 
     @AfterAll
@@ -39,7 +44,7 @@ class OrderMapperTest {
     @BeforeEach
     void setUp() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
-            createTestSchemaWithData(conn);
+            insertDataInTestDatabase(conn);
         }
 
         orderMapper = new OrderMapper();
