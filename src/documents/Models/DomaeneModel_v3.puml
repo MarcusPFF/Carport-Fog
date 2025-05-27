@@ -1,0 +1,91 @@
+@startuml
+
+!pragma layout smetana
+
+package entities {
+
+    class Material {
+        +materialName
+        +materialAmount
+    }
+
+    class MountForCalculator {
+            + name
+            + amount
+            + mountId
+            + description
+        }
+
+        class RoofForCalculator {
+            + name
+            + amount
+            + roofId
+            + description
+        }
+
+        class ScrewForCalculator {
+            + name
+            + amount
+            + screwId
+            + description
+        }
+
+        class WoodForCalculator {
+            + name
+            + amount
+            + woodDimensionId
+            + woodTreatmentId
+            + woodTypeId
+            + description
+        }
+
+    class CustomerInformation {
+        +customerMail
+        +firstName
+        +lastName
+        +streetName
+        +houseNumber
+        +zipCode
+        +city
+        +phoneNumber
+    }
+
+    class Status {
+        +statusId
+        +statusDescription
+        +messageForMail
+    }
+
+    class Order {
+        +orderId
+        +offerId
+        +date
+        +salesPrice
+    }
+
+    class Offer {
+        +offerId
+        +totalExpensePrice
+        +totalRetailPrice
+        +sellerId
+        +customerId
+        +expirationDate
+        +carportLength
+        +carportWidth
+        +shedLength
+        +shedWidth
+    }
+
+    ' Relationer
+    Offer --> Material
+    Offer --> MountForCalculator
+    Offer --> RoofForCalculator
+    Offer --> ScrewForCalculator
+    Offer --> WoodForCalculator
+    Offer --> CustomerInformation
+
+    Offer --> Order
+    Order --> Status
+}
+
+@enduml
