@@ -29,8 +29,7 @@ public class CarportSvg {
         rafterThickness = (int) Math.ceil(rafterCalculator.totalRafterWidthInMmCalculator(height) / 10);
 
         int extraMargin = 60; //Dette sørger for at der er plads
-        carportSvg = new Svg(0, 0, "0 0 " + (width + extraMargin) + " " + (height + extraMargin),
-                (width + extraMargin) + "px", (height + extraMargin) + "px");
+        carportSvg = new Svg(0, 0, "0 0 " + (width + extraMargin) + " " + (height + extraMargin), (width + extraMargin) + "px", (height + extraMargin) + "px");
 
         addOuterFrame(); //Viser hvor taget ligger
         //Tjekker om der skal være skur eller ej
@@ -144,12 +143,10 @@ public class CarportSvg {
         // Båndet der skal ligge på kryds
         if (poleCountAlongYAxis >= 2) {
             if (hasShed) {
-                addPlumbersTape(
-                        topMidX, topMidY, bottomRightX, bottomRightY,       // midt-top til højre bund
+                addPlumbersTape(topMidX, topMidY, bottomRightX, bottomRightY,       // midt-top til højre bund
                         bottomMidX, bottomMidY, topRightX, topRightY);      // midt-bund til højre top);
             } else {
-                addPlumbersTape(
-                        topLeftX, topLeftY, bottomRightX, bottomRightY,     // Venstre top til højre bund
+                addPlumbersTape(topLeftX, topLeftY, bottomRightX, bottomRightY,     // Venstre top til højre bund
                         bottomLeftX, bottomLeftY, topRightX, topRightY);    // Venstre bund til højre top
             }
         }

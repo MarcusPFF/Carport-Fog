@@ -55,11 +55,9 @@ public class RoofCalculator {
 
         if (carportLengthInCm + 5 < shortestLengthInCm) {
             roofLengthInCm = shortestLengthInCm;
-        }
-        else if (carportLengthInCm + 5 < mediumLengthInCm) {
+        } else if (carportLengthInCm + 5 < mediumLengthInCm) {
             roofLengthInCm = mediumLengthInCm;
-        }
-        else {
+        } else {
             roofLengthInCm = longestLengthInCm;
         }
 

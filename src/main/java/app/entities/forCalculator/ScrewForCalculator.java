@@ -7,7 +7,6 @@ import app.persistence.connection.ConnectionPool;
 import java.util.ArrayList;
 
 public class ScrewForCalculator {
-
     private String name;
     private int amount;
     private int screwId;

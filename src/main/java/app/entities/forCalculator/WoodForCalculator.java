@@ -10,7 +10,6 @@ import app.persistence.connection.ConnectionPool;
 import java.util.ArrayList;
 
 public class WoodForCalculator {
-
     private String name;
     private int amount;
     private int woodDimensionId;

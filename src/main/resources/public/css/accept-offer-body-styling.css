@@ -26,6 +26,7 @@
 .error {
     color: red;
 }
+
 .title-box {
     width: 556px;
     height: 115px;
@@ -54,6 +55,7 @@
 .button-accept:hover {
     background-color: #012b59;
 }
+
 .offer-input {
     position: relative;
     display: flex;

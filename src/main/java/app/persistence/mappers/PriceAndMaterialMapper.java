@@ -1,6 +1,5 @@
 package app.persistence.mappers;
 
-import app.entities.*;
 import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 
@@ -229,9 +228,7 @@ public class PriceAndMaterialMapper {
         } catch (SQLException ex) {
             throw new DatabaseException(ex, "Error getting wood treatment meter price from database");
         }
-
     }
-
 }
 
 

@@ -7,7 +7,6 @@ import app.persistence.connection.ConnectionPool;
 import java.util.ArrayList;
 
 public class RoofForCalculator {
-
     private String name;
     private int amount;
     private int roofId;

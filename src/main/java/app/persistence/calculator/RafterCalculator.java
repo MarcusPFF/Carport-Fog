@@ -18,7 +18,6 @@ public class RafterCalculator {
     //Drip cap = Vandbræt
     //PlumbersTape = Hulbånd
 
-
     public RafterCalculator() {
         offerMapper = new OfferMapper();
     }
@@ -63,44 +62,37 @@ public class RafterCalculator {
 
     public int rafterAmountForRoofCalculator(int carportLengthInCM) {
         int amount;
-        amount = 1 + (int) Math.ceil (carportLengthInCM/60.0);
+        amount = 1 + (int) Math.ceil(carportLengthInCM / 60.0);
 
         return amount;
     }
 
-    public int totalRafterHeightInMmCalculator( int carportWidthInCM) {
+    public int totalRafterHeightInMmCalculator(int carportWidthInCM) {
         int woodHeightInMm;
 
-        if ((carportWidthInCM - 60)  < 300) {
+        if ((carportWidthInCM - 60) < 300) {
             woodHeightInMm = 145;
-        }
-        else if ((carportWidthInCM - 60)  < 400) {
+        } else if ((carportWidthInCM - 60) < 400) {
             woodHeightInMm = 195;
-        }
-
-        else if ((carportWidthInCM - 60)  < 500) {
+        } else if ((carportWidthInCM - 60) < 500) {
             woodHeightInMm = 220;
-        }
-        else if ((carportWidthInCM - 60)  < 600) {
+        } else if ((carportWidthInCM - 60) < 600) {
             woodHeightInMm = 245;
-        }
-        else {
+        } else {
             woodHeightInMm = 270;
         }
 
         return woodHeightInMm;
     }
 
-    public int totalRafterWidthInMmCalculator( int carportWidthInCM) {
+    public int totalRafterWidthInMmCalculator(int carportWidthInCM) {
         int woodWidthInMm;
 
         if ((carportWidthInCM - 60) <= 500) {
             woodWidthInMm = 45;
-        }
-        else if ((carportWidthInCM - 60) <= 600) {
+        } else if ((carportWidthInCM - 60) <= 600) {
             woodWidthInMm = 60;
-        }
-        else {
+        } else {
             woodWidthInMm = 75;
         }
 
@@ -109,7 +101,7 @@ public class RafterCalculator {
 
     public int rafterBeamAmountCalculator(int carportWidthInCM) {
         int amount;
-        amount = 1 + (int) Math.ceil ((carportWidthInCM - 60.0)/600.0);
+        amount = 1 + (int) Math.ceil((carportWidthInCM - 60.0) / 600.0);
 
         return amount;
     }

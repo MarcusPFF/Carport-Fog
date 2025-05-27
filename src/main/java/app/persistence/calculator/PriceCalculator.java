@@ -21,7 +21,7 @@ public class PriceCalculator {
         priceAndMaterialMapper = new PriceAndMaterialMapper();
     }
 
-    public float calculateTotalOfferSalesPrice (ConnectionPool connection, float totalOfferExpensePrice) throws DatabaseException {
+    public float calculateTotalOfferSalesPrice(ConnectionPool connection, float totalOfferExpensePrice) throws DatabaseException {
         float totalOfferSalesPrice = 0;
         int markupPercentage;
 
@@ -32,7 +32,7 @@ public class PriceCalculator {
         return totalOfferSalesPrice;
     }
 
-    public float calculateTotalOfferExpensePrice (ConnectionPool connection, ArrayList<WoodForCalculator> woodList, ArrayList<RoofForCalculator> roofList, ArrayList<MountForCalculator> mountList, ArrayList<ScrewForCalculator> screwList) throws DatabaseException {
+    public float calculateTotalOfferExpensePrice(ConnectionPool connection, ArrayList<WoodForCalculator> woodList, ArrayList<RoofForCalculator> roofList, ArrayList<MountForCalculator> mountList, ArrayList<ScrewForCalculator> screwList) throws DatabaseException {
         float totalOfferExpensePrice = 0;
 
         totalOfferExpensePrice += calculateTotalWoodListPrice(connection, woodList);
@@ -119,7 +119,7 @@ public class PriceCalculator {
         return totalScrewExpensePrice;
     }
 
-    public float calculateWoodPrice(ConnectionPool connection,float meterPrice, int quantity, int woodDimensionId) throws DatabaseException {
+    public float calculateWoodPrice(ConnectionPool connection, float meterPrice, int quantity, int woodDimensionId) throws DatabaseException {
         int woodLengthInCm;
         int totalWoodLengthInCm;
         float totalWoodLengthInMeter;
@@ -141,10 +141,10 @@ public class PriceCalculator {
         return totalPrice;
     }
 
-    public int getMarkupPercentageFromCurrentSalesPrice(float totalSalesPrice, float totalExpensesPrice){
+    public int getMarkupPercentageFromCurrentSalesPrice(float totalSalesPrice, float totalExpensesPrice) {
         int markupPercentage;
 
-        markupPercentage = (int)(((totalSalesPrice / totalExpensesPrice) * 100) - 100);
+        markupPercentage = (int) (((totalSalesPrice / totalExpensesPrice) * 100) - 100);
 
         return markupPercentage;
     }
