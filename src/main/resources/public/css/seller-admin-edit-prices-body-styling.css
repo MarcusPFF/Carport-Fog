@@ -36,7 +36,7 @@
 }
 
 .button-getOfferId:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 .offer-input {
     position: relative;
@@ -216,7 +216,7 @@
 }
 
 .button-setRoofPrice:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-setScrewPrice {
@@ -235,7 +235,7 @@
 }
 
 .button-setScrewPrice:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-setMountPrice {
@@ -254,7 +254,7 @@
 }
 
 .button-setMountPrice:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-setWoodPrice {
@@ -272,7 +272,7 @@
 }
 
 .button-setWoodPrice:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-goBack {
@@ -293,7 +293,7 @@
 
 
 .button-goBack:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .error {

@@ -480,9 +480,7 @@ public class RoutingController {
 
         // Selve tegningen laves her
         CarportSvg svg = new CarportSvg(ctx, carportLength, carportWidth);
-
         ctx.attribute("svg", svg.toString());
-
         ctx.render("quick-byg-svg-drawing.html");
     }
 
