@@ -17,28 +17,9 @@ class MountCalculatorTest {
     private static ConnectionPool connectionPool;
 
     @BeforeAll
-    static void beforeAll() throws SQLException {
-        String USER = "postgres";
-        String PASSWORD = System.getenv("kudsk_db_password");
-        String URL = "jdbc:postgresql://134.122.71.16/%s?currentSchema=test";
-        String DB = "Fog_Carport";
-
-        connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
-
-        try (Connection conn = connectionPool.getConnection()) {
-            createTestSchemaWithData(conn);
-        }
+    static void beforeAll() {
+        calculator = new MountCalculator();
     }
-
-    @AfterAll
-    static void afterAll() throws SQLException {
-        try (Connection conn = connectionPool.getConnection()) {
-            conn.createStatement().execute("ROLLBACK;");
-        }
-    }
-    
-    @BeforeEach
-    void setUp() { calculator = new MountCalculator(); }
 
 
     @Test
@@ -118,29 +99,5 @@ class MountCalculatorTest {
 
         // Assert
         assertEquals(expected, result);
-    }
-
-    @Test
-    void leftRafterMountCalculator() {
-    }
-
-    @Test
-    void rightRafterMountCalculator() {
-    }
-
-    @Test
-    void squareBracketsForRafterMountCalculator() {
-    }
-
-    @Test
-    void angleMountCalculator() {
-    }
-
-    @Test
-    void stableDoorHandleCalculator() {
-    }
-
-    @Test
-    void hingeForDoorCalculator() {
     }
 }

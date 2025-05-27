@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.insertDataInTestDatabase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WoodForCalculatorTest {
@@ -29,6 +30,10 @@ class WoodForCalculatorTest {
         String DB = "Fog_Carport";
 
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+        try (Connection conn = connectionPool.getConnection()) {
+            createTestSchemaWithData(conn);
+        }
     }
 
     @AfterAll
@@ -41,8 +46,9 @@ class WoodForCalculatorTest {
     @BeforeEach
     void setUp() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
-            createTestSchemaWithData(conn);
+            insertDataInTestDatabase(conn);
         }
+
         boardCalculator = new BoardCalculator();
         noggingCalculator = new NoggingCalculator();
         poleCalculator = new PoleCalculator();

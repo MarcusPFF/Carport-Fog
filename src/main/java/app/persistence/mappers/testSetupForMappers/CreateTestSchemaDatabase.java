@@ -8,7 +8,7 @@ public class CreateTestSchemaDatabase {
 
     public static void createTestSchemaWithData(Connection conn) throws SQLException {
         String ddlWithData = """
-                -- Drop schema if it exists and create a new one
+         -- Drop schema if it exists and create a new one
         DROP SCHEMA IF EXISTS test CASCADE;
         CREATE SCHEMA test;
 
@@ -137,8 +137,22 @@ public class CreateTestSchemaDatabase {
             wood_amount INT NOT NULL, 
             wood_description VARCHAR(255)
         );
+        """;
 
-        -- Insert test data
+        try (Statement stmt = conn.createStatement()) {
+            stmt.execute(ddlWithData);
+        }
+    }
+
+    public static void insertDataInTestDatabase(Connection conn) throws SQLException {
+        String resetAndInsertData = """
+        -- Truncate all tables (respect FK constraints)
+        TRUNCATE test.orders, test.offers, test.customer, test.sellers, test.status,
+                 test.markup, test.mounts, test.roofs, test.screws, test.wood_type,
+                 test.wood_treatment, test.wood_dimensions, test.mounts_list,
+                 test.roof_list, test.screws_list, test.wood_list, test.cities
+                 RESTART IDENTITY CASCADE;
+    
         INSERT INTO test.cities (zip_code, city_name)
         VALUES (1000, 'Copenhagen'), (2000, 'Aarhus'), (3000, 'Odense');
 
@@ -147,22 +161,22 @@ public class CreateTestSchemaDatabase {
             ('john.doe@example.com', 'John', 'Doe', 'Main Street', 123, 1000, 60606060),
             ('jane.smith@example.com', 'Jane', 'Smith', 'Oak Avenue', 456, 2000, 70707070),
             ('alice.johnson@example.com', 'Alice', 'Johnson', 'Pine Road', 789, 3000, 80808080);
-
+    
         INSERT INTO test.sellers (seller_mail, seller_firstname, seller_lastname)
         VALUES
             ('bob.martin@example.com', 'Bob', 'Martin'),
             ('mary.jane@example.com', 'Mary', 'Jane'),
             ('sam.doe@example.com', 'Sam', 'Doe');
-
+    
         INSERT INTO test.status (status_id, status_description, message_for_mail)
         VALUES
             (1, 'Pending', 'Your order is pending.'),
             (2, 'Shipped', 'Your order has been shipped.'),
             (3, 'Delivered', 'Your order has been delivered.');
-
+    
         INSERT INTO test.markup (expenses_price, percentage)
         VALUES (0, 150), (10000, 140), (25000, 135), (50000, 125);
-
+    
         INSERT INTO test.mounts (mount_price, mount_type_name)
         VALUES 
             (15.00, 'Universalbeslag 190 mm højre'),
@@ -183,7 +197,7 @@ public class CreateTestSchemaDatabase {
             (600, 120, 349.95, 'Plastmo Ecolite sorttonet'),
             (450, 120, 299.95, 'Plastmo Ecolite sorttonet'),
             (300, 120, 249.95, 'Plastmo Ecolite sorttonet');
-
+    
         INSERT INTO test.screws (amount_pr_container, screw_price, screw_type_name)
         VALUES 
                 (200, 69.95, 'Plastmo bundskruer 200 stk.'), 
@@ -233,22 +247,22 @@ public class CreateTestSchemaDatabase {
         INSERT INTO test.mounts_list (offer_id, mount_id, mount_amount, mount_description)
         VALUES
             (1, 1, 10, 'Spær monterings beslag'), (1, 3, 6, 'Firkantskive til montering af rem'), (3, 4, 8, 'staldørsgreb til skur');
-
+    
         INSERT INTO test.roof_list (offer_id, roof_id, roof_amount, roof_description)
         VALUES
             (1, 1, 10, 'Tagplader monteres på spær'), (1, 2, 10, 'Tagplader monteres på spær'), (3, 3, 8, 'Tagplader monteres på spær');
-
+    
         INSERT INTO test.screws_list (offer_id, screw_id, screws_amount, screw_description)
         VALUES
             (1, 1, 50, 'Til spær beslag'), (1, 2, 30, 'Til rem montering på stolpe'), (3, 3, 20, 'Til beklædningsbræders montering');
-
+    
         INSERT INTO test.wood_list (offer_id, wood_type_id, wood_treatment_id, wood_dimension_id, wood_amount, wood_description)
         VALUES
             (1, 1, 1, 1, 100, 'Rem til montering på stolper'), (1, 1, 2, 2, 200, 'Spær til montering på rem'), (3, 3, 3, 3, 150, 'Lægte til Z bag på skurets dør');
-        """;
+    """;
 
         try (Statement stmt = conn.createStatement()) {
-            stmt.execute(ddlWithData);
+            stmt.execute(resetAndInsertData);
         }
     }
 }

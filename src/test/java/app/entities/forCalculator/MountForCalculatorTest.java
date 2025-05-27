@@ -3,6 +3,7 @@ package app.entities.forCalculator;
 import app.exceptions.DatabaseException;
 import app.persistence.calculator.MountCalculator;
 import app.persistence.connection.ConnectionPool;
+import app.persistence.mappers.PriceAndMaterialMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.insertDataInTestDatabase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MountForCalculatorTest {
@@ -26,6 +28,10 @@ class MountForCalculatorTest {
         String DB = "Fog_Carport";
 
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+        try (Connection conn = connectionPool.getConnection()) {
+            createTestSchemaWithData(conn);
+        }
     }
 
     @AfterAll
@@ -38,10 +44,10 @@ class MountForCalculatorTest {
     @BeforeEach
     void setUp() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
-            createTestSchemaWithData(conn);
+            insertDataInTestDatabase(conn);
         }
-        mountCalculator = new MountCalculator();
 
+        mountCalculator = new MountCalculator();
     }
 
 

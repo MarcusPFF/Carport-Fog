@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.createTestSchemaWithData;
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.insertDataInTestDatabase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OfferMapperTest {
@@ -28,6 +29,10 @@ class OfferMapperTest {
         String DB = "Fog_Carport";
 
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
+
+        try (Connection conn = connectionPool.getConnection()) {
+            createTestSchemaWithData(conn);
+        }
     }
 
     @AfterAll
@@ -40,10 +45,9 @@ class OfferMapperTest {
     @BeforeEach
     void setUp() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
-            createTestSchemaWithData(conn);
+            insertDataInTestDatabase(conn);
         }
         offerMapper = new OfferMapper();
-
     }
 
 

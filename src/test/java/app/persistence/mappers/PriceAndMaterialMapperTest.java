@@ -4,7 +4,10 @@ import app.exceptions.DatabaseException;
 import app.persistence.connection.ConnectionPool;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static app.persistence.mappers.testSetupForMappers.CreateTestSchemaDatabase.insertDataInTestDatabase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,12 +30,8 @@ class PriceAndMaterialMapperTest {
 
         connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
 
-
         try (Connection conn = connectionPool.getConnection()) {
-            try (Statement stmt = conn.createStatement()) {
-                createTestSchemaWithData(conn);
-
-            }
+            createTestSchemaWithData(conn);
         }
 
     }
@@ -41,8 +40,16 @@ class PriceAndMaterialMapperTest {
     static void afterAll() throws SQLException {
         try (Connection conn = connectionPool.getConnection()) {
             conn.createStatement().execute("ROLLBACK;");
-
         }
+    }
+
+    @BeforeEach
+    void setUp() throws SQLException {
+        try (Connection conn = connectionPool.getConnection()) {
+            insertDataInTestDatabase(conn);
+        }
+
+        priceAndMaterialMapper = new PriceAndMaterialMapper();
     }
 
 
@@ -217,7 +224,7 @@ class PriceAndMaterialMapperTest {
     void getMountPrice() throws SQLException, DatabaseException {
         // Arrange
         int mountId = 1;
-        double expectedPrice = 1000.00;
+        double expectedPrice = 15.00;
 
         // Act
         float actualPrice = PriceAndMaterialMapper.getMountPrice(connectionPool, mountId);
