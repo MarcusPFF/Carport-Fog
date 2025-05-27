@@ -33,7 +33,6 @@ public class CarportSvg {
                 (width + extraMargin) + "px", (height + extraMargin) + "px");
 
         addOuterFrame(); //Viser hvor taget ligger
-
         //Tjekker om der skal være skur eller ej
         this.hasShed = ctx.sessionAttribute("redskabsrumCheckbox");
         if (hasShed) {

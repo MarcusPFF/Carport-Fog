@@ -36,7 +36,7 @@
 }
 
 .button-getOfferId:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 .offer-input {
     position: relative;
@@ -210,7 +210,7 @@
 }
 
 .button-updateSalesPrice:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-editDimensions {
@@ -228,7 +228,7 @@
 }
 
 .button-editDimensions:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-editPrices {
@@ -246,7 +246,7 @@
 }
 
 .button-editPrices:hover {
-    background-color: #012b59;
+    background-color: #013469;
 }
 
 .button-sendOffer {
