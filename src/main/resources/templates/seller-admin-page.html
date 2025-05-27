@@ -110,7 +110,7 @@
                                    id="salesPrice" oninvalid="this.setCustomValidity('Indtast venligst kun tal')"
                                    oninput="this.setCustomValidity('')" autocomplete="off" maxlength="15" required/>
                         </div>
-                        <button type="submit" class="button-updateSalesPrice" th:disabled="${session.offerId == null or session.offerId <= 0}">Updater Salgs Pris</button>
+                        <button type="submit" class="button-updateSalesPrice" th:disabled="${session.offerId == null or session.offerId <= 0}">Opdater Salgs Pris</button>
                     </div>
                 </form>
                 <form method="get" th:action="@{/button-editDimensions}">
