@@ -257,7 +257,6 @@ class OfferMapperTest {
 
         //Assert
         assertEquals(4, existingId, "Skal hente id=1 for eksisterende john.doe@example.com");
-        System.out.println(newId);
         assertTrue(newId == 4, "Forventes at ny customer_id = 4, var " + newId);
     }
 

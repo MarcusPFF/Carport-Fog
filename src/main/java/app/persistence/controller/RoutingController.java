@@ -226,9 +226,9 @@ public class RoutingController {
     public static void handleSellerAdminPageSendFinalOffer(Context ctx) throws DatabaseException, IOException {
         int offerId = getOfferId();
         float salesPrice = offer.getTotalRetailPrice();
-        String acceptOfferTempLink = "acceptoffertemplink.com";
+        String acceptOfferLink = "carport.kudskprogramming.dk/accept-offer";
         CustomerInformation customerInformation = offerMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
-        mailSender.sendSecondMail(customerInformation, acceptOfferTempLink, salesPrice);
+        mailSender.sendSecondMail(customerInformation, acceptOfferLink, salesPrice);
         setOfferId(0);
         showSellerAdminPage(ctx);
     }
@@ -325,9 +325,10 @@ public class RoutingController {
         int offerId = Integer.parseInt(ctx.formParam("offerId"));
         String sellerMail = app.persistence.mappers.OfferMapper.getSellerMailFromOfferId(connectionPool, offerId);
         CustomerInformation customerInformation = app.persistence.mappers.OfferMapper.getCustomerInformationFromOfferId(connectionPool, offerId);
-
+        setOfferId(offerId);
         if (sellerMail != null) {
             mailSender.sendSellerMailContact(sellerMail, customerInformation);
+            setOfferId(0);
             showIndexPage(ctx);
         } else {
             ctx.status(400);
@@ -394,7 +395,7 @@ public class RoutingController {
         int offerId = materialCalculator.offerCalculator(connectionPool, getCarportLength(ctx), getCarportWidth(ctx), 210, getShedLength(ctx, getShedCheckbox(ctx)), getShedWidth(ctx, getShedCheckbox(ctx)), getShedDoors(ctx, getShedCheckbox(ctx)), getCustomerEmail(ctx), getCustomerFirstName(ctx), getCustomerLastName(ctx), getCustomerStreetName(ctx), getCustomerHouseNumber(ctx), getCustomerZipCode(ctx), getCustomerPhoneNumber(ctx), 120, getCarportTrapezRoof(ctx), 20, 5);
         setOfferId(offerId);
         ctx.render("/quick-byg-mail-sent.html");
-        String searchForOfferLink = "becontactedbyaseller.com";
+        String searchForOfferLink = "carport.kudskprogramming.dk/seller-contact";
 
         float salesPrice = app.persistence.mappers.OfferMapper.getSalesPriceFromOfferId(connectionPool, getOfferId());
         try {
@@ -403,6 +404,7 @@ public class RoutingController {
             setOfferId(0);
         } catch (IOException e) {
             System.out.println(e.getMessage());
+            ;
         }
     }
 
